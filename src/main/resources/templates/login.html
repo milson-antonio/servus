@@ -25,26 +25,29 @@
                 <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
                     <label class="flex flex-col min-w-40 flex-1">
                         <p class="text-[#0d141c] text-base font-medium leading-normal pb-2" th:text="#{login.email.label}">Email</p>
-                        <input
+                        <input id="email" name="email" type="email"
                                 th:attr="placeholder=#{login.email.placeholder}" placeholder="Introduza o seu email"
                                 class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0d141c] focus:outline-0 focus:ring-0 border-none bg-[#e7edf4] focus:border-none h-14 placeholder:text-[#49739c] p-4 text-base font-normal leading-normal"
-                                value=""
                         />
                     </label>
                 </div>
                 <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
                     <label class="flex flex-col min-w-40 flex-1">
                         <p class="text-[#0d141c] text-base font-medium leading-normal pb-2" th:text="#{login.password.label}">Palavra‑passe</p>
-                        <input
+                        <input id="password" name="password" type="password"
                                 th:attr="placeholder=#{login.password.placeholder}" placeholder="Introduza a sua palavra‑passe"
                                 class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0d141c] focus:outline-0 focus:ring-0 border-none bg-[#e7edf4] focus:border-none h-14 placeholder:text-[#49739c] p-4 text-base font-normal leading-normal"
-                                value=""
                         />
                     </label>
                 </div>
-                <p class="text-[#49739c] text-sm font-normal leading-normal pb-3 pt-1 px-4 underline" th:text="#{login.forgot}">Esqueceu a palavra‑passe?</p>
+                <div id="loginError" class="px-4 hidden">
+                    <div class="rounded-md border border-red-300 bg-red-50 text-red-700 text-sm p-3"></div>
+                </div>
+                <p class="text-[#49739c] text-sm font-normal leading-normal pb-3 pt-1 px-4">
+                    <a class="underline" th:href="@{/password-reset}" href="/password-reset" th:text="#{login.forgot}">Esqueceu a palavra‑passe?</a>
+                </p>
                 <div class="flex px-4 py-3">
-                    <button
+                    <button id="loginBtn" type="button"
                             class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 flex-1 bg-[#0d80f2] text-slate-50 text-sm font-bold leading-normal tracking-[0.015em]"
                     >
                         <span class="truncate" th:text="#{login.submit}">Iniciar sessão</span>
@@ -59,5 +62,50 @@
     </div>
 </div>
 </section>
+<script>
+  (function(){
+    const btn = document.getElementById('loginBtn');
+    const emailEl = document.getElementById('email');
+    const pwdEl = document.getElementById('password');
+    const errorBox = document.getElementById('loginError');
+
+    function showError(msg){
+      errorBox.classList.remove('hidden');
+      errorBox.querySelector('div').textContent = msg || 'Falha ao iniciar sessão. Verifique as credenciais.';
+    }
+
+    if(btn){
+      btn.addEventListener('click', async function(){
+        errorBox.classList.add('hidden');
+        const email = emailEl.value.trim();
+        const password = pwdEl.value;
+        if(!email || !password){
+          showError('Preencha email e palavra‑passe.');
+          return;
+        }
+        try {
+          const res = await fetch('/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: email, password })
+          });
+          if(!res.ok){
+            const text = await res.text();
+            showError(text || 'Credenciais inválidas');
+            return;
+          }
+          const data = await res.json();
+          localStorage.setItem('servus.jwt', data.token);
+          localStorage.setItem('servus.user', data.username);
+          document.cookie = 'Authorization=' + encodeURIComponent('Bearer ' + data.token) + '; Path=/; SameSite=Lax';
+          // redirect to schedule flow which will route appropriately
+          window.location.href = '/schedule';
+        } catch (e){
+          showError('Erro de rede. Tente novamente.');
+        }
+      });
+    }
+  })();
+</script>
 </body>
 </html>

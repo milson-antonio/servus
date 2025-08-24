@@ -23,11 +23,16 @@
                     </div>
                 </div>
 
-                <form th:action="@{/sign-up}" method="post" class="mt-2">
+                <form id="signupForm"
+                      class="mt-2"
+                      method="post"
+                      action="/auth/register"
+                      hx-post="/auth/register"
+                      hx-swap="none">
                     <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
                         <label class="flex flex-col min-w-40 flex-1">
                             <p class="text-[#0d141c] text-base font-medium leading-normal pb-2" th:text="#{signup.fullName.label}">Nome completo</p>
-                            <input name="fullName" type="text" required
+                            <input id="fullName" name="fullName" type="text" required
                                    th:attr="placeholder=#{signup.fullName.placeholder}" placeholder="Introduza o seu nome"
                                    class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0d141c] focus:outline-0 focus:ring-0 border-none bg-[#e7edf4] focus:border-none h-14 placeholder:text-[#49739c] p-4 text-base font-normal leading-normal"/>
                         </label>
@@ -36,7 +41,7 @@
                     <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
                         <label class="flex flex-col min-w-40 flex-1">
                             <p class="text-[#0d141c] text-base font-medium leading-normal pb-2" th:text="#{signup.email.label}">Email</p>
-                            <input name="email" type="email" required
+                            <input id="email" name="email" type="email" required
                                    th:attr="placeholder=#{signup.email.placeholder}" placeholder="Introduza o seu email"
                                    class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0d141c] focus:outline-0 focus:ring-0 border-none bg-[#e7edf4] focus:border-none h-14 placeholder:text-[#49739c] p-4 text-base font-normal leading-normal"/>
                         </label>
@@ -45,7 +50,7 @@
                     <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
                         <label class="flex flex-col min-w-40 flex-1">
                             <p class="text-[#0d141c] text-base font-medium leading-normal pb-2" th:text="#{signup.phone.label}">Telefone (WhatsApp)</p>
-                            <input name="phone" type="tel"
+                            <input id="phone" name="phone" type="tel"
                                    th:attr="placeholder=#{signup.phone.placeholder}" placeholder="Opcional"
                                    class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0d141c] focus:outline-0 focus:ring-0 border-none bg-[#e7edf4] focus:border-none h-14 placeholder:text-[#49739c] p-4 text-base font-normal leading-normal"/>
                         </label>
@@ -54,7 +59,7 @@
                     <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
                         <label class="flex flex-col min-w-40 flex-1">
                             <p class="text-[#0d141c] text-base font-medium leading-normal pb-2" th:text="#{signup.password.label}">Palavra‑passe</p>
-                            <input name="password" type="password" required
+                            <input id="password" name="password" type="password" required
                                    th:attr="placeholder=#{signup.password.placeholder}" placeholder="Introduza a sua palavra‑passe"
                                    class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0d141c] focus:outline-0 focus:ring-0 border-none bg-[#e7edf4] focus:border-none h-14 placeholder:text-[#49739c] p-4 text-base font-normal leading-normal"/>
                         </label>
@@ -63,14 +68,18 @@
                     <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
                         <label class="flex flex-col min-w-40 flex-1">
                             <p class="text-[#0d141c] text-base font-medium leading-normal pb-2" th:text="#{signup.confirmPassword.label}">Confirmar palavra‑passe</p>
-                            <input name="confirmPassword" type="password" required
+                            <input id="confirmPassword" name="confirmPassword" type="password" required
                                    th:attr="placeholder=#{signup.confirmPassword.placeholder}" placeholder="Repita a palavra‑passe"
                                    class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0d141c] focus:outline-0 focus:ring-0 border-none bg-[#e7edf4] focus:border-none h-14 placeholder:text-[#49739c] p-4 text-base font-normal leading-normal"/>
                         </label>
                     </div>
 
+                    <div id="signupError" class="px-4 hidden">
+                        <div class="rounded-md border border-red-300 bg-red-50 text-red-700 text-sm p-3 message"></div>
+                    </div>
+
                     <div class="flex px-4 py-3">
-                        <button type="submit"
+                        <button id="signupBtn" type="submit"
                                 class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 flex-1 bg-[#0d80f2] text-slate-50 text-base font-bold leading-normal tracking-[0.015em]">
                             <span class="truncate" th:text="#{signup.submit}">Criar conta</span>
                         </button>

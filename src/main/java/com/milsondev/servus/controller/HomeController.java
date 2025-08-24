@@ -18,8 +18,8 @@ public class HomeController {
 
     @GetMapping("/schedule")
     public String schedule(Model model) {
-        Random r = new Random();
-        boolean userLoggedIn = r.nextBoolean();
+        var auth = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
+        boolean userLoggedIn = auth != null && auth.isAuthenticated() && !(auth.getPrincipal() instanceof String && "anonymousUser".equals(auth.getPrincipal()));
         if (userLoggedIn) {
             return "redirect:/appointments";
         }
@@ -41,22 +41,19 @@ public class HomeController {
         return "sign-up";
     }
 
-    @PostMapping("/sign-up")
-    public String handleSignUp(
-            @RequestParam(name = "fullName", required = false) String fullName,
-            @RequestParam(name = "email", required = false) String email,
-            @RequestParam(name = "phone", required = false) String phone,
-            @RequestParam(name = "password", required = false) String password,
-            @RequestParam(name = "confirmPassword", required = false) String confirmPassword
-    ) {
-        // Minimal validation for demo purposes; no persistence yet
-        boolean hasBasics = notBlank(fullName) && notBlank(email) && notBlank(password) && notBlank(confirmPassword);
-        boolean passwordsMatch = notBlank(password) && password.equals(confirmPassword);
-        if (!hasBasics || !passwordsMatch) {
-            return "redirect:/sign-up?error=1";
-        }
-        // In a real app, create user, send verification, etc.
-        return "redirect:/login?registered=1";
+    @GetMapping("/sign-up/success")
+    public String signUpSuccess(Model model) {
+        return "sign-up-success";
+    }
+
+    @GetMapping("/password-reset")
+    public String passwordReset(Model model) {
+        return "password-reset";
+    }
+
+    @GetMapping("/password-reset/new")
+    public String passwordResetNew(Model model) {
+        return "password-reset-new";
     }
 
     private boolean notBlank(String s) {
