@@ -1,0 +1,79 @@
+<div th:fragment="header">
+    <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#e7edf4] px-10 py-3">
+        <div class="flex items-center gap-4 text-[#0d141c]">
+            <a th:href="@{/}" href="/" aria-label="Ir para a página inicial"
+               class="bg-red-600 p-1 rounded inline-flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                <img th:src="@{/images/logo.png}" src="/images/logo.png" th:alt="#{header.logo.alt}"
+                     class="h-20 w-auto transition-transform duration-300 ease-out hover:scale-105"/>
+            </a>
+            <h2 class="text-[#0d141c] text-lg font-bold leading-tight tracking-[-0.015em]" th:text="#{app.title}">Portal de Agendamentos</h2>
+        </div>
+        <div class="flex flex-1 justify-end gap-6 items-center">
+            <nav class="flex items-center gap-6">
+                <a class="text-[#0d141c] text-sm font-medium leading-normal" href="#" th:text="#{nav.embassies}">Para Embaixadas</a>
+                <a class="text-[#0d141c] text-sm font-medium leading-normal" href="#" th:text="#{nav.applicants}">Para Requerentes</a>
+                <a class="text-[#0d141c] text-sm font-medium leading-normal" href="#" th:text="#{nav.pricing}">Preços</a>
+                <a class="text-[#0d141c] text-sm font-medium leading-normal" href="#" th:text="#{nav.contact}">Contacto</a>
+            </nav>
+            <div class="flex items-center gap-3">
+                <!-- Language dropdown -->
+                <div class="relative" x-data>
+                    <button id="langMenuButton" type="button" class="rounded-lg border border-slate-300 px-3 py-2 text-sm inline-flex items-center gap-2"
+                            aria-haspopup="true" aria-expanded="false" aria-controls="langMenu">
+                        <!-- Globe icon -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M2 12h20"></path>
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                        </svg>
+                        <span class="sr-only">Idioma</span>
+                    </button>
+                    <div id="langMenu" class="absolute right-0 mt-2 w-44 rounded-md border border-slate-200 bg-white shadow-lg py-1 hidden z-50">
+                        <a href="#" onclick="switchLang('pt'); return false;" class="flex items-center gap-2 px-3 py-2 text-sm hover:bg-slate-100">
+                            <span aria-hidden="true">🇵🇹</span>
+                            <span th:text="#{lang.pt}">Português</span>
+                        </a>
+                        <a href="#" onclick="switchLang('de'); return false;" class="flex items-center gap-2 px-3 py-2 text-sm hover:bg-slate-100">
+                            <span aria-hidden="true">🇩🇪</span>
+                            <span th:text="#{lang.de}">Alemão</span>
+                        </a>
+                        <a href="#" onclick="switchLang('en'); return false;" class="flex items-center gap-2 px-3 py-2 text-sm hover:bg-slate-100">
+                            <span aria-hidden="true">🇬🇧</span>
+                            <span th:text="#{lang.en}">English</span>
+                        </a>
+                    </div>
+                </div>
+                <button type="button" onclick="toggleTheme()" class="rounded-lg border border-slate-300 px-3 py-2 text-sm"
+                        th:attr="aria-label=#{theme.toggle}">🌓</button>
+            </div>
+        </div>
+    </header>
+    <script>
+      (function(){
+        const btn = document.getElementById('langMenuButton');
+        const menu = document.getElementById('langMenu');
+        if(!btn || !menu) return;
+        function closeMenu(){ menu.classList.add('hidden'); btn.setAttribute('aria-expanded','false'); }
+        function openMenu(){ menu.classList.remove('hidden'); btn.setAttribute('aria-expanded','true'); }
+        btn.addEventListener('click', function(e){
+          e.stopPropagation();
+          if(menu.classList.contains('hidden')) openMenu(); else closeMenu();
+        });
+        document.addEventListener('click', function(){ closeMenu(); });
+        document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeMenu(); });
+        // Expose language switcher that preserves the current path and query string
+        window.switchLang = function(lang){
+          try {
+            const url = new URL(window.location.href);
+            url.searchParams.set('lang', lang);
+            // Optional: keep hash
+            window.location.href = url.toString();
+          } catch (e) {
+            // Fallback
+            const sep = window.location.href.includes('?') ? '&' : '?';
+            window.location.href = window.location.href + sep + 'lang=' + encodeURIComponent(lang);
+          }
+        }
+      })();
+    </script>
+</div>

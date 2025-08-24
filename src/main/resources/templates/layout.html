@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      th:attr="lang=${#locale?.language}">
+
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{app.title}">Portal de Agendamentos</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link rel="stylesheet" onload="this.rel='stylesheet'"
+          href="https://fonts.googleapis.com/css2?display=swap&family=Inter:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.5"
+            integrity="sha384-xcuj3WpfgjlKF+FXhSQFQ0ZNr39ln+hwjN3npfM9VBnUskLolQAcN80McRIVOPuO"
+            crossorigin="anonymous"></script>
+    <style>
+      :root { color-scheme: light dark; }
+      html.dark body { background-color: #0b1220; }
+      html.dark body, html.dark h1, html.dark h2, html.dark p, html.dark a { color: #e5e7eb !important; }
+      html.dark .border, html.dark [class*="border-"] { border-color: #2b3443 !important; }
+      html.dark .bg-slate-50 { background-color: #0f172a !important; }
+      html.dark a { color: #93c5fd !important; }
+      /* Language dropdown dark mode overrides */
+      html.dark #langMenu { background-color: #111827 !important; border-color: #2b3443 !important; color: #e5e7eb !important; }
+      html.dark #langMenu a { color: #e5e7eb !important; }
+      html.dark #langMenu a:hover { background-color: #1f2937 !important; }
+      html.dark #langMenuButton { border-color: #2b3443 !important; color: #e5e7eb !important; background-color: transparent !important; }
+    </style>
+    <script>
+      (function() {
+        try {
+          const ls = localStorage.getItem('theme');
+          const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (ls === 'dark' || (!ls && prefersDark)) {
+            document.documentElement.classList.add('dark');
+          }
+        } catch(e) {}
+      })();
+    </script>
+</head>
+
+<body>
+<header th:replace="~{header :: header}"></header>
+
+<main>
+    <section layout:fragment="content"></section>
+</main>
+
+<footer th:replace="~{footer :: footer}"></footer>
+<script>
+  function toggleTheme() {
+    const root = document.documentElement;
+    const isDark = root.classList.toggle('dark');
+    try { localStorage.setItem('theme', isDark ? 'dark' : 'light'); } catch(e) {}
+  }
+</script>
+</body>
+</html>

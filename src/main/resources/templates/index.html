@@ -1,0 +1,125 @@
+<html lang="pt"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<head>
+    <title>Agendamentos</title>
+</head>
+
+<body>
+<section layout:fragment="content">
+    <div class="relative flex size-full min-h-screen flex-col bg-slate-50 group/design-root overflow-x-hidden" style='font-family: Inter, "Noto Sans", sans-serif;'>
+        <div class="layout-container flex h-full grow flex-col">
+            <div class="px-40 flex flex-1 justify-center py-5">
+                <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+                    <div class="@container">
+                        <div class="@[480px]:p-4">
+                            <div class="flex min-h-[480px] flex-col gap-6 bg-cover bg-center bg-no-repeat @[480px]:gap-8 @[480px]:rounded-lg items-start justify-end px-4 pb-10 @[480px]:px-10"
+                                 th:style="|background-image: linear-gradient(rgba(13, 20, 28, 0.45) 0%, rgba(13, 20, 28, 0.75) 100%), url(@{/images/embaixada-angola.jpg});|">
+                                <div class="flex flex-col gap-2 text-left">
+                                    <h1 class="text-white text-4xl font-black leading-tight tracking-[-0.033em] @[480px]:text-5xl @[480px]:font-black @[480px]:leading-tight @[480px]:tracking-[-0.033em]" th:text="#{index.hero.title}">
+                                        Agende o seu atendimento na embaixada de forma rápida e segura
+                                    </h1>
+                                    <h2 class="text-white text-sm font-normal leading-normal @[480px]:text-base @[480px]:font-normal @[480px]:leading-normal" th:text="#{index.hero.subtitle}">
+                                        Sem filas nem deslocações desnecessárias: escolha o serviço, a data e a hora em minutos. Receba confirmações e lembretes automaticamente.
+                                    </h2>
+                                </div>
+                                <a th:href="@{/schedule}" href="/schedule" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 @[480px]:h-12 @[480px]:px-5 bg-[#0d80f2] text-slate-50 text-sm font-bold leading-normal tracking-[0.015em] @[480px]:text-base @[480px]:font-bold @[480px]:leading-normal @[480px]:tracking-[0.015em]" role="button">
+                                    <span class="truncate" th:text="#{index.hero.button}">Agendar Atendimento</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-10 px-4 py-10 @container">
+                        <div class="flex flex-col gap-4">
+                            <h1 class="text-[#0d141c] tracking-light text-[32px] font-bold leading-tight @[480px]:text-4xl @[480px]:font-black @[480px]:leading-tight @[480px]:tracking-[-0.033em] max-w-[720px]" th:text="#{index.features.title}">Para cidadãos: funcionalidades que simplificam a sua vida</h1>
+                            <p class="text-[#0d141c] text-base font-normal leading-normal max-w-[720px]" th:text="#{index.features.subtitle}">Este portal foi pensado para si. Agende, acompanhe e gere os seus pedidos consulares com total transparência.</p>
+                        </div>
+                        <div class="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] gap-3 p-0">
+                            <div class="flex flex-1 gap-3 rounded-lg border border-[#cedbe8] bg-slate-50 p-4 flex-col">
+                                <div class="text-[#0d141c]" data-icon="Calendar" data-size="24px" data-weight="regular">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                                        <path d="M208,32H184V24a8,8,0,0,0-16,0v8H88V24a8,8,0,0,0-16,0v8H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM72,48v8a8,8,0,0,0,16,0V48h80v8a8,8,0,0,0,16,0V48h24V80H48V48ZM208,208H48V96H208V208Zm-96-88v64a8,8,0,0,1-16,0V132.94l-4.42,2.22a8,8,0,0,1-7.16-14.32l16-8A8,8,0,0,1,112,120Zm59.16,30.45L152,176h16a8,8,0,0,1,0,16H136a8,8,0,0,1-6.4-12.8l28.78-38.37A8,8,0,1,0,145.07,132a8,8,0,1,1-13.85-8A24,24,0,0,1,176,136,23.76,23.76,0,0,1,171.16,150.45Z"></path></svg>
+                                </div>
+                                <div class="flex flex-col gap-1">
+                                    <h2 class="text-[#0d141c] text-base font-bold leading-tight" th:text="#{feature1.title}">Marque online em poucos passos</h2>
+                                    <p class="text-[#49739c] text-sm font-normal leading-normal" th:text="#{feature1.text}">Escolha o serviço, selecione a data e a hora disponíveis e confirme — tudo pelo telemóvel ou computador.</p>
+                                </div>
+                            </div>
+                            <div class="flex flex-1 gap-3 rounded-lg border border-[#cedbe8] bg-slate-50 p-4 flex-col">
+                                <div class="text-[#0d141c]" data-icon="Clock" data-size="24px" data-weight="regular">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A8,8,0,0,1,192,128Z"></path></svg>
+                                </div>
+                                <div class="flex flex-col gap-1">
+                                    <h2 class="text-[#0d141c] text-base font-bold leading-tight" th:text="#{feature2.title}">Menos tempo de espera</h2>
+                                    <p class="text-[#49739c] text-sm font-normal leading-normal" th:text="#{feature2.text}">Mostramos apenas horários livres e evitamos sobreposições, para que seja atendido à hora marcada.</p>
+                                </div>
+                            </div>
+                            <div class="flex flex-1 gap-3 rounded-lg border border-[#cedbe8] bg-slate-50 p-4 flex-col">
+                                <div class="text-[#0d141c]" data-icon="Bell" data-size="24px" data-weight="regular">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256"><path d="M221.8,175.94C216.25,166.38,208,139.33,208,104a80,80,0,1,0-160,0c0,35.34-8.26,62.38-13.81,71.94A16,16,0,0,0,48,200H88.81a40,40,0,0,0,78.38,0H208a16,16,0,0,0,13.8-24.06ZM128,216a24,24,0,0,1-22.62-16h45.24A24,24,0,0,1,128,216ZM48,184c7.7-13.24,16-43.92,16-80a64,64,0,1,1,128,0c0,36.05,8.28,66.73,16,80Z"></path></svg>
+                                </div>
+                                <div class="flex flex-col gap-1">
+                                    <h2 class="text-[#0d141c] text-base font-bold leading-tight" th:text="#{feature3.title}">Lembretes e confirmações</h2>
+                                    <p class="text-[#49739c] text-sm font-normal leading-normal" th:text="#{feature3.text}">Receba confirmações imediatas e lembretes por SMS/e‑mail para não perder o seu atendimento.</p>
+                                </div>
+                            </div>
+                            <div class="flex flex-1 gap-3 rounded-lg border border-[#cedbe8] bg-slate-50 p-4 flex-col">
+                                <div class="text-[#0d141c]" data-icon="UsersThree" data-size="24px" data-weight="regular">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256"><path d="M244.8,150.4a8,8,0,0,1-11.2-1.6A51.6,51.6,0,0,0,192,128a8,8,0,0,1-7.37-4.89,8,8,0,0,1,0-6.22A8,8,0,0,1,192,112a24,24,0,1,0-23.24-30,8,8,0,1,1-15.5-4A40,40,0,1,1,219,117.51a67.94,67.94,0,0,1,27.43,21.68A8,8,0,0,1,244.8,150.4ZM190.92,212a8,8,0,1,1-13.84,8,57,57,0,0,0-98.16,0,8,8,0,1,1-13.84-8,72.06,72.06,0,0,1,33.74-29.92,48,48,0,1,1,58.36,0A72.06,72.06,0,0,1,190.92,212ZM128,176a32,32,0,1,0-32-32A32,32,0,0,0,128,176ZM72,120a8,8,0,0,0-8-8A24,24,0,1,1,87.24,82a8,8,0,1,0,15.5-4A40,40,0,1,0,37,117.51,67.94,67.94,0,0,0,9.6,139.19a8,8,0,1,0,12.8,9.61A51.6,51.6,0,0,1,64,128,8,8,0,0,0,72,120Z"></path></svg>
+                                </div>
+                                <div class="flex flex-col gap-1">
+                                    <h2 class="text-[#0d141c] text-base font-bold leading-tight" th:text="#{feature4.title}">Acompanhe os seus pedidos</h2>
+                                    <p class="text-[#49739c] text-sm font-normal leading-normal" th:text="#{feature4.text}">Consulte o histórico de atendimentos e o estado dos seus pedidos sempre que precisar.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h2 class="text-[#0d141c] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5" th:text="#{index.testimonials.title}">Testemunhos</h2>
+                    <div class="flex overflow-y-auto [-ms-scrollbar-style:none] [scrollbar-width:none] [&amp;::-webkit-scrollbar]:hidden">
+                        <div class="flex items-stretch p-4 gap-3">
+                            <div class="flex h-full flex-1 flex-col gap-4 rounded-lg min-w-60">
+                                <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg flex flex-col" th:style="|background-image: url(@{/images/testemunho1.png});|"></div>
+                                <div>
+                                    <p class="text-[#0d141c] text-base font-medium leading-normal" th:text="#{testimonial1.text}">"O sistema de agendamento online é extremamente fácil de usar e poupou-me imenso tempo. Consegui marcar o meu atendimento em minutos!"</p>
+                                    <p class="text-[#49739c] text-sm font-normal leading-normal" th:text="#{testimonial1.author}">Sarah, Requerente</p>
+                                </div>
+                            </div>
+                            <div class="flex h-full flex-1 flex-col gap-4 rounded-lg min-w-60">
+                                <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg flex flex-col" th:style="|background-image: url(@{/images/testemunho2.png});|"></div>
+                                <div>
+                                    <p class="text-[#0d141c] text-base font-medium leading-normal" th:text="#{testimonial2.text}">"A nossa embaixada registou uma redução significativa nos tempos de espera e uma melhoria na satisfação dos requerentes desde que implementou esta plataforma."</p>
+                                    <p class="text-[#49739c] text-sm font-normal leading-normal" th:text="#{testimonial2.author}">Mark, Funcionário da Embaixada</p>
+                                </div>
+                            </div>
+                            <div class="flex h-full flex-1 flex-col gap-4 rounded-lg min-w-60">
+                                <div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg flex flex-col" th:style="|background-image: url(@{/images/testemunho3.png});|"></div>
+                                <div>
+                                    <p class="text-[#0d141c] text-base font-medium leading-normal" th:text="#{testimonial3.text}">"Os lembretes automáticos são uma maravilha! Nunca mais me preocupo em perder um atendimento."</p>
+                                    <p class="text-[#49739c] text-sm font-normal leading-normal" th:text="#{testimonial3.author}">Emily, Requerente</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="@container">
+                        <div class="flex flex-col justify-end gap-6 px-4 py-10 @[480px]:gap-8 @[480px]:px-10 @[480px]:py-20">
+                            <div class="flex flex-col gap-2 text-center">
+                                <h1 class="mx-auto text-[#0d141c] tracking-light text-[32px] font-bold leading-tight @[480px]:text-4xl @[480px]:font-black @[480px]:leading-tight @[480px]:tracking-[-0.033em] max-w-[720px]" th:text="#{index.cta.title}">Pronto para começar?</h1>
+                            </div>
+                            <div class="flex flex-1 justify-center">
+                                <div class="flex justify-center">
+                                    <a th:href="@{/schedule}" href="/schedule" class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 @[480px]:h-12 @[480px]:px-5 bg-[#0d80f2] text-slate-50 text-sm font-bold leading-normal tracking-[0.015em] @[480px]:text-base @[480px]:font-bold @[480px]:leading-normal @[480px]:tracking-[0.015em] grow" role="button">
+                                        <span class="truncate" th:text="#{index.cta.button}">Agendar Atendimento</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>
