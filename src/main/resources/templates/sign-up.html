@@ -27,14 +27,15 @@
                       class="mt-2"
                       method="post"
                       th:object="${user}"
-                      action="/auth/register">
+                      action="/auth/register"
+                      novalidate>
                     <div class="flex max-w-[480px] flex-wrap items-end gap-2 px-4 py-3">
                         <label class="flex flex-col min-w-40 flex-1">
                             <p class="text-[#0d141c] text-base font-medium leading-normal pb-2">
                                 <span th:text="#{signup.fullName.label}">Nome completo</span>
                                 <span class="text-red-600" aria-hidden="true"> *</span>
                             </p>
-                            <input id="fullName" th:field="*{fullName}" type="text" required
+                            <input id="fullName" th:field="*{fullName}" type="text"
                                    th:attr="placeholder=#{signup.fullName.placeholder}"
                                    placeholder="Introduza o seu nome"
                                    class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0d141c] focus:outline-0 focus:ring-0 border-none bg-[#e7edf4] focus:border-none h-14 placeholder:text-[#49739c] p-4 text-base font-normal leading-normal"
@@ -51,11 +52,10 @@
                                 <span class="text-red-600" aria-hidden="true"> *</span>
                             </p>
 
-                            <input id="email" th:field="*{email}" type="email" required
+                            <input id="email" th:field="*{email}" type="email"
                                    th:attr="placeholder=#{signup.email.placeholder}" placeholder="Introduza o seu email"
                                    class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0d141c] focus:outline-0 focus:ring-0 border-none bg-[#e7edf4] focus:border-none h-14 placeholder:text-[#49739c] p-4 text-base font-normal leading-normal"
                                    th:classappend="${errors != null and errors.containsKey('email') ? ' ring-2 ring-red-500' : (user != null and !#strings.isEmpty(user.email) ? ' ring-2 ring-green-400' : '')}"/>
-
                             <div class="mt-2 text-sm text-red-600" th:if="${errors != null and errors.containsKey('email')}" th:text="${errors['email']}"></div>
                         </label>
                     </div>
@@ -76,7 +76,7 @@
                                     <span th:text="#{signup.password.label}">Palavra‑passe</span>
                                     <span class="text-red-600" aria-hidden="true"> *</span>
                                 </p>
-                                <input id="password" th:field="*{password}" type="password" required
+                                <input id="password" th:field="*{password}" type="password"
                                        th:attr="placeholder=#{signup.password.placeholder}" placeholder="Introduza a sua palavra‑passe"
                                        class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0d141c] focus:outline-0 focus:ring-0 border-none bg-[#e7edf4] focus:border-none h-14 placeholder:text-[#49739c] p-4 text-base font-normal leading-normal"
                                        th:classappend="${errors != null and errors.containsKey('password') ? ' ring-2 ring-red-500' : (user != null and !#strings.isEmpty(user.password) ? ' ring-2 ring-green-400' : '')}"/>
@@ -87,7 +87,7 @@
                                     <span th:text="#{signup.confirmPassword.label}">Confirmar palavra‑passe</span>
                                     <span class="text-red-600" aria-hidden="true"> *</span>
                                 </p>
-                                <input id="confirmPassword" th:field="*{confirmPassword}" type="password" required
+                                <input id="confirmPassword" th:field="*{confirmPassword}" type="password"
                                        th:attr="placeholder=#{signup.confirmPassword.placeholder}" placeholder="Repita a palavra‑passe"
                                        class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0d141c] focus:outline-0 focus:ring-0 border-none bg-[#e7edf4] focus:border-none h-14 placeholder:text-[#49739c] p-4 text-base font-normal leading-normal"
                                        th:classappend="${errors != null and errors.containsKey('confirmPassword') ? ' ring-2 ring-red-500' : (user != null and !#strings.isEmpty(user.confirmPassword) ? ' ring-2 ring-green-400' : '')}"/>

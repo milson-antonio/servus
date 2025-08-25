@@ -5,16 +5,20 @@ import com.milsondev.servus.service.OrchestrationService;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 
 import java.util.regex.Pattern;
 
 public class UserDTOValidatorImpl implements ConstraintValidator<UserDTOValidator, UserDTO> {
 
     private final OrchestrationService orchestrationService;
+    private final MessageSource messageSource;
 
     @Autowired
-    public UserDTOValidatorImpl(OrchestrationService orchestrationService) {
+    public UserDTOValidatorImpl(OrchestrationService orchestrationService, MessageSource messageSource) {
         this.orchestrationService = orchestrationService;
+        this.messageSource = messageSource;
     }
 
     private static final Pattern EMAIL_REGEX = Pattern.compile(
@@ -33,23 +37,23 @@ public class UserDTOValidatorImpl implements ConstraintValidator<UserDTOValidato
 
         // fullName required (non-null, non-blank)
         if (isBlank(dto.getFullName())) {
-            addViolation(ctx, "fullName", "Nome completo é obrigatório");
+            addViolation(ctx, "fullName", msg("validation.signup.fullName.required"));
             valid = false;
         }
 
         // email required and valid format
         if (isBlank(dto.getEmail())) {
-            addViolation(ctx, "email", "Email é obrigatório");
+            addViolation(ctx, "email", msg("validation.signup.email.required"));
             valid = false;
         } else if (!EMAIL_REGEX.matcher(dto.getEmail().trim()).matches()) {
-            addViolation(ctx, "email", "Email inválido");
+            addViolation(ctx, "email", msg("validation.signup.email.invalid"));
             valid = false;
         }
 
         // password rules
         if (isCreate) {
             if (isBlank(dto.getPassword())) {
-                addViolation(ctx, "password", "Palavra‑passe é obrigatória");
+                addViolation(ctx, "password", msg("validation.signup.password.required"));
                 valid = false;
             }
         }
@@ -57,19 +61,21 @@ public class UserDTOValidatorImpl implements ConstraintValidator<UserDTOValidato
         // confirm password must match when password provided (create or update)
         if (!isBlank(dto.getPassword())) {
             if (dto.getConfirmPassword() == null || !dto.getPassword().equals(dto.getConfirmPassword())) {
-                addViolation(ctx, "confirmPassword", "As palavras‑passe não coincidem");
+                addViolation(ctx, "confirmPassword", msg("validation.signup.confirmPassword.mismatch"));
                 valid = false;
             }
         }
 
-        if(orchestrationService.isUserPresent(dto.getEmail())) {
-            addViolation(ctx, "email", "Já existe uma conta com este email: " + dto.getEmail());
+        if (dto.getEmail() != null && orchestrationService.isUserPresent(dto.getEmail())) {
+            addViolation(ctx, "email", msg("validation.signup.email.exists", dto.getEmail()));
             valid = false;
         }
 
-
-
         return valid;
+    }
+
+    private String msg(String code, Object... args) {
+        return messageSource.getMessage(code, args, LocaleContextHolder.getLocale());
     }
 
     private void addViolation(ConstraintValidatorContext ctx, String field, String message) {
