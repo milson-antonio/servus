@@ -1,11 +1,10 @@
 package com.milsondev.servus.controller;
 
-
+import com.milsondev.servus.dto.LoginRequestDTO;
+import com.milsondev.servus.dto.UserDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Random;
 
 @Controller
 @RequestMapping("/")
@@ -33,13 +32,16 @@ public class HomeController {
 
     @GetMapping("/login")
     public String login(Model model) {
+        if (!model.containsAttribute("login")) {
+            model.addAttribute("login", new LoginRequestDTO());
+        }
         return "login";
     }
 
     @GetMapping("/sign-up")
     public String signUp(Model model) {
         if (!model.containsAttribute("user")) {
-            model.addAttribute("user", new com.milsondev.servus.dto.UserDTO());
+            model.addAttribute("user", new UserDTO());
         }
         return "sign-up";
     }
@@ -57,10 +59,6 @@ public class HomeController {
     @GetMapping("/password-reset/new")
     public String passwordResetNew(Model model) {
         return "password-reset-new";
-    }
-
-    private boolean notBlank(String s) {
-        return s != null && !s.trim().isEmpty();
     }
 
 }
