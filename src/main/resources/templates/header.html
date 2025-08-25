@@ -1,10 +1,12 @@
 <div th:fragment="header">
     <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#e7edf4] px-10 py-3">
         <div class="flex items-center gap-4 text-[#0d141c]">
-            <a th:href="@{/}" href="/" aria-label="Ir para a página inicial"
-               class="bg-red-600 p-1 rounded inline-flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-                <img th:src="@{/images/logo.png}" src="/images/logo.png" th:alt="#{header.logo.alt}"
-                     class="h-20 w-auto transition-transform duration-300 ease-out hover:scale-105"/>
+            <a href="/" aria-label="Ir para a página inicial"
+               class="inline-flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                <div class="relative bg-red-600 p-1 rounded overflow-hidden transition-all duration-300 ease-out hover:shadow-lg hover:bg-red-700">
+                    <img src="/images/logo.png" alt="Logo"
+                         class="h-20 w-auto rounded transition-transform duration-300 ease-out hover:scale-105"/>
+                </div>
             </a>
             <h2 class="text-[#0d141c] text-lg font-bold leading-tight tracking-[-0.015em]" th:text="#{app.title}">Portal de Agendamentos</h2>
         </div>

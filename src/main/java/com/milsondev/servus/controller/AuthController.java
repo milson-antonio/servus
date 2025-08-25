@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.web.util.UriUtils;
 
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,6 +31,15 @@ public class AuthController {
     public AuthController(AuthService authService, MessageSource messageSource) {
         this.authService = authService;
         this.messageSource = messageSource;
+    }
+
+    @GetMapping("/login")
+    public String loginGet(@RequestParam(value = "lang", required = false) String lang) {
+        if (lang != null && !lang.isBlank()) {
+            String encoded = UriUtils.encode(lang, StandardCharsets.UTF_8);
+            return "redirect:/login?lang=" + encoded;
+        }
+        return "redirect:/login";
     }
 
     @GetMapping("/register")
