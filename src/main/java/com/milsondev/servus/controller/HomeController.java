@@ -38,6 +38,9 @@ public class HomeController {
 
     @GetMapping("/sign-up")
     public String signUp(Model model) {
+        if (!model.containsAttribute("user")) {
+            model.addAttribute("user", new com.milsondev.servus.dto.UserDTO());
+        }
         return "sign-up";
     }
 

@@ -8,11 +8,16 @@ import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
-@RestController
+@Controller
 @RequestMapping("/auth")
 public class AuthController {
 
@@ -23,6 +28,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
+    @ResponseBody
     public ResponseEntity<?> login(@RequestBody @Valid LoginRequestDTO loginRequest) {
         try {
             JwtResponseDTO response = authService.login(loginRequest);
@@ -33,15 +39,27 @@ public class AuthController {
     }
 
     @PostMapping(value = "/register", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public ResponseEntity<?> registerForm(@Valid UserDTO userDto, @RequestHeader(value = "HX-Request", required = false) String hxRequest) {
+    public String registerForm(@ModelAttribute("user") @Valid final UserDTO userDto,
+                               final BindingResult result,
+                               final Model model) {
+
+        if (result.hasErrors()) {
+            Map<String, String> errors = new HashMap<>();
+            for (FieldError error: result.getFieldErrors()){
+                errors.put(error.getField(), error.getDefaultMessage());
+            }
+            model.addAttribute("errors", errors);
+            return "sign-up";
+        }
+
         try {
             authService.register(userDto);
-            if (("true".equalsIgnoreCase(hxRequest) || "yes".equalsIgnoreCase(hxRequest))) {
-                return ResponseEntity.ok().header("HX-Redirect", "/sign-up/success").build();
-            }
-            return ResponseEntity.status(303).location(URI.create("/sign-up/success")).build();
+            return "redirect:/sign-up/success";
         } catch (IllegalArgumentException ex) {
-            return ResponseEntity.badRequest().body(ex.getMessage());
+            Map<String, String> errors = new HashMap<>();
+            errors.put("_global", ex.getMessage());
+            model.addAttribute("errors", errors);
+            return "sign-up";
         }
     }
 }

@@ -63,7 +63,7 @@ public class UserDTOValidatorImpl implements ConstraintValidator<UserDTOValidato
         }
 
         if(orchestrationService.isUserPresent(dto.getEmail())) {
-            addViolation(ctx, "e-mail", "Ja existe uma conta com este e-mail: " + dto.getEmail());
+            addViolation(ctx, "email", "Já existe uma conta com este email: " + dto.getEmail());
             valid = false;
         }
 
