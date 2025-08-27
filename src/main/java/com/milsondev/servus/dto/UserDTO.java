@@ -1,6 +1,7 @@
 package com.milsondev.servus.dto;
 
 import com.milsondev.servus.dto.validator.UserDTOValidator;
+import com.milsondev.servus.enu.Role;
 import lombok.Data;
 
 import java.util.UUID;
@@ -14,4 +15,5 @@ public class UserDTO {
     private String phone;
     private String password;
     private String confirmPassword;
+    private Role role;
 }

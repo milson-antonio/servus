@@ -44,4 +44,7 @@ public class User {
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @Column(name = "active")
+    private boolean active;
 }

@@ -1,0 +1,39 @@
+<html lang="pt"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <title th:text="#{activation.failed.title}">Activação falhou</title>
+</head>
+<body>
+<section layout:fragment="content">
+  <div class="relative flex size-full min-h-screen flex-col bg-slate-50 group/design-root overflow-x-hidden">
+    <div class="layout-container flex h-full grow flex-col">
+      <div class="px-40 flex flex-1 justify-center py-5">
+        <div class="layout-content-container flex flex-col w-[640px] max-w-[640px] py-5 max-w-[960px] flex-1">
+          <h2 class="text-[#0d141c] tracking-light text-[28px] font-bold leading-tight px-4 text-center pb-3 pt-5" th:text="#{activation.failed.heading}">Não foi possível activar a sua conta</h2>
+
+          <div class="px-4 py-2">
+            <div class="rounded-md border border-red-300 bg-red-50 text-red-700 text-base p-4">
+              <p class="mb-2" th:text="#{activation.failed.reason}">O link de activação é inválido ou expirou.</p>
+              <p th:text="#{activation.failed.nextSteps}">Solicite um novo link de activação ou contacte o suporte caso o problema persista.</p>
+            </div>
+          </div>
+
+          <div class="flex px-4 py-4 justify-center gap-3">
+            <a th:href="@{/sign-up}" href="/sign-up"
+               class="flex min-w-[120px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-[#e7edf4] text-[#0d141c] text-base font-bold leading-normal tracking-[0.015em]">
+              <span class="truncate" th:text="#{activation.failed.createAccount}">Criar conta</span>
+            </a>
+            <a th:href="@{/login}" href="/login"
+               class="flex min-w-[120px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-[#0d80f2] text-slate-50 text-base font-bold leading-normal tracking-[0.015em]">
+              <span class="truncate" th:text="#{activation.failed.loginLink}">Ir para Login</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</body>
+</html>

@@ -8,5 +8,6 @@ CREATE TABLE servus.user (
                              password VARCHAR(255) NOT NULL,
                              created_at TIMESTAMP NOT NULL,
                              updated_at TIMESTAMP,
-                             role VARCHAR(50) NOT NULL
+                             role VARCHAR(50) NOT NULL,
+                             active BOOLEAN NOT NULL DEFAULT FALSE
 );

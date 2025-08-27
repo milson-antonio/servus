@@ -60,8 +60,8 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/login", "/sign-up", "/password-reset", "/password-reset/new", "/schedule", "/sign-up/success").permitAll()
-                .requestMatchers("/auth/login", "/auth/register").permitAll()
+                .requestMatchers("/", "/login", "/sign-up", "/password-reset", "/password-reset/new", "/password-reset/requested", "/schedule", "/sign-up/success", "/activation/failed").permitAll()
+                .requestMatchers("/auth/login", "/auth/register", "/auth/password-reset", "/auth/active/token", "/auth/password-reset/token").permitAll()
                 .requestMatchers("/static/**", "/images/**", "/css/**", "/js/**", "/favicon.ico").permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()

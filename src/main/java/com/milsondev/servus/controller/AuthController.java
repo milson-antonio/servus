@@ -2,7 +2,9 @@ package com.milsondev.servus.controller;
 
 import com.milsondev.servus.dto.JwtResponseDTO;
 import com.milsondev.servus.dto.LoginRequestDTO;
+import com.milsondev.servus.dto.ResetPasswordRequestDTO;
 import com.milsondev.servus.dto.UserDTO;
+import com.milsondev.servus.enu.Role;
 import com.milsondev.servus.service.auth.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
@@ -27,10 +29,12 @@ public class AuthController {
 
     private final AuthService authService;
     private final MessageSource messageSource;
+    private final com.milsondev.servus.service.TokenService tokenService;
 
-    public AuthController(AuthService authService, MessageSource messageSource) {
+    public AuthController(AuthService authService, MessageSource messageSource, com.milsondev.servus.service.TokenService tokenService) {
         this.authService = authService;
         this.messageSource = messageSource;
+        this.tokenService = tokenService;
     }
 
     @GetMapping("/login")
@@ -40,6 +44,15 @@ public class AuthController {
             return "redirect:/login?lang=" + encoded;
         }
         return "redirect:/login";
+    }
+
+    @GetMapping("/password-reset")
+    public String passwordResetGet(@RequestParam(value = "lang", required = false) String lang) {
+        if (lang != null && !lang.isBlank()) {
+            String encoded = UriUtils.encode(lang, StandardCharsets.UTF_8);
+            return "redirect:/password-reset?lang=" + encoded;
+        }
+        return "redirect:/password-reset";
     }
 
     @GetMapping("/register")
@@ -86,6 +99,22 @@ public class AuthController {
         }
     }
 
+    @PostMapping(value = "/password-reset", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public String resetPasswordForm(@ModelAttribute("reset") @Valid final ResetPasswordRequestDTO resetDto,
+                                    final BindingResult result,
+                                    final Model model) {
+        if (result.hasErrors()) {
+            Map<String, String> errors = new HashMap<>();
+            for (FieldError error : result.getFieldErrors()) {
+                errors.put(error.getField(), error.getDefaultMessage());
+            }
+            model.addAttribute("errors", errors);
+            return "password-reset";
+        }
+        authService.requestPasswordResetAsync(resetDto.getEmail());
+        return "redirect:/password-reset/requested";
+    }
+
     @PostMapping(value = "/register", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String registerForm(@ModelAttribute("user") @Valid final UserDTO userDto,
                                final BindingResult result,
@@ -101,6 +130,7 @@ public class AuthController {
         }
 
         try {
+            userDto.setRole(Role.ROLE_USER);
             authService.register(userDto);
             return "redirect:/sign-up/success";
         } catch (IllegalArgumentException ex) {
@@ -110,4 +140,33 @@ public class AuthController {
             return "sign-up";
         }
     }
+
+    @GetMapping("/active/token")
+    public String activateAccount(@RequestParam("token") String token) {
+        try {
+            String email = tokenService.getEmailFromToken(token);
+            boolean activated = authService.activateUserAccount(email);
+            if (!activated) {
+                return "redirect:/activation/failed";
+            }
+            return "redirect:/login?registered"; 
+        } catch (Exception ex) {
+            return "redirect:/activation/failed";
+        }
+    }
+
+    @GetMapping("/password-reset/token")
+    public String passwordResetWithToken(@RequestParam("token") String token) {
+        try {
+            String email = tokenService.getEmailFromToken(token);
+            org.slf4j.LoggerFactory.getLogger(AuthController.class).info("Password reset token validated for {}", email);
+            // Redirect to the new password page, carrying the token forward.
+            String encoded = UriUtils.encode(token, StandardCharsets.UTF_8);
+            return "redirect:/password-reset/new?token=" + encoded;
+        } catch (Exception ex) {
+            org.slf4j.LoggerFactory.getLogger(AuthController.class).warn("Password reset token invalid: {}", ex.getMessage());
+            return "redirect:/password-reset?error=invalid_token";
+        }
+    }
+
 }

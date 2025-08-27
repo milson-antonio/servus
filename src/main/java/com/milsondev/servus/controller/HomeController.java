@@ -1,6 +1,7 @@
 package com.milsondev.servus.controller;
 
 import com.milsondev.servus.dto.LoginRequestDTO;
+import com.milsondev.servus.dto.ResetPasswordRequestDTO;
 import com.milsondev.servus.dto.UserDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -53,12 +54,25 @@ public class HomeController {
 
     @GetMapping("/password-reset")
     public String passwordReset(Model model) {
+        if (!model.containsAttribute("reset")) {
+            model.addAttribute("reset", new ResetPasswordRequestDTO());
+        }
         return "password-reset";
     }
 
     @GetMapping("/password-reset/new")
     public String passwordResetNew(Model model) {
         return "password-reset-new";
+    }
+
+    @GetMapping("/password-reset/requested")
+    public String passwordResetRequested(Model model) {
+        return "password-reset-requested";
+    }
+
+    @GetMapping("/activation/failed")
+    public String activationFailed(Model model) {
+        return "activation-failed";
     }
 
 }
