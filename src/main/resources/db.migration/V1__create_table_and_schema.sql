@@ -1,6 +1,6 @@
 CREATE SCHEMA IF NOT EXISTS servus;
 
-CREATE TABLE servus.user (
+CREATE TABLE servus.userEntity (
                              id UUID PRIMARY KEY,
                              full_name VARCHAR(255) NOT NULL,
                              email VARCHAR(100) NOT NULL UNIQUE,
