@@ -72,7 +72,7 @@ public class EmailTemplateBuilder {
                     <p class=\"muted\">Once your account is activated, you can log in and start scheduling your appointment. If you have any questions or need assistance, please don't hesitate to contact our support team.</p>
                     <p>Thank you, The Angolan Embassy Appointment Team</p>
                   </div>
-                """.formatted(brandName, activationLink, activationLink);
+                """.formatted(activationLink, activationLink);
                 String html = wrapHtml(subject, inner);
                 return new EmailContent(subject, html);
             }

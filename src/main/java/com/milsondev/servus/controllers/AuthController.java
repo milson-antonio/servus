@@ -5,8 +5,10 @@ import com.milsondev.servus.dtos.LoginRequestDTO;
 import com.milsondev.servus.dtos.ResetPasswordRequestDTO;
 import com.milsondev.servus.dtos.UserDTO;
 import com.milsondev.servus.enums.Role;
+import com.milsondev.servus.services.UserService;
 import com.milsondev.servus.services.auth.AuthService;
 import jakarta.validation.Valid;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Controller;
@@ -27,14 +29,21 @@ import java.util.Map;
 @RequestMapping("/auth")
 public class AuthController {
 
+    // tratar do reset pwd
+    // login logout
+    // tests
+
     private final AuthService authService;
     private final MessageSource messageSource;
     private final com.milsondev.servus.services.TokenService tokenService;
 
-    public AuthController(AuthService authService, MessageSource messageSource, com.milsondev.servus.services.TokenService tokenService) {
+    private final UserService userService;
+
+    public AuthController(AuthService authService, MessageSource messageSource, com.milsondev.servus.services.TokenService tokenService, UserService userService) {
         this.authService = authService;
         this.messageSource = messageSource;
         this.tokenService = tokenService;
+        this.userService = userService;
     }
 
     @GetMapping("/login")
@@ -57,6 +66,9 @@ public class AuthController {
 
     @GetMapping("/register")
     public String registerPage(Model model) {
+
+
+
         if (!model.containsAttribute("user")) {
             model.addAttribute("user", new UserDTO());
         }
