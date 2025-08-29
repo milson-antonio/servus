@@ -60,7 +60,7 @@ public class EmailTemplateBuilder {
         switch (type) {
             case ACTIVATE_ACCOUNT: {
                 String activationLink = baseUrl + "/auth/active/token?token=" + token;
-                String subject = "Action Required: Activate your account at Angolan Embassy Appointments Portal!";
+                String subject = "Activate your account - Angolan Embassy Appointments Portal!";
                 String inner = """
                   <div style=\"text-align:center;\">
                     <h1>Welcome to Angolan Embassy Appointments Portal!</h1>
@@ -78,14 +78,17 @@ public class EmailTemplateBuilder {
             }
             case RESET_PASSWORD: {
                 String resetLink = baseUrl + "/auth/password-reset/token?token=" + token;
-                String subject = "Reset your password";
+                String subject = "Reset your password - Angolan Embassy Appointments Portal!";
                 String inner = """
-                  <h2>Reset your password</h2>
-                  <p>We received a request to reset your password. Click the button below to continue:</p>
-                  <p><a class=\"btn\" href=\"%s\" target=\"_blank\" rel=\"noopener\">Reset Password</a></p>
-                  <p class=\"muted\">Can’t click the button? Copy and paste this link into your browser:</p>
-                  <p class=\"copy\">%s</p>
-                  <p class=\"muted\">If you did not request a password reset, you can ignore this email.</p>
+                  <div style=\"text-align:center;\">
+                    <h2>Reset your password</h2>
+                    <p>We received a request to reset your password. Click the button below to continue:</p>
+                    <p><a class=\"btn\" style=\"background:#1a73e8\" href=\"%s\" target=\"_blank\" rel=\"noopener\">Reset Password</a></p>
+                    <p class=\"muted\">Can’t click the button? Copy and paste this link into your browser:</p>
+                    <p class=\"copy\">%s</p>
+                    <p class=\"muted\">If you did not request a password reset, you can ignore this email.</p>
+                    <p>Thank you, The Angolan Embassy Appointment Team</p>
+                  </div>
                 """.formatted(resetLink, resetLink);
                 String html = wrapHtml(subject, inner);
                 return new EmailContent(subject, html);
