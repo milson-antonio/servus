@@ -181,4 +181,14 @@ public class AuthController {
         }
     }
 
+    @GetMapping("/logout")
+    public String logout(final HttpServletResponse httpResponse) {
+        var cookie = new jakarta.servlet.http.Cookie("Authorization", "");
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        cookie.setSecure(false); // set true if using HTTPS
+        cookie.setMaxAge(0); // delete cookie
+        httpResponse.addCookie(cookie);
+        return "redirect:/login?logout";
+    }
 }

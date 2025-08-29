@@ -28,6 +28,7 @@ public class HomeController {
 
     @GetMapping("/appointments")
     public String appointments(Model model) {
+        model.addAttribute("showUserHeader", true);
         return "appointments";
     }
 
