@@ -2,6 +2,7 @@ package com.milsondev.servus.controllers;
 
 import com.milsondev.servus.dtos.*;
 import com.milsondev.servus.enums.Role;
+import com.milsondev.servus.services.TokenService;
 import com.milsondev.servus.services.UserService;
 import com.milsondev.servus.services.auth.AuthService;
 import jakarta.validation.Valid;
@@ -28,15 +29,12 @@ public class AuthController {
 
     private final AuthService authService;
     private final MessageSource messageSource;
-    private final com.milsondev.servus.services.TokenService tokenService;
+    private final TokenService tokenService;
 
-    private final UserService userService;
-
-    public AuthController(AuthService authService, MessageSource messageSource, com.milsondev.servus.services.TokenService tokenService, UserService userService) {
+    public AuthController(AuthService authService, MessageSource messageSource, TokenService tokenService, UserService userService) {
         this.authService = authService;
         this.messageSource = messageSource;
         this.tokenService = tokenService;
-        this.userService = userService;
     }
 
     @GetMapping("/login")
