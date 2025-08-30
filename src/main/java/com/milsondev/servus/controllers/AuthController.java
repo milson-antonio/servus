@@ -26,10 +26,6 @@ import java.util.Map;
 @RequestMapping("/auth")
 public class AuthController {
 
-    // tratar do reset pwd
-    // login logout
-    // tests
-
     private final AuthService authService;
     private final MessageSource messageSource;
     private final com.milsondev.servus.services.TokenService tokenService;
