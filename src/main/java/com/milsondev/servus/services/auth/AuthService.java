@@ -30,15 +30,18 @@ public class AuthService {
     private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final com.milsondev.servus.services.TokenService tokenService;
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthService.class);
 
     public AuthService(EmailService emailService, AuthenticationManager authenticationManager, JwtUtil jwtUtil,
-                       UserRepository userRepository, PasswordEncoder passwordEncoder) {
+                       UserRepository userRepository, PasswordEncoder passwordEncoder,
+                       com.milsondev.servus.services.TokenService tokenService) {
         this.emailService = emailService;
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.tokenService = tokenService;
     }
 
     public JwtResponseDTO login(LoginRequestDTO loginRequest) {
@@ -51,7 +54,8 @@ public class AuthService {
                 new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
         );
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        String token = jwtUtil.generateToken(userDetails);
+        int tokenVersion = userRepository.findByEmail(userDetails.getUsername()).map(u -> u.getTokenVersion() == null ? 0 : u.getTokenVersion()).orElse(0);
+        String token = jwtUtil.generateToken(userDetails, tokenVersion);
         LOGGER.info("Login successful for user: {}", userDetails.getUsername());
         return new JwtResponseDTO(userDetails.getUsername(), token);
     }
@@ -80,8 +84,18 @@ public class AuthService {
     @Async
     public void requestPasswordResetAsync(final String recipient) {
         try {
-            boolean exists = isUserPresent(recipient);
-            if (exists) {
+            Optional<UserEntity> userOpt = userRepository.findByEmail(recipient);
+            if (userOpt.isPresent()) {
+                UserEntity user = userOpt.get();
+                long now = System.currentTimeMillis();
+                long last = user.getLastPasswordResetRequestAt() == null ? 0L : user.getLastPasswordResetRequestAt().getTime();
+                long FIVE_MIN = 5L * 60L * 1000L;
+                if (now - last < FIVE_MIN) {
+                    LOGGER.info("Password reset request throttled for user {} (requested too soon)", recipient);
+                    return; // silently ignore to avoid leaking info
+                }
+                user.setLastPasswordResetRequestAt(new java.util.Date(now));
+                userRepository.save(user);
                 emailService.sendEmail(recipient, RESET_PASSWORD);
                 LOGGER.info("Password reset requested for existing user: {}", recipient);
             } else {
@@ -123,5 +137,27 @@ public class AuthService {
         userRepository.save(userEntity);
         LOGGER.info("User account with email {} activated", email);
         return true;
+    }
+
+    public JwtResponseDTO resetPasswordWithToken(String token, String newPassword) {
+        String email = tokenService.getEmailFromToken(token);
+        Optional<UserEntity> userOptional = userRepository.findByEmail(email);
+        if (userOptional.isEmpty()) {
+            throw new IllegalArgumentException("User not found");
+        }
+        UserEntity user = userOptional.get();
+        user.setPassword(passwordEncoder.encode(newPassword));
+        // Increment tokenVersion to invalidate all other existing tokens
+        user.setTokenVersion((user.getTokenVersion() == null ? 0 : user.getTokenVersion()) + 1);
+        userRepository.save(user);
+
+        // Build a fresh token for the current device (with the new version)
+        org.springframework.security.core.userdetails.UserDetails userDetails =
+                new org.springframework.security.core.userdetails.User(
+                        user.getEmail(), user.getPassword(),
+                        java.util.Collections.singleton(new org.springframework.security.core.authority.SimpleGrantedAuthority(user.getRole().name()))
+                );
+        String jwt = jwtUtil.generateToken(userDetails, user.getTokenVersion());
+        return new JwtResponseDTO(user.getEmail(), jwt);
     }
 }

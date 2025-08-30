@@ -17,12 +17,13 @@ public class JwtUtil {
 
     private final SecretKey key = Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(UserDetails userDetails, int tokenVersion) {
         Date now = new Date();
         Date exp = new Date(now.getTime() + EXPIRATION_MS);
         return Jwts.builder()
                 .subject(userDetails.getUsername())
                 .claim("role", userDetails.getAuthorities().iterator().next().getAuthority())
+                .claim("ver", tokenVersion)
                 .issuedAt(now)
                 .expiration(exp)
                 .signWith(key)
@@ -33,9 +34,13 @@ public class JwtUtil {
         return Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload().getSubject();
     }
 
-    public boolean validateToken(String token, UserDetails userDetails) {
+    public boolean validateToken(String token, UserDetails userDetails, int currentTokenVersion) {
         String username = extractUsername(token);
-        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+        if (!username.equals(userDetails.getUsername()) || isTokenExpired(token)) {
+            return false;
+        }
+        Integer ver = (Integer) Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload().get("ver", Integer.class);
+        return ver != null && ver == currentTokenVersion;
     }
 
     private boolean isTokenExpired(String token) {

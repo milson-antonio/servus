@@ -1,9 +1,6 @@
 package com.milsondev.servus.controllers;
 
-import com.milsondev.servus.dtos.JwtResponseDTO;
-import com.milsondev.servus.dtos.LoginRequestDTO;
-import com.milsondev.servus.dtos.ResetPasswordRequestDTO;
-import com.milsondev.servus.dtos.UserDTO;
+import com.milsondev.servus.dtos.*;
 import com.milsondev.servus.enums.Role;
 import com.milsondev.servus.services.UserService;
 import com.milsondev.servus.services.auth.AuthService;
@@ -172,12 +169,43 @@ public class AuthController {
         try {
             String email = tokenService.getEmailFromToken(token);
             org.slf4j.LoggerFactory.getLogger(AuthController.class).info("Password reset token validated for {}", email);
-            // Redirect to the new password page, carrying the token forward.
             String encoded = UriUtils.encode(token, StandardCharsets.UTF_8);
             return "redirect:/password-reset/new?token=" + encoded;
         } catch (Exception ex) {
             org.slf4j.LoggerFactory.getLogger(AuthController.class).warn("Password reset token invalid: {}", ex.getMessage());
             return "redirect:/password-reset?error=invalid_token";
+        }
+    }
+
+    @PostMapping(value = "/password-reset/new", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public String saveNewPassword(@ModelAttribute("newPassword") @Valid final NewPasswordDTO dto,
+                                  final BindingResult result,
+                                  final Model model,
+                                  final HttpServletResponse httpResponse) {
+        Map<String, String> errors = new HashMap<>();
+        if (result.hasErrors()) {
+            for (FieldError error : result.getFieldErrors()) {
+                errors.put(error.getField(), error.getDefaultMessage());
+            }
+            model.addAttribute("errors", errors);
+            model.addAttribute("token", dto.getToken());
+            return "password-reset-new";
+        }
+        try {
+            JwtResponseDTO jwt = authService.resetPasswordWithToken(dto.getToken(), dto.getPassword());
+
+            var cookie = new jakarta.servlet.http.Cookie("Authorization", jwt.token());
+            cookie.setPath("/");
+            cookie.setHttpOnly(true);
+            cookie.setSecure(false);
+            cookie.setMaxAge(60 * 60 * 8);
+            httpResponse.addCookie(cookie);
+            return "redirect:/appointments";
+        } catch (Exception ex) {
+            errors.put("_global", "Unable to reset password: " + ex.getMessage());
+            model.addAttribute("errors", errors);
+            model.addAttribute("token", dto.getToken());
+            return "password-reset-new";
         }
     }
 

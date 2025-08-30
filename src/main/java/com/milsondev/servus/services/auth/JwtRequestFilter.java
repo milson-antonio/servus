@@ -23,6 +23,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private UserService userService;
 
     @Autowired
+    private com.milsondev.servus.db.repositories.UserRepository userRepository;
+
+    @Autowired
     private JwtUtil jwtUtil;
 
     @Override
@@ -64,7 +67,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             try {
                 UserDetails userDetails = this.userService.loadUserByUsername(username);
-                if (jwtUtil.validateToken(jwt, userDetails)) {
+                int currentVersion = userRepository.findByEmail(username).map(u -> u.getTokenVersion() == null ? 0 : u.getTokenVersion()).orElse(0);
+                if (jwtUtil.validateToken(jwt, userDetails, currentVersion)) {
                     UsernamePasswordAuthenticationToken authToken =
                             new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     SecurityContextHolder.getContext().setAuthentication(authToken);

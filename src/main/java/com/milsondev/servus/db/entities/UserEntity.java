@@ -47,4 +47,12 @@ public class UserEntity {
 
     @Column(name = "active")
     private boolean active;
+
+    // Token version for invalidating JWTs on password reset or other events
+    @Column(name = "token_version")
+    private Integer tokenVersion = 0;
+
+    // Rate limiting: last time a password reset email was requested
+    @Column(name = "last_password_reset_request_at")
+    private Date lastPasswordResetRequestAt;
 }

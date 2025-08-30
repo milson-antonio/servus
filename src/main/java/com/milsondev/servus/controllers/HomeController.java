@@ -62,7 +62,17 @@ public class HomeController {
     }
 
     @GetMapping("/password-reset/new")
-    public String passwordResetNew(Model model) {
+    public String passwordResetNew(@RequestParam(value = "token", required = false) String token, Model model) {
+        if (!model.containsAttribute("newPassword")) {
+            var dto = new com.milsondev.servus.dtos.NewPasswordDTO();
+            if (token != null && !token.isBlank()) {
+                dto.setToken(token);
+            }
+            model.addAttribute("newPassword", dto);
+        }
+        if (token != null && !token.isBlank()) {
+            model.addAttribute("token", token);
+        }
         return "password-reset-new";
     }
 
