@@ -1,12 +1,12 @@
 package com.milsondev.servus.controllers;
 
 import com.milsondev.servus.dtos.*;
-import com.milsondev.servus.enums.Role;
-import com.milsondev.servus.services.TokenService;
-import com.milsondev.servus.services.UserService;
-import com.milsondev.servus.services.auth.AuthService;
+import com.milsondev.servus.dtos.NewPasswordDTO;
+import com.milsondev.servus.dtos.UserDTO;
+import com.milsondev.servus.enums.ResetRequestStatus;
+import com.milsondev.servus.services.OrchestrationService;
+import jakarta.servlet.http.Cookie;
 import jakarta.validation.Valid;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Controller;
@@ -27,14 +27,12 @@ import java.util.Map;
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final AuthService authService;
+    private final OrchestrationService orchestrationService;
     private final MessageSource messageSource;
-    private final TokenService tokenService;
 
-    public AuthController(AuthService authService, MessageSource messageSource, TokenService tokenService, UserService userService) {
-        this.authService = authService;
+    public AuthController(OrchestrationService orchestrationService, MessageSource messageSource) {
+        this.orchestrationService = orchestrationService;
         this.messageSource = messageSource;
-        this.tokenService = tokenService;
     }
 
     @GetMapping("/login")
@@ -57,9 +55,6 @@ public class AuthController {
 
     @GetMapping("/register")
     public String registerPage(Model model) {
-
-
-
         if (!model.containsAttribute("user")) {
             model.addAttribute("user", new UserDTO());
         }
@@ -80,7 +75,7 @@ public class AuthController {
             return "login";
         }
         try {
-            JwtResponseDTO jwt = authService.login(loginDto);
+            JwtResponseDTO jwt = orchestrationService.login(loginDto);
             var cookie = new jakarta.servlet.http.Cookie("Authorization", jwt.token());
             cookie.setPath("/");
             cookie.setHttpOnly(true);
@@ -114,7 +109,10 @@ public class AuthController {
             model.addAttribute("errors", errors);
             return "password-reset";
         }
-        authService.requestPasswordResetAsync(resetDto.getEmail());
+        var status = orchestrationService.requestPasswordReset(resetDto.getEmail());
+        if (status == ResetRequestStatus.THROTTLED) {
+            return "redirect:/password-reset/requested?status=throttled";
+        }
         return "redirect:/password-reset/requested";
     }
 
@@ -133,8 +131,7 @@ public class AuthController {
         }
 
         try {
-            userDto.setRole(Role.ROLE_USER);
-            authService.register(userDto);
+            orchestrationService.registerUser(userDto);
             return "redirect:/sign-up/success";
         } catch (IllegalArgumentException ex) {
             Map<String, String> errors = new HashMap<>();
@@ -147,8 +144,7 @@ public class AuthController {
     @GetMapping("/active/token")
     public String activateAccount(@RequestParam("token") String token) {
         try {
-            String email = tokenService.getEmailFromToken(token);
-            boolean activated = authService.activateUserAccount(email);
+            boolean activated = orchestrationService.activateAccountFromToken(token);
             if (!activated) {
                 return "redirect:/activation/failed";
             }
@@ -161,12 +157,10 @@ public class AuthController {
     @GetMapping("/password-reset/token")
     public String passwordResetWithToken(@RequestParam("token") String token) {
         try {
-            String email = tokenService.getEmailFromToken(token);
-            org.slf4j.LoggerFactory.getLogger(AuthController.class).info("Password reset token validated for {}", email);
+            orchestrationService.validatePasswordResetToken(token);
             String encoded = UriUtils.encode(token, StandardCharsets.UTF_8);
             return "redirect:/password-reset/new?token=" + encoded;
         } catch (Exception ex) {
-            org.slf4j.LoggerFactory.getLogger(AuthController.class).warn("Password reset token invalid: {}", ex.getMessage());
             return "redirect:/password-reset?error=invalid_token";
         }
     }
@@ -186,9 +180,8 @@ public class AuthController {
             return "password-reset-new";
         }
         try {
-            JwtResponseDTO jwt = authService.resetPasswordWithToken(dto.getToken(), dto.getPassword());
-
-            var cookie = new jakarta.servlet.http.Cookie("Authorization", jwt.token());
+            JwtResponseDTO jwt = orchestrationService.resetPasswordWithToken(dto.getToken(), dto.getPassword());
+            var cookie = new Cookie("Authorization", jwt.token());
             cookie.setPath("/");
             cookie.setHttpOnly(true);
             cookie.setSecure(false);
@@ -205,7 +198,7 @@ public class AuthController {
 
     @GetMapping("/logout")
     public String logout(final HttpServletResponse httpResponse) {
-        var cookie = new jakarta.servlet.http.Cookie("Authorization", "");
+        var cookie = new Cookie("Authorization", "");
         cookie.setPath("/");
         cookie.setHttpOnly(true);
         cookie.setSecure(false); // set true if using HTTPS

@@ -28,4 +28,8 @@ public class UserService implements UserDetailsService {
                 Collections.singleton(new SimpleGrantedAuthority(userEntity.getRole().name()))
         );
     }
+
+    public void deleteAllUsers() {
+        userRepository.deleteAll();
+    }
 }

@@ -1,6 +1,6 @@
 package com.milsondev.servus.dtos;
 
-import com.milsondev.servus.dtos.validator.UserDTOValidator;
+import com.milsondev.servus.dtos.validation.UserDTOValidator;
 import com.milsondev.servus.enums.Role;
 import lombok.Data;
 

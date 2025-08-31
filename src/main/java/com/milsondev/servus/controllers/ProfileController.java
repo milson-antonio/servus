@@ -1,8 +1,7 @@
 package com.milsondev.servus.controllers;
 
 import com.milsondev.servus.db.entities.UserEntity;
-import com.milsondev.servus.db.repositories.UserRepository;
-import com.milsondev.servus.services.auth.AuthService;
+import com.milsondev.servus.services.OrchestrationService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,20 +17,17 @@ import java.util.Optional;
 @RequestMapping("/profile")
 public class ProfileController {
 
-    private final UserRepository userRepository;
-    private final AuthService authService;
+    private final OrchestrationService orchestrationService;
 
-    public ProfileController(UserRepository userRepository, AuthService authService) {
-        this.userRepository = userRepository;
-        this.authService = authService;
+    public ProfileController(OrchestrationService orchestrationService) {
+        this.orchestrationService = orchestrationService;
     }
 
     @GetMapping
     public String profile(Model model) {
         String email = currentEmail();
-        Optional<UserEntity> opt = userRepository.findByEmail(email);
+        Optional<UserEntity> opt = orchestrationService.findUserByEmail(email);
         if (opt.isEmpty()) {
-            // If for some reason not found, redirect to login
             return "redirect:/login";
         }
         UserEntity user = opt.get();
@@ -45,7 +41,7 @@ public class ProfileController {
                                 @RequestParam(value = "phone", required = false) String phone,
                                 RedirectAttributes ra) {
         String email = currentEmail();
-        Optional<UserEntity> opt = userRepository.findByEmail(email);
+        Optional<UserEntity> opt = orchestrationService.findUserByEmail(email);
         if (opt.isEmpty()) {
             return "redirect:/login";
         }
@@ -57,7 +53,7 @@ public class ProfileController {
         }
         user.setFullName(fullName.trim());
         user.setPhone(phone != null ? phone.trim() : null);
-        userRepository.save(user);
+        orchestrationService.updateUserProfile(email, fullName, phone);
         ra.addFlashAttribute("success", "Profile updated successfully");
         return "redirect:/profile";
     }
@@ -65,7 +61,7 @@ public class ProfileController {
     @PostMapping("/password-reset")
     public String requestPasswordReset(RedirectAttributes ra) {
         String email = currentEmail();
-        authService.requestPasswordResetAsync(email);
+        orchestrationService.requestPasswordResetAsync(email);
         ra.addFlashAttribute("success", "Password reset email requested. Please check your inbox.");
         return "redirect:/profile";
     }

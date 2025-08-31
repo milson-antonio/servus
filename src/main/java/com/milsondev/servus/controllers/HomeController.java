@@ -2,7 +2,9 @@ package com.milsondev.servus.controllers;
 
 import com.milsondev.servus.dtos.LoginRequestDTO;
 import com.milsondev.servus.dtos.ResetPasswordRequestDTO;
+import com.milsondev.servus.dtos.NewPasswordDTO;
 import com.milsondev.servus.dtos.UserDTO;
+import com.milsondev.servus.services.OrchestrationService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,8 +13,15 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/")
 public class HomeController {
 
+    private final OrchestrationService orchestrationService;
+
+    public HomeController(OrchestrationService orchestrationService) {
+        this.orchestrationService = orchestrationService;
+    }
+
     @GetMapping
     public String home(Model model) {
+        //userService.deleteAllUsers();
         return "index";
     }
 
@@ -64,7 +73,7 @@ public class HomeController {
     @GetMapping("/password-reset/new")
     public String passwordResetNew(@RequestParam(value = "token", required = false) String token, Model model) {
         if (!model.containsAttribute("newPassword")) {
-            var dto = new com.milsondev.servus.dtos.NewPasswordDTO();
+            var dto = new NewPasswordDTO();
             if (token != null && !token.isBlank()) {
                 dto.setToken(token);
             }

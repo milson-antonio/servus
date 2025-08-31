@@ -1,4 +1,4 @@
-package com.milsondev.servus.dtos.validator;
+package com.milsondev.servus.dtos.validation;
 
 import com.milsondev.servus.dtos.UserDTO;
 import com.milsondev.servus.services.OrchestrationService;
@@ -7,8 +7,6 @@ import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-
-import java.util.regex.Pattern;
 
 public class UserDTOValidatorImpl implements ConstraintValidator<UserDTOValidator, UserDTO> {
 
@@ -21,11 +19,6 @@ public class UserDTOValidatorImpl implements ConstraintValidator<UserDTOValidato
         this.messageSource = messageSource;
     }
 
-    private static final Pattern EMAIL_REGEX = Pattern.compile(
-            "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}$",
-            Pattern.CASE_INSENSITIVE
-    );
-
     @Override
     public boolean isValid(UserDTO dto, ConstraintValidatorContext ctx) {
         if (dto == null) {
@@ -36,30 +29,39 @@ public class UserDTOValidatorImpl implements ConstraintValidator<UserDTOValidato
         boolean isCreate = dto.getId() == null;
 
         // fullName required (non-null, non-blank)
-        if (isBlank(dto.getFullName())) {
+        if (orchestrationService.isBlank(dto.getFullName())) {
             addViolation(ctx, "fullName", msg("validation.signup.fullName.required"));
             valid = false;
         }
 
         // email required and valid format
-        if (isBlank(dto.getEmail())) {
+        if (orchestrationService.isBlank(dto.getEmail())) {
             addViolation(ctx, "email", msg("validation.signup.email.required"));
             valid = false;
-        } else if (!EMAIL_REGEX.matcher(dto.getEmail().trim()).matches()) {
+        } else if (!orchestrationService.isValidEmailFormat(dto.getEmail())) {
             addViolation(ctx, "email", msg("validation.signup.email.invalid"));
             valid = false;
         }
 
         // password rules
         if (isCreate) {
-            if (isBlank(dto.getPassword())) {
+            if (orchestrationService.isBlank(dto.getPassword())) {
                 addViolation(ctx, "password", msg("validation.signup.password.required"));
+                valid = false;
+            } else if (!orchestrationService.isStrongPassword(dto.getPassword())) {
+                addViolation(ctx, "password", msg("validation.signup.password.weak"));
+                valid = false;
+            }
+        } else {
+            // update: if password provided, validate strength too
+            if (!orchestrationService.isBlank(dto.getPassword()) && !orchestrationService.isStrongPassword(dto.getPassword())) {
+                addViolation(ctx, "password", msg("validation.signup.password.weak"));
                 valid = false;
             }
         }
 
         // confirm password must match when password provided (create or update)
-        if (!isBlank(dto.getPassword())) {
+        if (!orchestrationService.isBlank(dto.getPassword())) {
             if (dto.getConfirmPassword() == null || !dto.getPassword().equals(dto.getConfirmPassword())) {
                 addViolation(ctx, "confirmPassword", msg("validation.signup.confirmPassword.mismatch"));
                 valid = false;
@@ -83,9 +85,5 @@ public class UserDTOValidatorImpl implements ConstraintValidator<UserDTOValidato
         ctx.buildConstraintViolationWithTemplate(message)
                 .addPropertyNode(field)
                 .addConstraintViolation();
-    }
-
-    private boolean isBlank(String s) {
-        return s == null || s.trim().isEmpty();
     }
 }

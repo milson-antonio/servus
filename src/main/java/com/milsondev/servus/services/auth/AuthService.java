@@ -6,10 +6,12 @@ import com.milsondev.servus.dtos.LoginRequestDTO;
 import com.milsondev.servus.dtos.UserDTO;
 import com.milsondev.servus.enums.EmailTemplateType;
 import com.milsondev.servus.db.repositories.UserRepository;
+import com.milsondev.servus.services.TokenService;
 import com.milsondev.servus.services.email.EmailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,6 +21,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
+
+import com.milsondev.servus.enums.ResetRequestStatus;
 
 import static com.milsondev.servus.enums.EmailTemplateType.RESET_PASSWORD;
 
@@ -30,12 +34,12 @@ public class AuthService {
     private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final com.milsondev.servus.services.TokenService tokenService;
+    private final TokenService tokenService;
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthService.class);
 
     public AuthService(EmailService emailService, AuthenticationManager authenticationManager, JwtUtil jwtUtil,
                        UserRepository userRepository, PasswordEncoder passwordEncoder,
-                       com.milsondev.servus.services.TokenService tokenService) {
+                       TokenService tokenService) {
         this.emailService = emailService;
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
@@ -45,8 +49,13 @@ public class AuthService {
     }
 
     public JwtResponseDTO login(LoginRequestDTO loginRequest) {
-        if (!isUserPresentAndAccountActive(loginRequest.getEmail())) {
-            LOGGER.warn("Login attempt for inactive or non-existing account: {}", loginRequest.getEmail());
+        Optional<UserEntity> userOpt = userRepository.findByEmail(loginRequest.getEmail());
+        if (userOpt.isEmpty()) {
+            LOGGER.warn("Login attempt for non-existing account: {}", loginRequest.getEmail());
+            throw new BadCredentialsException("Invalid credentials");
+        }
+        if (!userOpt.get().isActive()) {
+            LOGGER.warn("Login attempt for inactive account: {}", loginRequest.getEmail());
             throw new IllegalArgumentException("Your account is not active. Please check your email to activate your account.");
         }
 
@@ -58,11 +67,6 @@ public class AuthService {
         String token = jwtUtil.generateToken(userDetails, tokenVersion);
         LOGGER.info("Login successful for user: {}", userDetails.getUsername());
         return new JwtResponseDTO(userDetails.getUsername(), token);
-    }
-
-    public boolean isUserPresentAndAccountActive(final String email) {
-        Optional<UserEntity> userOptional = userRepository.findByEmail(email);
-        return userOptional.map(UserEntity::isActive).orElse(false);
     }
 
     public boolean isUserPresent(final  String email) {
@@ -81,8 +85,8 @@ public class AuthService {
         sendActivationEmailAsync(userEntity.getEmail());
     }
 
-    @Async
-    public void requestPasswordResetAsync(final String recipient) {
+
+    public ResetRequestStatus requestPasswordReset(final String recipient) {
         try {
             Optional<UserEntity> userOpt = userRepository.findByEmail(recipient);
             if (userOpt.isPresent()) {
@@ -92,18 +96,26 @@ public class AuthService {
                 long FIVE_MIN = 5L * 60L * 1000L;
                 if (now - last < FIVE_MIN) {
                     LOGGER.info("Password reset request throttled for user {} (requested too soon)", recipient);
-                    return; // silently ignore to avoid leaking info
+                    return ResetRequestStatus.THROTTLED;
                 }
                 user.setLastPasswordResetRequestAt(new java.util.Date(now));
                 userRepository.save(user);
                 emailService.sendEmail(recipient, RESET_PASSWORD);
                 LOGGER.info("Password reset requested for existing user: {}", recipient);
+                return ResetRequestStatus.SENT;
             } else {
                 LOGGER.info("Password reset requested for non-existing email: {}", recipient);
+                return ResetRequestStatus.SENT;
             }
         } catch (Exception ex) {
             LOGGER.error("Failed to process password reset request for {}: {}", recipient, ex.getMessage());
+            return ResetRequestStatus.SENT;
         }
+    }
+
+    @Async
+    public void requestPasswordResetAsync(final String recipient) {
+        requestPasswordReset(recipient);
     }
 
     @Async
@@ -147,11 +159,9 @@ public class AuthService {
         }
         UserEntity user = userOptional.get();
         user.setPassword(passwordEncoder.encode(newPassword));
-        // Increment tokenVersion to invalidate all other existing tokens
         user.setTokenVersion((user.getTokenVersion() == null ? 0 : user.getTokenVersion()) + 1);
         userRepository.save(user);
 
-        // Build a fresh token for the current device (with the new version)
         org.springframework.security.core.userdetails.UserDetails userDetails =
                 new org.springframework.security.core.userdetails.User(
                         user.getEmail(), user.getPassword(),
