@@ -48,13 +48,13 @@ public class ProfileController {
         UserEntity user = opt.get();
         // Simple validation
         if (fullName == null || fullName.trim().isEmpty()) {
-            ra.addFlashAttribute("error", "Full name is required");
+            ra.addFlashAttribute("error", "profile.fullName.required");
             return "redirect:/profile";
         }
         user.setFullName(fullName.trim());
         user.setPhone(phone != null ? phone.trim() : null);
         orchestrationService.updateUserProfile(email, fullName, phone);
-        ra.addFlashAttribute("success", "Profile updated successfully");
+        ra.addFlashAttribute("success", "profile.update.success");
         return "redirect:/profile";
     }
 
@@ -62,7 +62,7 @@ public class ProfileController {
     public String requestPasswordReset(RedirectAttributes ra) {
         String email = currentEmail();
         orchestrationService.requestPasswordResetAsync(email);
-        ra.addFlashAttribute("success", "Password reset email requested. Please check your inbox.");
+        ra.addFlashAttribute("success", "profile.password.reset.requested.success");
         return "redirect:/profile";
     }
 
