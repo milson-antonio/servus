@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layout}">
+
+<head>
+    <title th:text="#{schedule.docs.title}">Required Documents</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <div
+            class="relative flex size-full min-h-screen flex-col bg-slate-50 group/design-root overflow-x-hidden"
+            style="font-family: Inter, 'Noto Sans', sans-serif;">
+        <div class="layout-container flex h-full grow flex-col">
+            <div class="px-40 flex flex-1 justify-center py-5">
+                <div class="layout-content-container flex flex-col w-[512px] max-w-[512px] py-5 max-w-[960px] flex-1">
+                    <div class="flex flex-wrap gap-2 p-4">
+                        <a class="text-[#49739c] text-base font-medium leading-normal" href="/appointments" th:text="#{schedule.breadcrumb.root}">Appointments</a>
+                        <span class="text-[#49739c] text-base font-medium leading-normal">/</span>
+                        <a class="text-[#49739c] text-base font-medium leading-normal" href="/schedule-appointment" th:text="#{schedule.breadcrumb.current}">Schedule Appointment</a>
+                        <span class="text-[#49739c] text-base font-medium leading-normal">/</span>
+                        <span class="text-[#0d141c] text-base font-medium leading-normal" th:text="#{schedule.docs.breadcrumb.current}">Required Documents</span>
+                    </div>
+                    <div class="flex flex-wrap justify-between gap-3 p-4">
+                        <div class="flex min-w-72 flex-col gap-3">
+                            <p class="text-[#0d141c] tracking-light text-[32px] font-bold leading-tight" th:text="#{schedule.docs.heading}">Required Documents</p>
+                            <p class="text-[#49739c] text-sm font-normal leading-normal" th:text="#{schedule.docs.subtitle}">Please review the documents required for your selected service.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-3 p-4 border border-solid border-[#cedbe8] rounded-lg">
+                        <div class="flex items-center gap-2">
+                            <p class="text-[#0d141c] text-base font-semibold leading-normal" th:text="#{schedule.docs.forService(${#messages.msgOrNull('schedule.service.' + service)})}">Required documents for: Service</p>
+                        </div>
+                        <div class="text-[#49739c] text-sm font-normal leading-normal">
+                            <div th:switch="${service}">
+                                <div th:case="'passportRenewal'" th:with="docs=${#messages.msg('schedule.docs.passportRenewal').split(',')}">
+                                    <div th:each="doc : ${docs}">
+                                        <p class="flex items-start gap-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#10b981] mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                                <path d="M20 6 9 17l-5-5"/>
+                                            </svg>
+                                            <span th:text="${#strings.trim(doc)}">Documento</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div th:case="'visaApplication'" th:with="docs=${#messages.msg('schedule.docs.visaApplication').split(',')}">
+                                    <div th:each="doc : ${docs}">
+                                        <p class="flex items-start gap-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#10b981] mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                                <path d="M20 6 9 17l-5-5"/>
+                                            </svg>
+                                            <span th:text="${#strings.trim(doc)}">Documento</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div th:case="'consularRegistration'" th:with="docs=${#messages.msg('schedule.docs.consularRegistration').split(',')}">
+                                    <div th:each="doc : ${docs}">
+                                        <p class="flex items-start gap-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#10b981] mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                                <path d="M20 6 9 17l-5-5"/>
+                                            </svg>
+                                            <span th:text="${#strings.trim(doc)}">Documento</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div th:case="'documentLegalization'" th:with="docs=${#messages.msg('schedule.docs.documentLegalization').split(',')}">
+                                    <div th:each="doc : ${docs}">
+                                        <p class="flex items-start gap-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#10b981] mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                                <path d="M20 6 9 17l-5-5"/>
+                                            </svg>
+                                            <span th:text="${#strings.trim(doc)}">Documento</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div th:case="'notarialServices'" th:with="docs=${#messages.msg('schedule.docs.notarialServices').split(',')}">
+                                    <div th:each="doc : ${docs}">
+                                        <p class="flex items-start gap-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#10b981] mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" aria-label="check">
+                                                <path d="M20 6 9 17l-5-5"/>
+                                            </svg>
+                                            <span th:text="${#strings.trim(doc)}">Documento</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div th:case="'emergencyServices'" th:with="docs=${#messages.msg('schedule.docs.emergencyServices').split(',')}">
+                                    <div th:each="doc : ${docs}">
+                                        <p class="flex items-start gap-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#10b981] mt-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                                <path d="M20 6 9 17l-5-5"/>
+                                            </svg>
+                                            <span th:text="${#strings.trim(doc)}">Documento</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <p th:case="*" th:text="#{schedule.docs.none}">No documents found for this service.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex px-4 py-3 justify-between">
+                        <a href="/schedule-appointment"
+                           class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#0d80f2] text-slate-50 text-sm font-bold leading-normal tracking-[0.015em]">
+                            <span class="truncate" th:text="#{common.back}">Back</span>
+                        </a>
+                        <a th:href="@{'/schedule-who'(service=${service})}"
+                           class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#0d80f2] text-slate-50 text-sm font-bold leading-normal tracking-[0.015em]">
+                            <span class="truncate" th:text="#{schedule.next}">Next</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

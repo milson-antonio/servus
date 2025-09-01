@@ -1,0 +1,80 @@
+<html lang="pt"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layout}">
+
+<head>
+    <title th:text="#{schedule.who.title}">Choose Applicant</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <div
+            class="relative flex size-full min-h-screen flex-col bg-slate-50 group/design-root overflow-x-hidden"
+            style="font-family: Inter, 'Noto Sans', sans-serif;">
+        <div class="layout-container flex h-full grow flex-col">
+            <div class="px-40 flex flex-1 justify-center py-5">
+                <div class="layout-content-container flex flex-col w-[512px] max-w-[512px] py-5 max-w-[960px] flex-1">
+                    <div class="flex flex-wrap gap-2 p-4">
+                        <a class="text-[#49739c] text-base font-medium leading-normal" href="/appointments" th:text="#{schedule.breadcrumb.root}">Appointments</a>
+                        <span class="text-[#49739c] text-base font-medium leading-normal">/</span>
+                        <span class="text-[#0d141c] text-base font-medium leading-normal" th:text="#{schedule.who.breadcrumb.current}">Choose Applicant</span>
+                    </div>
+                    <div class="flex flex-wrap justify-between gap-3 p-4">
+                        <div class="flex min-w-72 flex-col gap-3">
+                            <p class="text-[#0d141c] tracking-light text-[32px] font-bold leading-tight" th:text="#{schedule.who.heading}">Who is this appointment for?</p>
+                            <p class="text-[#49739c] text-sm font-normal leading-normal" th:text="#{schedule.who.subtitle}">Choose whether you are booking for yourself or for another person.</p>
+                        </div>
+                    </div>
+                    <form method="get" action="/schedule-date-and-time">
+                        <input type="hidden" name="service" th:value="${service} ?: ${param.service}">
+                        <div class="flex flex-col gap-3 p-4">
+                            <label class="flex items-center gap-4 rounded-lg border border-solid border-[#cedbe8] p-[15px]">
+                                <input type="radio" class="h-5 w-5 accent-[#0d80f2]" name="applicantType" value="self" checked>
+                                <div class="flex grow flex-col">
+                                    <div class="flex items-center gap-2">
+                                        <!-- Single user icon -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#0d80f2]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                            <circle cx="12" cy="7" r="4"/>
+                                        </svg>
+                                        <p class="text-[#0d141c] text-sm font-medium leading-normal" th:text="#{schedule.who.option.self}">For me</p>
+                                    </div>
+                                    <p class="text-[#49739c] text-sm font-normal leading-normal" th:text="#{schedule.who.option.self.desc}">Book an appointment for your own documents.</p>
+                                </div>
+                            </label>
+                            <label class="flex items-center gap-4 rounded-lg border border-solid border-[#cedbe8] p-[15px]">
+                                <input type="radio" class="h-5 w-5 accent-[#0d80f2]" name="applicantType" value="other">
+                                <div class="flex grow flex-col">
+                                    <div class="flex items-center gap-2">
+                                        <!-- Users icon -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#0d80f2]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                                            <circle cx="9" cy="7" r="4"/>
+                                            <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+                                            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                                        </svg>
+                                        <p class="text-[#0d141c] text-sm font-medium leading-normal" th:text="#{schedule.who.option.other}">For another person</p>
+                                    </div>
+                                    <p class="text-[#49739c] text-sm font-normal leading-normal" th:text="#{schedule.who.option.other.desc}">Book on behalf of a family member or someone else.</p>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="flex px-4 py-3 justify-between">
+                            <a href="/schedule-appointment"
+                               class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#0d80f2] text-slate-50 text-sm font-bold leading-normal tracking-[0.015em]">
+                                <span class="truncate" th:text="#{common.back}">Back</span>
+                            </a>
+                            <button type="submit"
+                                    class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#0d80f2] text-slate-50 text-sm font-bold leading-normal tracking-[0.015em]">
+                                <span class="truncate" th:text="#{schedule.next}">Next</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

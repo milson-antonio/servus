@@ -16,70 +16,43 @@
             <div class="px-40 flex flex-1 justify-center py-5">
                 <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
                     <div class="flex flex-wrap justify-between gap-3 p-4">
-                        <button
+                        <a href="/schedule-appointment"
                                 class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 px-4 bg-[#e7edf4] text-[#0d141c] text-sm font-medium leading-normal">
-                            <span class="truncate">New Appointment</span>
-                        </button>
+                            <span class="truncate" th:text="#{appointments.new}">New Appointment</span>
+                        </a>
                     </div>
-                    <h2 class="text-[#0d141c] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Upcoming Appointments</h2>
+                    <h2 class="text-[#0d141c] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5" th:text="#{appointments.upcoming.title}">Upcoming Appointments</h2>
                     <div class="px-4 py-3 @container">
                         <div class="flex overflow-hidden rounded-lg border border-[#cedbe8] bg-slate-50">
                             <table class="flex-1">
                                 <thead>
                                 <tr class="bg-slate-50">
-                                    <th class="table-4dbc3523-9768-4e2b-b967-2a7966f03924-column-120 px-4 py-3 text-left text-[#0d141c] w-[400px] text-sm font-medium leading-normal">Date</th>
-                                    <th class="table-4dbc3523-9768-4e2b-b967-2a7966f03924-column-240 px-4 py-3 text-left text-[#0d141c] w-[400px] text-sm font-medium leading-normal">Time</th>
-                                    <th class="table-4dbc3523-9768-4e2b-b967-2a7966f03924-column-360 px-4 py-3 text-left text-[#0d141c] w-[400px] text-sm font-medium leading-normal">Embassy</th>
-                                    <th class="table-4dbc3523-9768-4e2b-b967-2a7966f03924-column-480 px-4 py-3 text-left text-[#0d141c] w-[400px] text-sm font-medium leading-normal">Service</th>
-                                    <th class="table-4dbc3523-9768-4e2b-b967-2a7966f03924-column-600 px-4 py-3 text-left text-[#0d141c] w-60 text-sm font-medium leading-normal">Status</th>
-                                    <th class="table-4dbc3523-9768-4e2b-b967-2a7966f03924-column-720 px-4 py-3 text-left text-[#0d141c] w-60 text-[#49739c] text-sm font-medium leading-normal">
+                                    <th class="table-4dbc3523-9768-4e2b-b967-2a7966f03924-column-120 px-4 py-3 text-left text-[#0d141c] w-[400px] text-sm font-medium leading-normal" th:text="#{appointments.table.date}">Date</th>
+                                    <th class="table-4dbc3523-9768-4e2b-b967-2a7966f03924-column-240 px-4 py-3 text-left text-[#0d141c] w-[400px] text-sm font-medium leading-normal" th:text="#{appointments.table.time}">Time</th>
+                                    <th class="table-4dbc3523-9768-4e2b-b967-2a7966f03924-column-480 px-4 py-3 text-left text-[#0d141c] w-[400px] text-sm font-medium leading-normal" th:text="#{appointments.table.service}">Service</th>
+                                    <th class="table-4dbc3523-9768-4e2b-b967-2a7966f03924-column-600 px-4 py-3 text-left text-[#0d141c] w-60 text-sm font-medium leading-normal" th:text="#{appointments.table.status}">Status</th>
+                                    <th class="table-4dbc3523-9768-4e2b-b967-2a7966f03924-column-720 px-4 py-3 text-left text-[#0d141c] w-60 text-[#49739c] text-sm font-medium leading-normal" th:text="#{appointments.table.actions}">
                                         Actions
                                     </th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr class="border-t border-t-[#cedbe8]">
-                                    <td class="table-4dbc3523-9768-4e2b-b967-2a7966f03924-column-120 h-[72px] px-4 py-2 w-[400px] text-[#49739c] text-sm font-normal leading-normal">
-                                        2024-08-15
-                                    </td>
-                                    <td class="table-4dbc3523-9768-4e2b-b967-2a7966f03924-column-240 h-[72px] px-4 py-2 w-[400px] text-[#49739c] text-sm font-normal leading-normal">10:00 AM</td>
-                                    <td class="table-4dbc3523-9768-4e2b-b967-2a7966f03924-column-360 h-[72px] px-4 py-2 w-[400px] text-[#49739c] text-sm font-normal leading-normal">
-                                        Embassy of France
-                                    </td>
-                                    <td class="table-4dbc3523-9768-4e2b-b967-2a7966f03924-column-480 h-[72px] px-4 py-2 w-[400px] text-[#49739c] text-sm font-normal leading-normal">
-                                        Visa Application
-                                    </td>
+                                <tr class="border-t border-t-[#cedbe8]" th:each="a : ${upcomingAppointments}">
+                                    <td class="table-4dbc3523-9768-4e2b-b967-2a7966f03924-column-120 h-[72px] px-4 py-2 w-[400px] text-[#49739c] text-sm font-normal leading-normal"
+                                        th:text="${#dates.format(a.startAt, 'yyyy-MM-dd')}">2024-08-15</td>
+                                    <td class="table-4dbc3523-9768-4e2b-b967-2a7966f03924-column-240 h-[72px] px-4 py-2 w-[400px] text-[#49739c] text-sm font-normal leading-normal"
+                                        th:text="${#dates.format(a.startAt, 'hh:mm a')}">10:00 AM</td>
+                                    <td class="table-4dbc3523-9768-4e2b-b967-2a7966f03924-column-480 h-[72px] px-4 py-2 w-[400px] text-[#49739c] text-sm font-normal leading-normal"
+                                        th:text="${a.service}">Service</td>
                                     <td class="table-4dbc3523-9768-4e2b-b967-2a7966f03924-column-600 h-[72px] px-4 py-2 w-60 text-sm font-normal leading-normal">
-                                        <button
-                                                class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 px-4 bg-[#e7edf4] text-[#0d141c] text-sm font-medium leading-normal w-full"
-                                        >
-                                            <span class="truncate">Confirmed</span>
+                                        <button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 px-4 bg-[#e7edf4] text-[#0d141c] text-sm font-medium leading-normal w-full">
+                                            <span class="truncate" th:text="${a.status}">Status</span>
                                         </button>
                                     </td>
                                     <td class="table-4dbc3523-9768-4e2b-b967-2a7966f03924-column-720 h-[72px] px-4 py-2 w-60 text-[#49739c] text-sm font-bold leading-normal tracking-[0.015em]">
-                                        Reschedule | Cancel
-                                    </td>
-                                </tr>
-                                <tr class="border-t border-t-[#cedbe8]">
-                                    <td class="table-4dbc3523-9768-4e2b-b967-2a7966f03924-column-120 h-[72px] px-4 py-2 w-[400px] text-[#49739c] text-sm font-normal leading-normal">
-                                        2024-09-20
-                                    </td>
-                                    <td class="table-4dbc3523-9768-4e2b-b967-2a7966f03924-column-240 h-[72px] px-4 py-2 w-[400px] text-[#49739c] text-sm font-normal leading-normal">02:30 PM</td>
-                                    <td class="table-4dbc3523-9768-4e2b-b967-2a7966f03924-column-360 h-[72px] px-4 py-2 w-[400px] text-[#49739c] text-sm font-normal leading-normal">
-                                        Embassy of Germany
-                                    </td>
-                                    <td class="table-4dbc3523-9768-4e2b-b967-2a7966f03924-column-480 h-[72px] px-4 py-2 w-[400px] text-[#49739c] text-sm font-normal leading-normal">
-                                        Passport Renewal
-                                    </td>
-                                    <td class="table-4dbc3523-9768-4e2b-b967-2a7966f03924-column-600 h-[72px] px-4 py-2 w-60 text-sm font-normal leading-normal">
-                                        <button
-                                                class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 px-4 bg-[#e7edf4] text-[#0d141c] text-sm font-medium leading-normal w-full"
-                                        >
-                                            <span class="truncate">Confirmed</span>
-                                        </button>
-                                    </td>
-                                    <td class="table-4dbc3523-9768-4e2b-b967-2a7966f03924-column-720 h-[72px] px-4 py-2 w-60 text-[#49739c] text-sm font-bold leading-normal tracking-[0.015em]">
-                                        Reschedule | Cancel
+                                        <span th:text="#{appointments.actions.reschedule}">Reschedule</span>
+                                        |
+                                        <span th:text="#{appointments.actions.cancel}">Cancel</span>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -94,56 +67,34 @@
                             @container(max-width:720px){.table-4dbc3523-9768-4e2b-b967-2a7966f03924-column-720{display: none;}}
                         </style>
                     </div>
-                    <h2 class="text-[#0d141c] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Past Appointments</h2>
+                    <h2 class="text-[#0d141c] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5" th:text="#{appointments.past.title}">Past Appointments</h2>
                     <div class="px-4 py-3 @container">
                         <div class="flex overflow-hidden rounded-lg border border-[#cedbe8] bg-slate-50">
                             <table class="flex-1">
                                 <thead>
                                 <tr class="bg-slate-50">
-                                    <th class="table-78a91709-2297-410a-971f-6f82435152e2-column-120 px-4 py-3 text-left text-[#0d141c] w-[400px] text-sm font-medium leading-normal">Date</th>
-                                    <th class="table-78a91709-2297-410a-971f-6f82435152e2-column-240 px-4 py-3 text-left text-[#0d141c] w-[400px] text-sm font-medium leading-normal">Time</th>
-                                    <th class="table-78a91709-2297-410a-971f-6f82435152e2-column-360 px-4 py-3 text-left text-[#0d141c] w-[400px] text-sm font-medium leading-normal">Embassy</th>
-                                    <th class="table-78a91709-2297-410a-971f-6f82435152e2-column-480 px-4 py-3 text-left text-[#0d141c] w-[400px] text-sm font-medium leading-normal">Service</th>
-                                    <th class="table-78a91709-2297-410a-971f-6f82435152e2-column-600 px-4 py-3 text-left text-[#0d141c] w-60 text-sm font-medium leading-normal">Status</th>
+                                    <th class="table-78a91709-2297-410a-971f-6f82435152e2-column-120 px-4 py-3 text-left text-[#0d141c] w-[400px] text-sm font-medium leading-normal" th:text="#{appointments.table.date}">Date</th>
+                                    <th class="table-78a91709-2297-410a-971f-6f82435152e2-column-240 px-4 py-3 text-left text-[#0d141c] w-[400px] text-sm font-medium leading-normal" th:text="#{appointments.table.time}">Time</th>
+                                    <th class="table-78a91709-2297-410a-971f-6f82435152e2-column-480 px-4 py-3 text-left text-[#0d141c] w-[400px] text-sm font-medium leading-normal" th:text="#{appointments.table.service}">Service</th>
+                                    <th class="table-78a91709-2297-410a-971f-6f82435152e2-column-600 px-4 py-3 text-left text-[#0d141c] w-60 text-sm font-medium leading-normal" th:text="#{appointments.table.status}">Status</th>
+                                    <th class="table-78a91709-2297-410a-971f-6f82435152e2-column-720 px-4 py-3 text-left text-[#0d141c] w-60 text-[#49739c] text-sm font-medium leading-normal" th:text="#{appointments.table.actions}">Actions</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr class="border-t border-t-[#cedbe8]">
-                                    <td class="table-78a91709-2297-410a-971f-6f82435152e2-column-120 h-[72px] px-4 py-2 w-[400px] text-[#49739c] text-sm font-normal leading-normal">
-                                        2024-07-10
-                                    </td>
-                                    <td class="table-78a91709-2297-410a-971f-6f82435152e2-column-240 h-[72px] px-4 py-2 w-[400px] text-[#49739c] text-sm font-normal leading-normal">11:00 AM</td>
-                                    <td class="table-78a91709-2297-410a-971f-6f82435152e2-column-360 h-[72px] px-4 py-2 w-[400px] text-[#49739c] text-sm font-normal leading-normal">
-                                        Embassy of Spain
-                                    </td>
-                                    <td class="table-78a91709-2297-410a-971f-6f82435152e2-column-480 h-[72px] px-4 py-2 w-[400px] text-[#49739c] text-sm font-normal leading-normal">
-                                        Visa Interview
-                                    </td>
+                                <tr class="border-t border-t-[#cedbe8]" th:each="a : ${pastAppointments}">
+                                    <td class="table-78a91709-2297-410a-971f-6f82435152e2-column-120 h-[72px] px-4 py-2 w-[400px] text-[#49739c] text-sm font-normal leading-normal"
+                                        th:text="${#dates.format(a.startAt, 'yyyy-MM-dd')}">2024-07-10</td>
+                                    <td class="table-78a91709-2297-410a-971f-6f82435152e2-column-240 h-[72px] px-4 py-2 w-[400px] text-[#49739c] text-sm font-normal leading-normal"
+                                        th:text="${#dates.format(a.startAt, 'hh:mm a')}">11:00 AM</td>
+                                    <td class="table-78a91709-2297-410a-971f-6f82435152e2-column-480 h-[72px] px-4 py-2 w-[400px] text-[#49739c] text-sm font-normal leading-normal"
+                                        th:text="${a.service}">Service</td>
                                     <td class="table-78a91709-2297-410a-971f-6f82435152e2-column-600 h-[72px] px-4 py-2 w-60 text-sm font-normal leading-normal">
-                                        <button
-                                                class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 px-4 bg-[#e7edf4] text-[#0d141c] text-sm font-medium leading-normal w-full"
-                                        >
-                                            <span class="truncate">Attended</span>
+                                        <button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 px-4 bg-[#e7edf4] text-[#0d141c] text-sm font-medium leading-normal w-full">
+                                            <span class="truncate" th:text="${a.status}">Status</span>
                                         </button>
                                     </td>
-                                </tr>
-                                <tr class="border-t border-t-[#cedbe8]">
-                                    <td class="table-78a91709-2297-410a-971f-6f82435152e2-column-120 h-[72px] px-4 py-2 w-[400px] text-[#49739c] text-sm font-normal leading-normal">
-                                        2024-06-05
-                                    </td>
-                                    <td class="table-78a91709-2297-410a-971f-6f82435152e2-column-240 h-[72px] px-4 py-2 w-[400px] text-[#49739c] text-sm font-normal leading-normal">09:00 AM</td>
-                                    <td class="table-78a91709-2297-410a-971f-6f82435152e2-column-360 h-[72px] px-4 py-2 w-[400px] text-[#49739c] text-sm font-normal leading-normal">
-                                        Embassy of Italy
-                                    </td>
-                                    <td class="table-78a91709-2297-410a-971f-6f82435152e2-column-480 h-[72px] px-4 py-2 w-[400px] text-[#49739c] text-sm font-normal leading-normal">
-                                        Consular Services
-                                    </td>
-                                    <td class="table-78a91709-2297-410a-971f-6f82435152e2-column-600 h-[72px] px-4 py-2 w-60 text-sm font-normal leading-normal">
-                                        <button
-                                                class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 px-4 bg-[#e7edf4] text-[#0d141c] text-sm font-medium leading-normal w-full"
-                                        >
-                                            <span class="truncate">Cancelled</span>
-                                        </button>
+                                    <td class="table-78a91709-2297-410a-971f-6f82435152e2-column-720 h-[72px] px-4 py-2 w-60 text-[#49739c] text-sm font-bold leading-normal tracking-[0.015em]">
+                                        <span>-</span>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -161,11 +112,6 @@
             </div>
         </div>
     </div>
-
-
-
-
-
 </section>
 </body>
 </html>

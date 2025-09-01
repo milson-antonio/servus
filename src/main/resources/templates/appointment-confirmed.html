@@ -1,0 +1,65 @@
+<html
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      th:lang="${#locale}"
+      layout:decorate="~{layout}">
+<head>
+    <title th:text="#{appointment.confirmed.title}">Appointment Confirmed</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <div class="relative flex size-full min-h-screen flex-col bg-slate-50 group/design-root overflow-x-hidden" style='font-family: Inter, "Noto Sans", sans-serif;'>
+        <div class="layout-container flex h-full grow flex-col">
+            <div class="px-40 flex flex-1 justify-center py-5">
+                <div class="layout-content-container flex flex-col w-[512px] max-w-[512px] py-5 max-w-[960px] flex-1">
+                    <div class="flex flex-wrap justify-between gap-3 px-4 pt-2 pb-1">
+                        <p class="text-[#0d141c] tracking-light text-[32px] font-bold leading-tight min-w-72" th:text="#{appointment.confirmed.title}">Appointment Confirmed</p>
+                    </div>
+                    <p class="text-[#0d141c] text-base font-normal leading-normal pb-3 pt-1 px-4" th:text="#{appointment.confirmed.subtitle}">Your appointment has been successfully scheduled. Please review the details below.</p>
+                    <h3 class="text-[#0d141c] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4" th:text="#{appointment.confirmed.details.title}">Appointment Details</h3>
+                    <div class="p-4 grid grid-cols-[20%_1fr] gap-x-6">
+                        <div class="col-span-2 grid grid-cols-subgrid border-t border-t-[#cedbe8] py-5">
+                            <p class="text-[#49739c] text-sm font-normal leading-normal" th:text="#{appointment.confirmed.field.service}">Service</p>
+                            <p class="text-[#0d141c] text-sm font-normal leading-normal" th:text="${appointmentServiceName} ?: 'Visa Application'">Visa Application</p>
+                        </div>
+                        <div class="col-span-2 grid grid-cols-subgrid border-t border-t-[#cedbe8] py-5">
+                            <p class="text-[#49739c] text-sm font-normal leading-normal" th:text="#{appointment.confirmed.field.date}">Date</p>
+                            <p class="text-[#0d141c] text-sm font-normal leading-normal" th:text="${appointmentDate} ?: 'July 15, 2024'">July 15, 2024</p>
+                        </div>
+                        <div class="col-span-2 grid grid-cols-subgrid border-t border-t-[#cedbe8] py-5">
+                            <p class="text-[#49739c] text-sm font-normal leading-normal" th:text="#{appointment.confirmed.field.time}">Time</p>
+                            <p class="text-[#0d141c] text-sm font-normal leading-normal" th:text="${appointmentTime} ?: '10:00 AM'">10:00 AM</p>
+                        </div>
+                        <div class="col-span-2 grid grid-cols-subgrid border-t border-t-[#cedbe8] py-5">
+                            <p class="text-[#49739c] text-sm font-normal leading-normal" th:text="#{appointment.confirmed.field.location}">Location</p>
+                            <p class="text-[#0d141c] text-sm font-normal leading-normal" th:text="${appointmentLocation} ?: 'Embassy of the United States, London'">Embassy of the United States, London</p>
+                        </div>
+                    </div>
+                    <h3 class="text-[#0d141c] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4" th:text="#{appointment.confirmed.confirmation.title}">Confirmation</h3>
+                    <p class="text-[#0d141c] text-base font-normal leading-normal pb-3 pt-1 px-4" th:text="#{appointment.confirmed.confirmation.message}">
+                        A confirmation has been sent to your email address and via SMS. Please check your inbox and messages for further instructions.
+                    </p>
+                    <div class="flex w-full grow bg-slate-50 @container p-4">
+                        <div class="w-full gap-1 overflow-hidden bg-slate-50 @[480px]:gap-2 aspect-[3/2] rounded-lg flex">
+                            <div
+                                    class="w-full bg-center bg-no-repeat bg-cover aspect-auto rounded-none flex-1"
+                                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCw8H2WVttJSzNnpPj6fwiCVYsK6LUJG0_ENcvlu6NfnnEX0ih6FsYeBxmcKCyZ5FS1lVfyKtrJmNkMov4ZWj0cmyDU5c7KmFEeTrBVa09iKgDyJSwXH37V-hTBvYAwHLewGnit1QPhHm-jts4paxQ57ANPbSkwlJCO6vwnXHmn7xA6qIfGpHgXVYBrhjiTtehNO4qqak9krnlfNy8LYBkMs1EktIov04xxgqyWQ_9-8U7lwFjfx-lSqg4kUOuDQ-ObbsjC2nCtzQGl");'
+                            ></div>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-3 px-4 py-3">
+                        <a href="/appointments" class="flex min-w-[120px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#0d80f2] text-slate-50 text-sm font-bold leading-normal tracking-[0.015em]">
+                            <span class="truncate" th:text="#{common.viewAppointment}">View Appointments</span>
+                        </a>
+                        <button type="button" onclick="window.print()" class="flex min-w-[120px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-white border border-[#cedbe8] text-[#0d141c] text-sm font-bold leading-normal tracking-[0.015em]">
+                            <span class="truncate" th:text="#{common.downloadPdf}">Download PDF</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

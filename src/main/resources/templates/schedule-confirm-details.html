@@ -1,0 +1,113 @@
+<html
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      th:lang="${#locale}"
+      layout:decorate="~{layout}">
+
+<head>
+    <title th:text="#{schedule.confirm.title}">Confirm Details</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <div class="relative flex size-full min-h-screen flex-col bg-slate-50 group/design-root overflow-x-hidden" style='font-family: Inter, "Noto Sans", sans-serif;'>
+        <div class="layout-container flex h-full grow flex-col">
+            <div class="px-40 flex flex-1 justify-center py-5">
+                <div class="layout-content-container flex flex-col w-[512px] max-w-[512px] py-5 max-w-[960px] flex-1">
+                    <div class="flex flex-wrap gap-2 px-4">
+                        <a class="text-[#49739c] text-base font-medium leading-normal" href="/appointments" th:text="#{schedule.breadcrumb.root}">Appointments</a>
+                        <span class="text-[#49739c] text-base font-medium leading-normal">/</span>
+                        <a class="text-[#49739c] text-base font-medium leading-normal" href="/schedule-date-and-time" th:text="#{schedule.datetime.breadcrumb.current}">Select Date &amp; Time</a>
+                        <span class="text-[#49739c] text-base font-medium leading-normal">/</span>
+                        <span class="text-[#0d141c] text-base font-medium leading-normal" th:text="#{schedule.confirm.breadcrumb.current}">Confirm Details</span>
+                    </div>
+                    <div class="flex flex-wrap justify-between gap-3 p-4">
+                        <p class="text-[#0d141c] tracking-light text-[32px] font-bold leading-tight min-w-72" th:text="#{schedule.confirm.heading}">Confirm Your Details</p>
+                    </div>
+                    <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+                        <label class="flex flex-col min-w-40 flex-1">
+                            <p class="text-[#0d141c] text-base font-medium leading-normal pb-2" th:text="#{schedule.confirm.field.firstName}">First Name</p>
+                            <input
+                                    class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0d141c] focus:outline-0 focus:ring-0 border border-[#cedbe8] bg-slate-50 focus:border-[#cedbe8] h-14 placeholder:text-[#49739c] p-[15px] text-base font-normal leading-normal"
+                                    value=""
+                            />
+                        </label>
+                    </div>
+                    <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+                        <label class="flex flex-col min-w-40 flex-1">
+                            <p class="text-[#0d141c] text-base font-medium leading-normal pb-2" th:text="#{schedule.confirm.field.lastName}">Last Name</p>
+                            <input
+                                    class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0d141c] focus:outline-0 focus:ring-0 border border-[#cedbe8] bg-slate-50 focus:border-[#cedbe8] h-14 placeholder:text-[#49739c] p-[15px] text-base font-normal leading-normal"
+                                    value=""
+                            />
+                        </label>
+                    </div>
+                    <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+                        <label class="flex flex-col min-w-40 flex-1">
+                            <p class="text-[#0d141c] text-base font-medium leading-normal pb-2" th:text="#{schedule.confirm.field.dob}">Date of Birth</p>
+                            <input
+                                    class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0d141c] focus:outline-0 focus:ring-0 border border-[#cedbe8] bg-slate-50 focus:border-[#cedbe8] h-14 placeholder:text-[#49739c] p-[15px] text-base font-normal leading-normal"
+                                    value=""
+                            />
+                        </label>
+                    </div>
+                    <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+                        <label class="flex flex-col min-w-40 flex-1">
+                            <p class="text-[#0d141c] text-base font-medium leading-normal pb-2" th:text="#{schedule.confirm.field.nationality}">Nationality</p>
+                            <input
+                                    class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0d141c] focus:outline-0 focus:ring-0 border border-[#cedbe8] bg-slate-50 focus:border-[#cedbe8] h-14 placeholder:text-[#49739c] p-[15px] text-base font-normal leading-normal"
+                                    value=""
+                            />
+                        </label>
+                    </div>
+                    <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+                        <label class="flex flex-col min-w-40 flex-1">
+                            <p class="text-[#0d141c] text-base font-medium leading-normal pb-2" th:text="#{schedule.confirm.field.passport}">Passport Number</p>
+                            <input
+                                    class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0d141c] focus:outline-0 focus:ring-0 border border-[#cedbe8] bg-slate-50 focus:border-[#cedbe8] h-14 placeholder:text-[#49739c] p-[15px] text-base font-normal leading-normal"
+                                    value=""
+                            />
+                        </label>
+                    </div>
+                    <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+                        <label class="flex flex-col min-w-40 flex-1">
+                            <p class="text-[#0d141c] text-base font-medium leading-normal pb-2" th:text="#{schedule.confirm.field.email}">Email</p>
+                            <input
+                                    class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0d141c] focus:outline-0 focus:ring-0 border border-[#cedbe8] bg-slate-50 focus:border-[#cedbe8] h-14 placeholder:text-[#49739c] p-[15px] text-base font-normal leading-normal"
+                                    value=""
+                            />
+                        </label>
+                    </div>
+                    <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+                        <label class="flex flex-col min-w-40 flex-1">
+                            <p class="text-[#0d141c] text-base font-medium leading-normal pb-2" th:text="#{schedule.confirm.field.phone}">Phone Number</p>
+                            <input
+                                    class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0d141c] focus:outline-0 focus:ring-0 border border-[#cedbe8] bg-slate-50 focus:border-[#cedbe8] h-14 placeholder:text-[#49739c] p-[15px] text-base font-normal leading-normal"
+                                    value=""
+                            />
+                        </label>
+                    </div>
+                    <div class="flex px-4 py-3 justify-between items-center">
+                        <a href="/schedule-date-and-time"
+                           class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#0d80f2] text-slate-50 text-sm font-bold leading-normal tracking-[0.015em]">
+                            <span class="truncate" th:text="#{common.back}">Back</span>
+                        </a>
+                        <form th:action="@{/appointments}" method="post" class="m-0">
+                            <input type="hidden" name="service" th:value="${service} ?: ${param.service}">
+                            <input type="hidden" name="applicantType" th:value="${applicantType} ?: ${param.applicantType}">
+                            <input type="hidden" name="date" th:value="${date} ?: ${param.date}">
+                            <input type="hidden" name="time" th:value="${time} ?: ${param.time}">
+                            <input type="hidden" th:if="${_csrf != null}" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                            <button type="submit"
+                                    class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#0d80f2] text-slate-50 text-sm font-bold leading-normal tracking-[0.015em]">
+                                <span class="truncate" th:text="#{schedule.confirm.submit}">Confirm Appointment</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

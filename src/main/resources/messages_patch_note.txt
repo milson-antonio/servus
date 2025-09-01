@@ -1,0 +1,4 @@
+This file documents newly added i18n keys for the schedule appointment page.
+Keys:
+- schedule.title, schedule.breadcrumb.root, schedule.breadcrumb.current, schedule.heading, schedule.subtitle, schedule.next
+- schedule.service.passportRenewal, schedule.service.visaApplication, schedule.service.consularRegistration, schedule.service.documentLegalization, schedule.service.notarialServices, schedule.service.emergencyServices
