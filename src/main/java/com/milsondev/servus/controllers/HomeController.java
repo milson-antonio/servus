@@ -21,8 +21,6 @@ public class HomeController {
 
     @GetMapping
     public String home(Model model) {
-        //orchestrationService.deleteAllAppointments();
-        //orchestrationService.deleteAllUsers();
         return "index";
     }
 
@@ -36,7 +34,6 @@ public class HomeController {
         return "redirect:/login";
     }
 
-
     @GetMapping("/schedule-appointment")
     public String scheduleAppointment(Model model) {
         model.addAttribute("showUserHeader", true);
@@ -44,49 +41,34 @@ public class HomeController {
     }
 
     @GetMapping("/schedule-who")
-    public String scheduleWho(@RequestParam(name = "service", required = false) String service,
-                              @RequestParam(name = "applicantType", required = false) String applicantType,
+    public String scheduleWho(@RequestParam(name = "service") String service,
                               Model model) {
         model.addAttribute("showUserHeader", true);
-        if (service != null && !service.isBlank()) model.addAttribute("service", service);
-        if (applicantType != null && !applicantType.isBlank()) model.addAttribute("applicantType", applicantType);
+        model.addAttribute("service", service);
         return "schedule-who";
     }
 
-    @GetMapping("/schedule-documents")
-    public String scheduleDocuments(@RequestParam(name = "service", required = false) String service, Model model) {
-        model.addAttribute("showUserHeader", true);
-        if (service != null && !service.isBlank()) {
-            model.addAttribute("service", service);
-        }
-        return "schedule-documents";
-    }
-
     @GetMapping("/schedule-date-and-time")
-    public String scheduleDateAndTime(@RequestParam(name = "service", required = false) String service,
-                                      @RequestParam(name = "applicantType", required = false) String applicantType,
-                                      @RequestParam(name = "date", required = false) String date,
-                                      @RequestParam(name = "time", required = false) String time,
+    public String scheduleDateAndTime(@RequestParam(name = "service") String service,
+                                      @RequestParam(name = "applicantType") String applicantType,
                                       Model model) {
         model.addAttribute("showUserHeader", true);
-        if (service != null && !service.isBlank()) model.addAttribute("service", service);
-        if (applicantType != null && !applicantType.isBlank()) model.addAttribute("applicantType", applicantType);
-        if (date != null && !date.isBlank()) model.addAttribute("date", date);
-        if (time != null && !time.isBlank()) model.addAttribute("time", time);
+        model.addAttribute("service", service);
+        model.addAttribute("applicantType", applicantType);
         return "schedule-date-and-time";
     }
 
     @GetMapping("/schedule-confirm-details")
-    public String scheduleConfirmDetails(@RequestParam(name = "service", required = false) String service,
-                                         @RequestParam(name = "applicantType", required = false) String applicantType,
-                                         @RequestParam(name = "date", required = false) String date,
-                                         @RequestParam(name = "time", required = false) String time,
+    public String scheduleConfirmDetails(@RequestParam(name = "service") String service,
+                                         @RequestParam(name = "applicantType") String applicantType,
+                                         @RequestParam(name = "date") String date,
+                                         @RequestParam(name = "time") String time,
                                          Model model) {
         model.addAttribute("showUserHeader", true);
-        if (service != null && !service.isBlank()) model.addAttribute("service", service);
-        if (applicantType != null && !applicantType.isBlank()) model.addAttribute("applicantType", applicantType);
-        if (date != null && !date.isBlank()) model.addAttribute("date", date);
-        if (time != null && !time.isBlank()) model.addAttribute("time", time);
+        model.addAttribute("service", service);
+        model.addAttribute("applicantType", applicantType);
+        model.addAttribute("date", date);
+        model.addAttribute("time", time);
         return "schedule-confirm-details";
     }
 

@@ -9,9 +9,7 @@ import com.milsondev.servus.enums.AppointmentStatus;
 import jakarta.validation.Validator;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,6 +22,33 @@ public class AppointmentService {
                               Validator validator) {
         this.appointmentRepository = appointmentRepository;
         this.validator = validator;
+    }
+
+    public Map<String, List<String>> getAvailableSlots(int year, int month) {
+        Map<String, List<String>> availableSlots = new HashMap<>();
+
+        // Dummy data: in a real application, this would query the database.
+        List<String> times = Arrays.asList("9:00 AM", "9:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM", "1:00 PM", "1:30 PM", "2:00 PM");
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(year, month - 1, 1);
+        int daysInMonth = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+        for (int day = 1; day <= daysInMonth; day++) {
+            cal.set(Calendar.DAY_OF_MONTH, day);
+            int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+
+            // Appointments only available on weekdays
+            if (dayOfWeek != Calendar.SATURDAY && dayOfWeek != Calendar.SUNDAY) {
+                // Skip some days for demonstration
+                if (day % 4 != 0) {
+                    String dateStr = String.format("%d-%02d-%02d", year, month, day);
+                    availableSlots.put(dateStr, times);
+                }
+            }
+        }
+
+        return availableSlots;
     }
 
     public List<AppointmentEntity> listAllByUser(UUID userId) {
