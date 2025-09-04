@@ -64,15 +64,23 @@ public class AppointmentController {
                                         @RequestParam(name = "date", required = false) String date,
                                         @RequestParam(name = "time", required = false) String time,
                                         RedirectAttributes ra) {
-        if (date == null || date.isBlank() || time == null || time.isBlank()) {
-            String msg = messageSource.getMessage("schedule.datetime.error.notSelected", null, LocaleContextHolder.getLocale());
-            ra.addFlashAttribute("error", msg);
-            ra.addAttribute("service", service);
-            ra.addAttribute("applicantType", applicantType);
-            return "redirect:/schedule-date-and-time";
-        }
+        
         ra.addAttribute("service", service);
         ra.addAttribute("applicantType", applicantType);
+
+        if (date == null || date.isBlank()) {
+            String msg = messageSource.getMessage("schedule.datetime.error.dateNotSelected", null, LocaleContextHolder.getLocale());
+            ra.addFlashAttribute("error", msg);
+            return "redirect:/schedule-date-and-time";
+        }
+
+        if (time == null || time.isBlank()) {
+            String msg = messageSource.getMessage("schedule.datetime.error.timeNotSelected", null, LocaleContextHolder.getLocale());
+            ra.addFlashAttribute("error", msg);
+            ra.addFlashAttribute("selectedDate", date); // Pass the selected date back
+            return "redirect:/schedule-date-and-time";
+        }
+
         ra.addAttribute("date", date);
         ra.addAttribute("time", time);
         return "redirect:/schedule-confirm-details";

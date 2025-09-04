@@ -52,6 +52,10 @@
         </div>
     </div>
 
+    <script th:inline="javascript">
+        /* Pass selectedDate from model to JavaScript */
+        const initialSelectedDate = /*[[${selectedDate}]]*/ null;
+    </script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const monthYearEl = document.getElementById('month-year');
@@ -62,6 +66,12 @@
             const availableTimesContainer = document.getElementById('available-times-container');
 
             let currentDate = new Date();
+            if (initialSelectedDate) {
+                // If a date was passed back from the server, use it to set the initial calendar view
+                const parts = initialSelectedDate.split('-');
+                currentDate = new Date(parts[0], parts[1] - 1, 1);
+                selectedDateInput.value = initialSelectedDate;
+            }
             currentDate.setDate(1);
             let availableSlots = {};
 
@@ -75,6 +85,10 @@
                     }
                     availableSlots = await response.json();
                     renderCalendar();
+                    // If a date was pre-selected, render its times immediately
+                    if (initialSelectedDate && availableSlots[initialSelectedDate]) {
+                        renderAvailableTimes(availableSlots[initialSelectedDate]);
+                    }
                 } catch (error) {
                     console.error('Failed to fetch available slots:', error);
                     availableSlots = {};
@@ -90,7 +104,7 @@
                 const currentMonth = now.getMonth();
                 const currentYear = now.getFullYear();
 
-                if (year < currentYear || (year === currentYear && month <= currentMonth)) {
+                if (year < currentYear || (year === currentYear && month < currentMonth)) {
                     prevMonthBtn.disabled = true;
                     prevMonthBtn.classList.add('cursor-not-allowed', 'opacity-50');
                 } else {
@@ -170,7 +184,6 @@
                         radio.name = 'time';
                         radio.value = time;
                         radio.className = 'invisible absolute';
-                        radio.required = true;
 
                         label.appendChild(radio);
                         availableTimesContainer.appendChild(label);
