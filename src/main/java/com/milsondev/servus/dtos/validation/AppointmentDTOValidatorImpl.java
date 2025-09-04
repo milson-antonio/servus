@@ -10,12 +10,13 @@ import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.stereotype.Component;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
-
+@Component
 public class AppointmentDTOValidatorImpl implements ConstraintValidator<AppointmentDTOValidator, AppointmentDTO> {
 
     private final UserRepository userRepository;
@@ -54,7 +55,7 @@ public class AppointmentDTOValidatorImpl implements ConstraintValidator<Appointm
         }
 
         // service required
-        if (validationService.isBlank(dto.getService())) {
+        if (dto.getAppointmentServiceType() == null) {
             addViolation(ctx, "service", msg("validation.appointment.service.required"));
             valid = false;
         }
@@ -87,6 +88,7 @@ public class AppointmentDTOValidatorImpl implements ConstraintValidator<Appointm
         }
 
         // overlap check if we have user and both times
+        /*
         if (valid && userOpt.isPresent() && startAt != null && endAt != null) {
             boolean overlap = appointmentRepository.existsOverlap(userId, startAt, endAt, AppointmentStatus.CANCELLED);
             if (overlap) {
@@ -94,6 +96,7 @@ public class AppointmentDTOValidatorImpl implements ConstraintValidator<Appointm
                 valid = false;
             }
         }
+         */
 
         return valid;
     }

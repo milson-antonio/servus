@@ -21,7 +21,8 @@ public class HomeController {
 
     @GetMapping
     public String home(Model model) {
-        //userService.deleteAllUsers();
+        //orchestrationService.deleteAllAppointments();
+        //orchestrationService.deleteAllUsers();
         return "index";
     }
 

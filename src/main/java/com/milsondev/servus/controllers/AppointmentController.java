@@ -3,6 +3,7 @@ package com.milsondev.servus.controllers;
 import com.milsondev.servus.db.entities.UserEntity;
 import com.milsondev.servus.db.repositories.UserRepository;
 import com.milsondev.servus.enums.ApplicantType;
+import com.milsondev.servus.enums.AppointmentServiceType;
 import com.milsondev.servus.services.AppointmentService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -45,7 +46,7 @@ public class AppointmentController {
     }
 
     @PostMapping("/appointments")
-    public String createAppointment(@RequestParam(name = "service", required = false) String service,
+    public String createAppointment(@RequestParam(name = "service", required = false) String serviceStr,
                                     @RequestParam(name = "applicantType", required = false) String applicantTypeStr,
                                     @RequestParam(name = "date", required = false) String dateStr,
                                     @RequestParam(name = "time", required = false) String timeStr,
@@ -77,10 +78,13 @@ public class AppointmentController {
         Date startAt = deriveStartAt(dateStr, timeStr);
         Date endAt = null; // service will default to +30min if needed
 
+        // Parse service string into enum
+        AppointmentServiceType service = AppointmentServiceType.fromInput(serviceStr);
+
         try {
             var saved = appointmentService.createForUser(userId, service, applicantType, startAt, endAt);
             // Prepare confirmation display fields
-            ra.addFlashAttribute("appointmentServiceName", service);
+            ra.addFlashAttribute("appointmentServiceName", service != null ? service.getLabel() : "");
             ra.addFlashAttribute("appointmentDate", new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH).format(saved.getStartAt()));
             ra.addFlashAttribute("appointmentTime", new SimpleDateFormat("h:mm a", Locale.ENGLISH).format(saved.getStartAt()));
             ra.addFlashAttribute("appointmentLocation", "—");
@@ -88,7 +92,7 @@ public class AppointmentController {
         } catch (IllegalArgumentException ex) {
             ra.addFlashAttribute("error", ex.getMessage());
             // Send back to confirm page with the current selections
-            String url = "/schedule-confirm-details" + buildQueryParams(service, applicantTypeStr, dateStr, timeStr);
+            String url = "/schedule-confirm-details" + buildQueryParams(serviceStr, applicantTypeStr, dateStr, timeStr);
             return "redirect:" + url;
         }
     }

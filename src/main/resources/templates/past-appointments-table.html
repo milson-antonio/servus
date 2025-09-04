@@ -1,0 +1,40 @@
+<div class="px-4 py-3 @container" th:fragment="pastAppointmentsTable">
+    <div class="flex overflow-hidden rounded-lg border border-[#cedbe8] bg-slate-50">
+        <table class="flex-1">
+            <thead>
+            <tr class="bg-slate-50">
+                <th class="table-78a91709-2297-410a-971f-6f82435152e2-column-120 px-4 py-3 text-left text-[#0d141c] w-[400px] text-sm font-medium leading-normal" th:text="#{appointments.table.date}">Date</th>
+                <th class="table-78a91709-2297-410a-971f-6f82435152e2-column-240 px-4 py-3 text-left text-[#0d141c] w-[400px] text-sm font-medium leading-normal" th:text="#{appointments.table.time}">Time</th>
+                <th class="table-78a91709-2297-410a-971f-6f82435152e2-column-480 px-4 py-3 text-left text-[#0d141c] w-[400px] text-sm font-medium leading-normal" th:text="#{appointments.table.service}">Service</th>
+                <th class="table-78a91709-2297-410a-971f-6f82435152e2-column-600 px-4 py-3 text-left text-[#0d141c] w-60 text-sm font-medium leading-normal" th:text="#{appointments.table.status}">Status</th>
+                <th class="table-78a91709-2297-410a-971f-6f82435152e2-column-720 px-4 py-3 text-left text-[#0d141c] w-60 text-[#49739c] text-sm font-medium leading-normal" th:text="#{appointments.table.actions}">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="border-t border-t-[#cedbe8]" th:each="a : ${pastAppointments}">
+                <td class="table-78a91709-2297-410a-971f-6f82435152e2-column-120 h-[72px] px-4 py-2 w-[400px] text-[#49739c] text-sm font-normal leading-normal"
+                    th:text="${#dates.format(a.startAt, 'yyyy-MM-dd')}">2024-07-10</td>
+                <td class="table-78a91709-2297-410a-971f-6f82435152e2-column-240 h-[72px] px-4 py-2 w-[400px] text-[#49739c] text-sm font-normal leading-normal"
+                    th:text="${#dates.format(a.startAt, 'hh:mm a')}">11:00 AM</td>
+                <td class="table-78a91709-2297-410a-971f-6f82435152e2-column-480 h-[72px] px-4 py-2 w-[400px] text-[#49739c] text-sm font-normal leading-normal"
+                    th:text="${a.service}">Service</td>
+                <td class="table-78a91709-2297-410a-971f-6f82435152e2-column-600 h-[72px] px-4 py-2 w-60 text-sm font-normal leading-normal">
+                    <button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 px-4 bg-[#e7edf4] text-[#0d141c] text-sm font-medium leading-normal w-full">
+                        <span class="truncate" th:text="${a.status}">Status</span>
+                    </button>
+                </td>
+                <td class="table-78a91709-2297-410a-971f-6f82435152e2-column-720 h-[72px] px-4 py-2 w-60 text-[#49739c] text-sm font-bold leading-normal tracking-[0.015em]">
+                    <span>-</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <style>
+        @container(max-width:120px){.table-78a91709-2297-410a-971f-6f82435152e2-column-120{display: none;}}
+        @container(max-width:240px){.table-78a91709-2297-410a-971f-6f82435152e2-column-240{display: none;}}
+        @container(max-width:360px){.table-78a91709-2297-410a-971f-6f82435152e2-column-360{display: none;}}
+        @container(max-width:480px){.table-78a91709-2297-410a-971f-6f82435152e2-column-480{display: none;}}
+        @container(max-width:600px){.table-78a91709-2297-410a-971f-6f82435152e2-column-600{display: none;}}
+    </style>
+</div>

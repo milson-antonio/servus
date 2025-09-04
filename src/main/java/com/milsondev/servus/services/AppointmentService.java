@@ -2,6 +2,11 @@ package com.milsondev.servus.services;
 
 import com.milsondev.servus.db.entities.AppointmentEntity;
 import com.milsondev.servus.db.repositories.AppointmentRepository;
+import com.milsondev.servus.dtos.AppointmentDTO;
+import com.milsondev.servus.enums.ApplicantType;
+import com.milsondev.servus.enums.AppointmentServiceType;
+import com.milsondev.servus.enums.AppointmentStatus;
+import jakarta.validation.Validator;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -13,11 +18,12 @@ import java.util.stream.Collectors;
 public class AppointmentService {
 
     private final AppointmentRepository appointmentRepository;
-    private final jakarta.validation.Validator validator;
+    private final Validator validator;
 
-    public AppointmentService(AppointmentRepository appointmentRepository) {
+    public AppointmentService(AppointmentRepository appointmentRepository,
+                              Validator validator) {
         this.appointmentRepository = appointmentRepository;
-        this.validator = jakarta.validation.Validation.buildDefaultValidatorFactory().getValidator();
+        this.validator = validator;
     }
 
     public List<AppointmentEntity> listAllByUser(UUID userId) {
@@ -40,11 +46,12 @@ public class AppointmentService {
                 .collect(Collectors.toList());
     }
 
-    public AppointmentEntity createForUser(UUID userId, String service, com.milsondev.servus.enums.ApplicantType applicantType,
+    public AppointmentEntity createForUser(UUID userId, AppointmentServiceType service,
+                                           ApplicantType applicantType,
                                            Date startAt, Date endAt) {
         // default applicant type
         if (applicantType == null) {
-            applicantType = com.milsondev.servus.enums.ApplicantType.SELF;
+            applicantType = ApplicantType.SELF;
         }
         // default endAt: +30 minutes
         if (startAt != null && endAt == null) {
@@ -54,9 +61,9 @@ public class AppointmentService {
             endAt = cal.getTime();
         }
         // Build DTO to reuse validator rules
-        com.milsondev.servus.dtos.AppointmentDTO dto = new com.milsondev.servus.dtos.AppointmentDTO();
+        AppointmentDTO dto = new AppointmentDTO();
         dto.setUserId(userId);
-        dto.setService(service);
+        dto.setAppointmentServiceType(service);
         dto.setApplicantType(applicantType);
         dto.setStartAt(startAt);
         dto.setEndAt(endAt);
@@ -69,11 +76,15 @@ public class AppointmentService {
 
         AppointmentEntity entity = new AppointmentEntity();
         entity.setUserId(userId);
-        entity.setService(service);
+        entity.setAppointmentServiceType(service);
         entity.setApplicantType(applicantType);
         entity.setStartAt(dto.getStartAt());
         entity.setEndAt(dto.getEndAt());
-        entity.setStatus(com.milsondev.servus.enums.AppointmentStatus.SCHEDULED);
+        entity.setStatus(AppointmentStatus.Scheduled);
         return appointmentRepository.save(entity);
+    }
+
+    public void deleteAllAppointments(){
+        appointmentRepository.deleteAll();
     }
 }

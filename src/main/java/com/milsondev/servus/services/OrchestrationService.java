@@ -20,16 +20,20 @@ public class OrchestrationService {
     private final TokenService tokenService;
     private final UserRepository userRepository;
     private final ValidationService validationService;
+    private final AppointmentService appointmentService;
+    private final UserService userService;
 
     @Autowired
     public OrchestrationService(final AuthService authService,
                                 final TokenService tokenService,
                                 final UserRepository userRepository,
-                                final ValidationService validationService) {
+                                final ValidationService validationService, AppointmentService appointmentService, UserService userService) {
         this.authService = authService;
         this.tokenService = tokenService;
         this.userRepository = userRepository;
         this.validationService = validationService;
+        this.appointmentService = appointmentService;
+        this.userService = userService;
     }
 
     public boolean isUserPresent(final String email) {
@@ -100,4 +104,13 @@ public class OrchestrationService {
     public boolean isStrongPassword(final String password) {
         return validationService.isStrongPassword(password);
     }
+
+    public void deleteAllAppointments(){
+        appointmentService.deleteAllAppointments();
+    }
+
+    public void deleteAllUsers(){
+        userService.deleteAllUsers();
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.milsondev.servus.db.entities;
 
 import com.milsondev.servus.enums.ApplicantType;
+import com.milsondev.servus.enums.AppointmentServiceType;
 import com.milsondev.servus.enums.AppointmentStatus;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -25,8 +26,9 @@ public class AppointmentEntity {
     @Column(name = "user_id", nullable = false, columnDefinition = "uuid")
     private UUID userId;
 
-    @Column(name = "service", nullable = false, length = 100)
-    private String service;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "appointment_service_type", nullable = false, length = 100)
+    private AppointmentServiceType appointmentServiceType;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "applicant_type", nullable = false, length = 20)
@@ -42,7 +44,7 @@ public class AppointmentEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 20)
-    private AppointmentStatus status = AppointmentStatus.SCHEDULED;
+    private AppointmentStatus status = AppointmentStatus.Scheduled;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
