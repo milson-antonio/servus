@@ -5,6 +5,9 @@ import com.milsondev.servus.db.repositories.UserRepository;
 import com.milsondev.servus.enums.ApplicantType;
 import com.milsondev.servus.enums.AppointmentServiceType;
 import com.milsondev.servus.services.AppointmentService;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -12,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.text.ParseException;
@@ -23,10 +27,19 @@ public class AppointmentController {
 
     private final AppointmentService appointmentService;
     private final UserRepository userRepository;
+    private final MessageSource messageSource;
 
-    public AppointmentController(AppointmentService appointmentService, UserRepository userRepository) {
+    public AppointmentController(AppointmentService appointmentService, UserRepository userRepository, MessageSource messageSource) {
         this.appointmentService = appointmentService;
         this.userRepository = userRepository;
+        this.messageSource = messageSource;
+    }
+
+    @GetMapping("/api/appointments/available-slots")
+    @ResponseBody
+    public ResponseEntity<Map<String, List<String>>> getAvailableSlots(@RequestParam("year") int year, @RequestParam("month") int month) {
+        Map<String, List<String>> slots = appointmentService.getAvailableSlots(year, month);
+        return ResponseEntity.ok(slots);
     }
 
     @GetMapping("/appointments")
@@ -43,6 +56,34 @@ public class AppointmentController {
             }
         }
         return "appointments";
+    }
+
+    @PostMapping("/schedule-appointment-time")
+    public String scheduleAppointmentTime(@RequestParam(name = "service") String service,
+                                        @RequestParam(name = "applicantType") String applicantType,
+                                        @RequestParam(name = "date", required = false) String date,
+                                        @RequestParam(name = "time", required = false) String time,
+                                        RedirectAttributes ra) {
+        
+        ra.addAttribute("service", service);
+        ra.addAttribute("applicantType", applicantType);
+
+        if (date == null || date.isBlank()) {
+            String msg = messageSource.getMessage("schedule.datetime.error.dateNotSelected", null, LocaleContextHolder.getLocale());
+            ra.addFlashAttribute("error", msg);
+            return "redirect:/schedule-date-and-time";
+        }
+
+        if (time == null || time.isBlank()) {
+            String msg = messageSource.getMessage("schedule.datetime.error.timeNotSelected", null, LocaleContextHolder.getLocale());
+            ra.addFlashAttribute("error", msg);
+            ra.addFlashAttribute("selectedDate", date); // Pass the selected date back
+            return "redirect:/schedule-date-and-time";
+        }
+
+        ra.addAttribute("date", date);
+        ra.addAttribute("time", time);
+        return "redirect:/schedule-confirm-details";
     }
 
     @PostMapping("/appointments")

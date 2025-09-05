@@ -20,319 +20,192 @@
                         <span class="text-[#0d141c] text-base font-medium leading-normal" th:text="#{schedule.datetime.breadcrumb.current}">Select Date &amp; Time</span>
                     </div>
                     <h2 class="text-[#0d141c] tracking-light text-[28px] font-bold leading-tight px-4 text-left pb-3 pt-5" th:text="#{schedule.datetime.heading}">Select Date &amp; Time</h2>
-                    <div class="flex flex-wrap items-center justify-center gap-6 p-4">
-                        <div class="flex min-w-72 max-w-[336px] flex-1 flex-col gap-0.5">
-                            <div class="flex items-center p-1 justify-between">
-                                <button>
-                                    <div class="text-[#0d141c] flex size-10 items-center justify-center" data-icon="CaretLeft" data-size="18px" data-weight="regular">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" fill="currentColor" viewBox="0 0 256 256">
-                                            <path d="M165.66,202.34a8,8,0,0,1-11.32,11.32l-80-80a8,8,0,0,1,0-11.32l80-80a8,8,0,0,1,11.32,11.32L91.31,128Z"></path>
-                                        </svg>
-                                    </div>
-                                </button>
-                                <p class="text-[#0d141c] text-base font-bold leading-tight flex-1 text-center pr-10">July 2024</p>
-                            </div>
-                            <div class="grid grid-cols-7">
-                                <p class="text-[#0d141c] text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">S</p>
-                                <p class="text-[#0d141c] text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">M</p>
-                                <p class="text-[#0d141c] text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">T</p>
-                                <p class="text-[#0d141c] text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">W</p>
-                                <p class="text-[#0d141c] text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">T</p>
-                                <p class="text-[#0d141c] text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">F</p>
-                                <p class="text-[#0d141c] text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">S</p>
-                                <button class="h-12 w-full text-[#0d141c] col-start-4 text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">1</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">2</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">3</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">4</div>
-                                </button>
-                                <button class="h-12 w-full text-slate-50 text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full bg-[#0d80f2]">5</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">6</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">7</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">8</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">9</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">10</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">11</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">12</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">13</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">14</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">15</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">16</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">17</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">18</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">19</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">20</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">21</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">22</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">23</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">24</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">25</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">26</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">27</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">28</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">29</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">30</div>
-                                </button>
-                            </div>
+
+                    <div th:if="${error}" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                        <span class="block sm:inline" th:text="${error}"></span>
+                    </div>
+
+                    <form th:action="@{/schedule-appointment-time}" method="post">
+                        <input type="hidden" name="service" th:value="${service}" />
+                        <input type="hidden" name="applicantType" th:value="${applicantType}" />
+
+                        <div class="p-4">
+                            <div th:insert="~{appointment-calendar :: appointmentCalendar}"></div>
+                            <input type="hidden" id="selected-date" name="date" />
                         </div>
-                        <div class="flex min-w-72 max-w-[336px] flex-1 flex-col gap-0.5">
-                            <div class="flex items-center p-1 justify-between">
-                                <p class="text-[#0d141c] text-base font-bold leading-tight flex-1 text-center pl-10">August 2024</p>
-                                <button>
-                                    <div class="text-[#0d141c] flex size-10 items-center justify-center" data-icon="CaretRight" data-size="18px" data-weight="regular">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" fill="currentColor" viewBox="0 0 256 256">
-                                            <path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"></path>
-                                        </svg>
-                                    </div>
-                                </button>
-                            </div>
-                            <div class="grid grid-cols-7">
-                                <p class="text-[#0d141c] text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">S</p>
-                                <p class="text-[#0d141c] text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">M</p>
-                                <p class="text-[#0d141c] text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">T</p>
-                                <p class="text-[#0d141c] text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">W</p>
-                                <p class="text-[#0d141c] text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">T</p>
-                                <p class="text-[#0d141c] text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">F</p>
-                                <p class="text-[#0d141c] text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">S</p>
-                                <button class="h-12 w-full text-[#0d141c] col-start-4 text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">1</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">2</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">3</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">4</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">5</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">6</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">7</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">8</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">9</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">10</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">11</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">12</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">13</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">14</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">15</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">16</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">17</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">18</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">19</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">20</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">21</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">22</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">23</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">24</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">25</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">26</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">27</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">28</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">29</div>
-                                </button>
-                                <button class="h-12 w-full text-[#0d141c] text-sm font-medium leading-normal">
-                                    <div class="flex size-full items-center justify-center rounded-full">30</div>
-                                </button>
-                            </div>
+
+                        <div th:insert="~{appointment-times :: appointmentTimes}"></div>
+
+                        <div class="flex px-4 py-3 justify-between">
+                            <a th:href="@{/schedule-who(service=${service})}"
+                               class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#e7edf4] text-[#0d141c] text-sm font-bold leading-normal tracking-[0.015em]">
+                                <span class="truncate" th:text="#{common.back}">Back</span>
+                            </a>
+                            <button type="submit"
+                               class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#0d80f2] text-slate-50 text-sm font-bold leading-normal tracking-[0.015em]">
+                                <span class="truncate" th:text="#{schedule.next}">Next</span>
+                            </button>
                         </div>
-                    </div>
-                    <h3 class="text-[#0d141c] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4" th:text="#{schedule.datetime.availableTimes}">Available Times</h3>
-                    <div class="flex flex-wrap gap-3 p-4">
-                        <label
-                                class="text-sm font-medium leading-normal flex items-center justify-center rounded-lg border border-[#cedbe8] px-4 h-11 text-[#0d141c] has-[:checked]:border-[3px] has-[:checked]:px-3.5 has-[:checked]:border-[#0d80f2] relative cursor-pointer"
-                        >
-                            9:00 AM
-                            <input type="radio" class="invisible absolute" name="b8a44f94-ab3b-410f-ad83-561df070347b" />
-                        </label>
-                        <label
-                                class="text-sm font-medium leading-normal flex items-center justify-center rounded-lg border border-[#cedbe8] px-4 h-11 text-[#0d141c] has-[:checked]:border-[3px] has-[:checked]:px-3.5 has-[:checked]:border-[#0d80f2] relative cursor-pointer"
-                        >
-                            9:30 AM
-                            <input type="radio" class="invisible absolute" name="b8a44f94-ab3b-410f-ad83-561df070347b" />
-                        </label>
-                        <label
-                                class="text-sm font-medium leading-normal flex items-center justify-center rounded-lg border border-[#cedbe8] px-4 h-11 text-[#0d141c] has-[:checked]:border-[3px] has-[:checked]:px-3.5 has-[:checked]:border-[#0d80f2] relative cursor-pointer"
-                        >
-                            10:00 AM
-                            <input type="radio" class="invisible absolute" name="b8a44f94-ab3b-410f-ad83-561df070347b" />
-                        </label>
-                        <label
-                                class="text-sm font-medium leading-normal flex items-center justify-center rounded-lg border border-[#cedbe8] px-4 h-11 text-[#0d141c] has-[:checked]:border-[3px] has-[:checked]:px-3.5 has-[:checked]:border-[#0d80f2] relative cursor-pointer"
-                        >
-                            10:30 AM
-                            <input type="radio" class="invisible absolute" name="b8a44f94-ab3b-410f-ad83-561df070347b" />
-                        </label>
-                        <label
-                                class="text-sm font-medium leading-normal flex items-center justify-center rounded-lg border border-[#cedbe8] px-4 h-11 text-[#0d141c] has-[:checked]:border-[3px] has-[:checked]:px-3.5 has-[:checked]:border-[#0d80f2] relative cursor-pointer"
-                        >
-                            11:00 AM
-                            <input type="radio" class="invisible absolute" name="b8a44f94-ab3b-410f-ad83-561df070347b" />
-                        </label>
-                        <label
-                                class="text-sm font-medium leading-normal flex items-center justify-center rounded-lg border border-[#cedbe8] px-4 h-11 text-[#0d141c] has-[:checked]:border-[3px] has-[:checked]:px-3.5 has-[:checked]:border-[#0d80f2] relative cursor-pointer"
-                        >
-                            11:30 AM
-                            <input type="radio" class="invisible absolute" name="b8a44f94-ab3b-410f-ad83-561df070347b" />
-                        </label>
-                        <label
-                                class="text-sm font-medium leading-normal flex items-center justify-center rounded-lg border border-[#cedbe8] px-4 h-11 text-[#0d141c] has-[:checked]:border-[3px] has-[:checked]:px-3.5 has-[:checked]:border-[#0d80f2] relative cursor-pointer"
-                        >
-                            1:00 PM
-                            <input type="radio" class="invisible absolute" name="b8a44f94-ab3b-410f-ad83-561df070347b" />
-                        </label>
-                        <label
-                                class="text-sm font-medium leading-normal flex items-center justify-center rounded-lg border border-[#cedbe8] px-4 h-11 text-[#0d141c] has-[:checked]:border-[3px] has-[:checked]:px-3.5 has-[:checked]:border-[#0d80f2] relative cursor-pointer"
-                        >
-                            1:30 PM
-                            <input type="radio" class="invisible absolute" name="b8a44f94-ab3b-410f-ad83-561df070347b" />
-                        </label>
-                        <label
-                                class="text-sm font-medium leading-normal flex items-center justify-center rounded-lg border border-[#cedbe8] px-4 h-11 text-[#0d141c] has-[:checked]:border-[3px] has-[:checked]:px-3.5 has-[:checked]:border-[#0d80f2] relative cursor-pointer"
-                        >
-                            2:00 PM
-                            <input type="radio" class="invisible absolute" name="b8a44f94-ab3b-410f-ad83-561df070347b" />
-                        </label>
-                        <label
-                                class="text-sm font-medium leading-normal flex items-center justify-center rounded-lg border border-[#cedbe8] px-4 h-11 text-[#0d141c] has-[:checked]:border-[3px] has-[:checked]:px-3.5 has-[:checked]:border-[#0d80f2] relative cursor-pointer"
-                        >
-                            2:30 PM
-                            <input type="radio" class="invisible absolute" name="b8a44f94-ab3b-410f-ad83-561df070347b" />
-                        </label>
-                        <label
-                                class="text-sm font-medium leading-normal flex items-center justify-center rounded-lg border border-[#cedbe8] px-4 h-11 text-[#0d141c] has-[:checked]:border-[3px] has-[:checked]:px-3.5 has-[:checked]:border-[#0d80f2] relative cursor-pointer"
-                        >
-                            3:00 PM
-                            <input type="radio" class="invisible absolute" name="b8a44f94-ab3b-410f-ad83-561df070347b" />
-                        </label>
-                        <label
-                                class="text-sm font-medium leading-normal flex items-center justify-center rounded-lg border border-[#cedbe8] px-4 h-11 text-[#0d141c] has-[:checked]:border-[3px] has-[:checked]:px-3.5 has-[:checked]:border-[#0d80f2] relative cursor-pointer"
-                        >
-                            3:30 PM
-                            <input type="radio" class="invisible absolute" name="b8a44f94-ab3b-410f-ad83-561df070347b" />
-                        </label>
-                    </div>
-                    <div class="flex px-4 py-3 justify-between">
-                        <a href="/schedule-who"
-                           class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#0d80f2] text-slate-50 text-sm font-bold leading-normal tracking-[0.015em]">
-                            <span class="truncate" th:text="#{common.back}">Back</span>
-                        </a>
-                        <a th:href="@{'/schedule-confirm-details'(service=${service}, applicantType=${applicantType})}"
-                           class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#0d80f2] text-slate-50 text-sm font-bold leading-normal tracking-[0.015em]">
-                            <span class="truncate" th:text="#{schedule.next}">Next</span>
-                        </a>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+
+    <script th:inline="javascript">
+        /* Pass selectedDate from model to JavaScript */
+        const initialSelectedDate = /*[[${selectedDate}]]*/ null;
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const monthYearEl = document.getElementById('month-year');
+            const calendarGridEl = document.getElementById('calendar-grid');
+            const prevMonthBtn = document.getElementById('prev-month');
+            const nextMonthBtn = document.getElementById('next-month');
+            const selectedDateInput = document.getElementById('selected-date');
+            const availableTimesContainer = document.getElementById('available-times-container');
+
+            let currentDate = new Date();
+            if (initialSelectedDate) {
+                // If a date was passed back from the server, use it to set the initial calendar view
+                const parts = initialSelectedDate.split('-');
+                currentDate = new Date(parts[0], parts[1] - 1, 1);
+                selectedDateInput.value = initialSelectedDate;
+            }
+            currentDate.setDate(1);
+            let availableSlots = {};
+
+            async function fetchAvailableSlots() {
+                const year = currentDate.getFullYear();
+                const month = currentDate.getMonth() + 1;
+                try {
+                    const response = await fetch(`/api/appointments/available-slots?year=${year}&month=${month}`);
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    availableSlots = await response.json();
+                    renderCalendar();
+                    // If a date was pre-selected, render its times immediately
+                    if (initialSelectedDate && availableSlots[initialSelectedDate]) {
+                        renderAvailableTimes(availableSlots[initialSelectedDate]);
+                    }
+                } catch (error) {
+                    console.error('Failed to fetch available slots:', error);
+                    availableSlots = {};
+                    renderCalendar();
+                }
+            }
+
+            function renderCalendar() {
+                const month = currentDate.getMonth();
+                const year = currentDate.getFullYear();
+
+                const now = new Date();
+                const currentMonth = now.getMonth();
+                const currentYear = now.getFullYear();
+
+                if (year < currentYear || (year === currentYear && month < currentMonth)) {
+                    prevMonthBtn.disabled = true;
+                    prevMonthBtn.classList.add('cursor-not-allowed', 'opacity-50');
+                } else {
+                    prevMonthBtn.disabled = false;
+                    prevMonthBtn.classList.remove('cursor-not-allowed', 'opacity-50');
+                }
+
+                monthYearEl.textContent = `${currentDate.toLocaleString('default', { month: 'long' })} ${year}`;
+                calendarGridEl.innerHTML = '';
+
+                const firstDayOfMonth = new Date(year, month, 1).getDay();
+                const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+                const dayHeaders = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+                dayHeaders.forEach(day => {
+                    const dayEl = document.createElement('div');
+                    dayEl.className = 'font-semibold text-gray-600 text-sm';
+                    dayEl.textContent = day;
+                    calendarGridEl.appendChild(dayEl);
+                });
+
+                for (let i = 0; i < firstDayOfMonth; i++) {
+                    const emptyEl = document.createElement('div');
+                    calendarGridEl.appendChild(emptyEl);
+                }
+
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const dayEl = document.createElement('button');
+                    dayEl.type = 'button';
+                    dayEl.textContent = day;
+                    dayEl.className = 'p-2 rounded-full';
+                    
+                    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    const dayDate = new Date(year, month, day);
+
+                    if (dayDate < today || !availableSlots[dateStr]) {
+                        dayEl.disabled = true;
+                        dayEl.classList.add('text-gray-400', 'cursor-not-allowed');
+                    } else {
+                        dayEl.classList.add('hover:bg-blue-100', 'focus:outline-none', 'focus:ring-2', 'focus:ring-blue-400');
+                        dayEl.addEventListener('click', () => {
+                            selectedDateInput.value = dateStr;
+                            renderAvailableTimes(availableSlots[dateStr]);
+
+                            document.querySelectorAll('#calendar-grid button').forEach(btn => {
+                                btn.classList.remove('bg-blue-500', 'text-white');
+                                if(!btn.disabled) {
+                                   btn.classList.add('hover:bg-blue-100');
+                                }
+                            });
+                            dayEl.classList.add('bg-blue-500', 'text-white');
+                            dayEl.classList.remove('hover:bg-blue-100');
+                        });
+                    }
+                    
+                    if (selectedDateInput.value === dateStr) {
+                         dayEl.classList.add('bg-blue-500', 'text-white');
+                         dayEl.classList.remove('hover:bg-blue-100');
+                    }
+
+                    calendarGridEl.appendChild(dayEl);
+                }
+            }
+
+            function renderAvailableTimes(times) {
+                availableTimesContainer.innerHTML = '';
+                if (times && times.length > 0) {
+                    times.forEach(time => {
+                        const label = document.createElement('label');
+                        label.className = 'text-sm font-medium leading-normal flex items-center justify-center rounded-lg border border-[#cedbe8] px-4 h-11 text-[#0d141c] has-[:checked]:border-[3px] has-[:checked]:px-3.5 has-[:checked]:border-[#0d80f2] relative cursor-pointer';
+                        label.textContent = time;
+
+                        const radio = document.createElement('input');
+                        radio.type = 'radio';
+                        radio.name = 'time';
+                        radio.value = time;
+                        radio.className = 'invisible absolute';
+
+                        label.appendChild(radio);
+                        availableTimesContainer.appendChild(label);
+                    });
+                } else {
+                    availableTimesContainer.textContent = 'No available times for this date.';
+                }
+            }
+
+            prevMonthBtn.addEventListener('click', () => {
+                currentDate.setMonth(currentDate.getMonth() - 1);
+                fetchAvailableSlots();
+            });
+
+            nextMonthBtn.addEventListener('click', () => {
+                currentDate.setMonth(currentDate.getMonth() + 1);
+                fetchAvailableSlots();
+            });
+
+            fetchAvailableSlots();
+        });
+    </script>
 </section>
 </body>
 </html>

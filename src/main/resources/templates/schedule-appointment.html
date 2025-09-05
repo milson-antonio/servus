@@ -1,7 +1,8 @@
-<html lang="pt"
+<html
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org"
+      th:lang="${#locale}"
       layout:decorate="~{layout}">
 
 <head>
@@ -9,9 +10,7 @@
 </head>
 <body>
 <section layout:fragment="content">
-    <div
-            class="relative flex size-full min-h-screen flex-col bg-slate-50 group/design-root overflow-x-hidden"
-            style="font-family: Inter, 'Noto Sans', sans-serif;">
+    <div class="relative flex size-full min-h-screen flex-col bg-slate-50 group/design-root overflow-x-hidden" style='font-family: Inter, "Noto Sans", sans-serif;'>
         <div class="layout-container flex h-full grow flex-col">
             <div class="px-40 flex flex-1 justify-center py-5">
                 <div class="layout-content-container flex flex-col w-[512px] max-w-[512px] py-5 max-w-[960px] flex-1">
@@ -20,143 +19,18 @@
                         <span class="text-[#49739c] text-base font-medium leading-normal">/</span>
                         <span class="text-[#0d141c] text-base font-medium leading-normal" th:text="#{schedule.breadcrumb.current}">Schedule Appointment</span>
                     </div>
-                    <div class="flex flex-wrap justify-between gap-3 p-4">
-                        <div class="flex min-w-72 flex-col gap-3">
-                            <p class="text-[#0d141c] tracking-light text-[32px] font-bold leading-tight" th:text="#{schedule.heading}">Schedule Appointment</p>
-                            <p class="text-[#49739c] text-sm font-normal leading-normal" th:text="#{schedule.subtitle}">Select the service you need to schedule an appointment for.</p>
-                        </div>
-                    </div>
-                    <form class="flex flex-col gap-3 p-4" method="get" action="/schedule-documents">
-                        <label class="flex items-center gap-4 rounded-lg border border-solid border-[#cedbe8] p-[15px] flex-row-reverse">
-                            <input
-                                    type="radio"
-                                    class="h-5 w-5 accent-[#0d80f2]"
-                                    name="service"
-                                    value="passportRenewal"
-                                    checked
-                            />
-                            <div class="flex grow flex-col">
-                                <div class="flex items-center gap-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#0d80f2]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                        <path d="M4 19V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v14"/>
-                                        <path d="M4 19a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2"/>
-                                        <path d="M8 7h8"/>
-                                        <path d="M8 11h8"/>
-                                    </svg>
-                                    <p class="text-[#0d141c] text-sm font-medium leading-normal" th:text="#{schedule.service.passportRenewal}">Passport Renewal</p>
-                                </div>
-                                <p class="text-[#49739c] text-sm font-normal leading-normal" th:text="#{schedule.service.passportRenewal.desc}">Renew your passport if it's expired or about to expire.</p>
-                            </div>
-                        </label>
-                        <label class="flex items-center gap-4 rounded-lg border border-solid border-[#cedbe8] p-[15px] flex-row-reverse">
-                            <input
-                                    type="radio"
-                                    class="h-5 w-5 accent-[#0d80f2]"
-                                    name="service"
-                                    value="visaApplication"
-                            />
-                            <div class="flex grow flex-col">
-                                <div class="flex items-center gap-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#0d80f2]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                        <path d="M7 12V9a5 5 0 0 1 10 0v3"/>
-                                        <path d="M5 12h14"/>
-                                        <rect x="5" y="17" width="14" height="5" rx="1"/>
-                                        <path d="M12 17v5"/>
-                                    </svg>
-                                    <p class="text-[#0d141c] text-sm font-medium leading-normal" th:text="#{schedule.service.visaApplication}">Visa Application</p>
-                                </div>
-                                <p class="text-[#49739c] text-sm font-normal leading-normal" th:text="#{schedule.service.visaApplication.desc}">Apply for a visa to enter a foreign country.</p>
-                            </div>
-                        </label>
-                        <label class="flex items-center gap-4 rounded-lg border border-solid border-[#cedbe8] p-[15px] flex-row-reverse">
-                            <input
-                                    type="radio"
-                                    class="h-5 w-5 accent-[#0d80f2]"
-                                    name="service"
-                                    value="consularRegistration"
-                            />
-                            <div class="flex grow flex-col">
-                                <div class="flex items-center gap-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#0d80f2]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                                        <circle cx="12" cy="7" r="4"/>
-                                        <path d="M16 11h6"/>
-                                        <path d="M19 8v6"/>
-                                    </svg>
-                                    <p class="text-[#0d141c] text-sm font-medium leading-normal" th:text="#{schedule.service.consularRegistration}">Consular Registration</p>
-                                </div>
-                                <p class="text-[#49739c] text-sm font-normal leading-normal" th:text="#{schedule.service.consularRegistration.desc}">Register your presence with the consulate for assistance.</p>
-                            </div>
-                        </label>
-                        <label class="flex items-center gap-4 rounded-lg border border-solid border-[#cedbe8] p-[15px] flex-row-reverse">
-                            <input
-                                    type="radio"
-                                    class="h-5 w-5 accent-[#0d80f2]"
-                                    name="service"
-                                    value="documentLegalization"
-                            />
-                            <div class="flex grow flex-col">
-                                <div class="flex items-center gap-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#0d80f2]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                                        <path d="M14 2v6h6"/>
-                                        <path d="m9 15 2 2 4-4"/>
-                                    </svg>
-                                    <p class="text-[#0d141c] text-sm font-medium leading-normal" th:text="#{schedule.service.documentLegalization}">Document Legalization</p>
-                                </div>
-                                <p class="text-[#49739c] text-sm font-normal leading-normal" th:text="#{schedule.service.documentLegalization.desc}">Legalize documents for international use.</p>
-                            </div>
-                        </label>
-                        <label class="flex items-center gap-4 rounded-lg border border-solid border-[#cedbe8] p-[15px] flex-row-reverse">
-                            <input
-                                    type="radio"
-                                    class="h-5 w-5 accent-[#0d80f2]"
-                                    name="service"
-                                    value="notarialServices"
-                            />
-                            <div class="flex grow flex-col">
-                                <div class="flex items-center gap-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#0d80f2]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                        <path d="M12 12l8-8"/>
-                                        <path d="M2 22l10-10"/>
-                                        <path d="M14.5 5.5l4 4"/>
-                                    </svg>
-                                    <p class="text-[#0d141c] text-sm font-medium leading-normal" th:text="#{schedule.service.notarialServices}">Notarial Services</p>
-                                </div>
-                                <p class="text-[#49739c] text-sm font-normal leading-normal" th:text="#{schedule.service.notarialServices.desc}">Get documents notarized for legal validity.</p>
-                            </div>
-                        </label>
-                        <label class="flex items-center gap-4 rounded-lg border border-solid border-[#cedbe8] p-[15px] flex-row-reverse">
-                            <input
-                                    type="radio"
-                                    class="h-5 w-5 accent-[#0d80f2]"
-                                    name="service"
-                                    value="emergencyServices"
-                            />
-                            <div class="flex grow flex-col">
-                                <div class="flex items-center gap-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#0d80f2]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                        <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-                                        <line x1="12" y1="9" x2="12" y2="13"/>
-                                        <line x1="12" y1="17" x2="12.01" y2="17"/>
-                                    </svg>
-                                    <p class="text-[#0d141c] text-sm font-medium leading-normal" th:text="#{schedule.service.emergencyServices}">Emergency Services</p>
-                                </div>
-                                <p class="text-[#49739c] text-sm font-normal leading-normal" th:text="#{schedule.service.emergencyServices.desc}">Seek assistance in case of emergencies.</p>
-                            </div>
-                        </label>
+                    <h2 class="text-[#0d141c] tracking-light text-[28px] font-bold leading-tight px-4 text-left pb-3 pt-5" th:text="#{schedule.heading}">Schedule Appointment</h2>
+                    <p class="text-[#627384] text-base leading-normal px-4 pb-5" th:text="#{schedule.subtitle}">Select the service you want to schedule.</p>
 
-                        <div class="flex px-0 py-3 justify-between">
-                            <a href="/appointments"
-                               class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#0d80f2] text-slate-50 text-sm font-bold leading-normal tracking-[0.015em]">
-                                <span class="truncate" th:text="#{common.back}">Back</span>
-                            </a>
-                            <button type="submit"
-                               class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#0d80f2] text-slate-50 text-sm font-bold leading-normal tracking-[0.015em]">
-                                <span class="truncate" th:text="#{schedule.next}">Next</span>
-                            </button>
-                        </div>
-                    </form>
+                    <div class="flex flex-col gap-4 p-4">
+                        <a th:each="service : ${T(com.milsondev.servus.enums.AppointmentServiceType).values()}"
+                           th:href="@{/schedule-who(service=${service.name()})}"
+                           class="flex flex-col gap-1.5 rounded-lg border border-[#cedbe8] p-4 hover:border-[#0d80f2] focus:border-[#0d80f2] focus:outline-none">
+                            <p class="text-[#0d141c] text-base font-bold leading-tight" th:text="${service.getLabel()}"></p>
+                            <p class="text-[#627384] text-sm leading-normal" th:text="#{'schedule.service.' + ${service.name()} + '.desc'}"></p>
+                        </a>
+                    </div>
+
                 </div>
             </div>
         </div>
