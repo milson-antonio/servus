@@ -28,6 +28,10 @@
                     <form th:action="@{/schedule-appointment-time}" method="post">
                         <input type="hidden" name="service" th:value="${service}" />
                         <input type="hidden" name="applicantType" th:value="${applicantType}" />
+                        <input type="hidden" name="otherFirstName" th:value="${otherFirstName}" />
+                        <input type="hidden" name="otherLastName" th:value="${otherLastName}" />
+                        <input type="hidden" name="otherEmail" th:value="${otherEmail}" />
+                        <input type="hidden" name="otherPhone" th:value="${otherPhone}" />
 
                         <div class="p-4">
                             <div th:insert="~{appointment-calendar :: appointmentCalendar}"></div>
@@ -37,7 +41,7 @@
                         <div th:insert="~{appointment-times :: appointmentTimes}"></div>
 
                         <div class="flex px-4 py-3 justify-between">
-                            <a th:href="@{/schedule-who(service=${service})}"
+                            <a th:href="${applicantType == 'OTHER'} ? @{/schedule-for-other(service=${service})} : @{/schedule-who(service=${service})}"
                                class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#e7edf4] text-[#0d141c] text-sm font-bold leading-normal tracking-[0.015em]">
                                 <span class="truncate" th:text="#{common.back}">Back</span>
                             </a>

@@ -29,7 +29,7 @@
                             <p class="text-[#0d141c] text-base font-bold leading-tight" th:text="#{schedule.who.option.self}">For me</p>
                             <p class="text-[#627384] text-sm leading-normal" th:text="#{schedule.who.option.self.desc}">Schedule an appointment for my own documents.</p>
                         </a>
-                        <a th:href="@{/schedule-date-and-time(service=${service}, applicantType='OTHER')}" class="flex flex-col gap-1.5 rounded-lg border border-[#cedbe8] p-4 hover:border-[#0d80f2] focus:border-[#0d80f2] focus:outline-none">
+                        <a th:href="@{/schedule-for-other(service=${service})}" class="flex flex-col gap-1.5 rounded-lg border border-[#cedbe8] p-4 hover:border-[#0d80f2] focus:border-[#0d80f2] focus:outline-none">
                             <p class="text-[#0d141c] text-base font-bold leading-tight" th:text="#{schedule.who.option.other}">For someone else</p>
                             <p class="text-[#627384] text-sm leading-normal" th:text="#{schedule.who.option.other.desc}">Schedule on behalf of a family member or another person.</p>
                         </a>

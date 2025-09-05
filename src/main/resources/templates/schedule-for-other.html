@@ -1,0 +1,94 @@
+<html
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      th:lang="${#locale}"
+      layout:decorate="~{layout}">
+
+<head>
+    <title th:text="#{schedule.for_other.title}">Enter Details</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <div class="relative flex size-full min-h-screen flex-col bg-slate-50 group/design-root overflow-x-hidden" style='font-family: Inter, "Noto Sans", sans-serif;'>
+        <div class="layout-container flex h-full grow flex-col">
+            <div class="px-40 flex flex-1 justify-center py-5">
+                <div class="layout-content-container flex flex-col w-[512px] max-w-[512px] py-5 max-w-[960px] flex-1">
+                    <div class="flex flex-wrap gap-2 p-4">
+                        <a class="text-[#49739c] text-base font-medium leading-normal" href="/appointments" th:text="#{schedule.breadcrumb.root}">Appointments</a>
+                        <span class="text-[#49739c] text-base font-medium leading-normal">/</span>
+                        <span class="text-[#0d141c] text-base font-medium leading-normal">Enter Details</span>
+                    </div>
+                    <h2 class="text-[#0d141c] tracking-light text-[28px] font-bold leading-tight px-4 text-left pb-3 pt-5">Details for the person being scheduled</h2>
+                    <p class="text-[#627384] text-base leading-normal px-4 pb-5">Please enter the details of the person who will be attending the appointment.</p>
+
+                    <form th:action="@{/schedule-for-other}" th:object="${otherPersonDetails}" method="post">
+                        <input type="hidden" th:field="*{service}" />
+
+                        <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+                            <label class="flex flex-col min-w-40 flex-1">
+                                <p class="text-[#0d141c] text-base font-medium leading-normal pb-2">First Name <span class="text-red-500">*</span></p>
+                                <input th:field="*{otherFirstName}" 
+                                       class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0d141c] focus:outline-0 focus:ring-0 bg-[#e7edf4] h-14 placeholder:text-[#49739c] p-4 text-base font-normal leading-normal"
+                                       th:classappend="${#fields.hasErrors('otherFirstName')} ? 'border border-red-500' : 'border-none'" />
+                                <span th:if="${#fields.hasErrors('otherFirstName')}" th:errors="*{otherFirstName}" class="text-red-500 text-sm mt-1"></span>
+                            </label>
+                        </div>
+                        <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+                            <label class="flex flex-col min-w-40 flex-1">
+                                <p class="text-[#0d141c] text-base font-medium leading-normal pb-2">Last Name <span class="text-red-500">*</span></p>
+                                <input th:field="*{otherLastName}" 
+                                       class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0d141c] focus:outline-0 focus:ring-0 bg-[#e7edf4] h-14 placeholder:text-[#49739c] p-4 text-base font-normal leading-normal"
+                                       th:classappend="${#fields.hasErrors('otherLastName')} ? 'border border-red-500' : 'border-none'" />
+                                <span th:if="${#fields.hasErrors('otherLastName')}" th:errors="*{otherLastName}" class="text-red-500 text-sm mt-1"></span>
+                            </label>
+                        </div>
+                        <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+                            <label class="flex flex-col min-w-40 flex-1">
+                                <p class="text-[#0d141c] text-base font-medium leading-normal pb-2">Date of Birth</p>
+                                <input type="date" th:field="*{otherDob}" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0d141c] focus:outline-0 focus:ring-0 border-none bg-[#e7edf4] h-14 placeholder:text-[#49739c] p-4 text-base font-normal leading-normal" />
+                            </label>
+                        </div>
+                        <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+                            <label class="flex flex-col min-w-40 flex-1">
+                                <p class="text-[#0d141c] text-base font-medium leading-normal pb-2">Nationality</p>
+                                <input th:field="*{otherNationality}" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0d141c] focus:outline-0 focus:ring-0 border-none bg-[#e7edf4] h-14 placeholder:text-[#49739c] p-4 text-base font-normal leading-normal" />
+                            </label>
+                        </div>
+                        <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+                            <label class="flex flex-col min-w-40 flex-1">
+                                <p class="text-[#0d141c] text-base font-medium leading-normal pb-2">Passport Number</p>
+                                <input th:field="*{otherPassportNumber}" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0d141c] focus:outline-0 focus:ring-0 border-none bg-[#e7edf4] h-14 placeholder:text-[#49739c] p-4 text-base font-normal leading-normal" />
+                            </label>
+                        </div>
+                        <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+                            <label class="flex flex-col min-w-40 flex-1">
+                                <p class="text-[#0d141c] text-base font-medium leading-normal pb-2">Email</p>
+                                <input type="email" th:field="*{otherEmail}" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0d141c] focus:outline-0 focus:ring-0 border-none bg-[#e7edf4] h-14 placeholder:text-[#49739c] p-4 text-base font-normal leading-normal" />
+                            </label>
+                        </div>
+                        <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
+                            <label class="flex flex-col min-w-40 flex-1">
+                                <p class="text-[#0d141c] text-base font-medium leading-normal pb-2">Phone Number</p>
+                                <input type="tel" th:field="*{otherPhone}" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0d141c] focus:outline-0 focus:ring-0 border-none bg-[#e7edf4] h-14 placeholder:text-[#49739c] p-4 text-base font-normal leading-normal" />
+                            </label>
+                        </div>
+
+                        <div class="flex pt-4 px-4 justify-between">
+                            <a th:href="@{/schedule-who(service=${otherPersonDetails.service})}"
+                               class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#e7edf4] text-[#0d141c] text-sm font-bold leading-normal tracking-[0.015em]">
+                                <span class="truncate" th:text="#{common.back}">Back</span>
+                            </a>
+                            <button type="submit"
+                               class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#0d80f2] text-slate-50 text-sm font-bold leading-normal tracking-[0.015em]">
+                                <span class="truncate" th:text="#{schedule.next}">Next</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

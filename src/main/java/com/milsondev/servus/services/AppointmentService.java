@@ -73,7 +73,8 @@ public class AppointmentService {
 
     public AppointmentEntity createForUser(UUID userId, AppointmentServiceType service,
                                            ApplicantType applicantType,
-                                           Date startAt, Date endAt) {
+                                           Date startAt, Date endAt,
+                                           boolean forOther, Map<String, String> otherPersonDetails) {
         // default applicant type
         if (applicantType == null) {
             applicantType = ApplicantType.SELF;
@@ -106,6 +107,12 @@ public class AppointmentService {
         entity.setStartAt(dto.getStartAt());
         entity.setEndAt(dto.getEndAt());
         entity.setStatus(AppointmentStatus.Scheduled);
+        entity.setForOther(forOther);
+
+        if (forOther && otherPersonDetails != null && !otherPersonDetails.isEmpty()) {
+            entity.setOtherPersonDetails(otherPersonDetails);
+        }
+
         return appointmentRepository.save(entity);
     }
 

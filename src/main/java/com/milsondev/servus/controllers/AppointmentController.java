@@ -59,14 +59,11 @@ public class AppointmentController {
     }
 
     @PostMapping("/schedule-appointment-time")
-    public String scheduleAppointmentTime(@RequestParam(name = "service") String service,
-                                        @RequestParam(name = "applicantType") String applicantType,
-                                        @RequestParam(name = "date", required = false) String date,
-                                        @RequestParam(name = "time", required = false) String time,
-                                        RedirectAttributes ra) {
-        
-        ra.addAttribute("service", service);
-        ra.addAttribute("applicantType", applicantType);
+    public String scheduleAppointmentTime(@RequestParam Map<String, String> allParams, RedirectAttributes ra) {
+        String date = allParams.get("date");
+        String time = allParams.get("time");
+
+        allParams.forEach(ra::addAttribute);
 
         if (date == null || date.isBlank()) {
             String msg = messageSource.getMessage("schedule.datetime.error.dateNotSelected", null, LocaleContextHolder.getLocale());
@@ -77,21 +74,15 @@ public class AppointmentController {
         if (time == null || time.isBlank()) {
             String msg = messageSource.getMessage("schedule.datetime.error.timeNotSelected", null, LocaleContextHolder.getLocale());
             ra.addFlashAttribute("error", msg);
-            ra.addFlashAttribute("selectedDate", date); // Pass the selected date back
+            ra.addFlashAttribute("selectedDate", date);
             return "redirect:/schedule-date-and-time";
         }
 
-        ra.addAttribute("date", date);
-        ra.addAttribute("time", time);
         return "redirect:/schedule-confirm-details";
     }
 
     @PostMapping("/appointments")
-    public String createAppointment(@RequestParam(name = "service", required = false) String serviceStr,
-                                    @RequestParam(name = "applicantType", required = false) String applicantTypeStr,
-                                    @RequestParam(name = "date", required = false) String dateStr,
-                                    @RequestParam(name = "time", required = false) String timeStr,
-                                    RedirectAttributes ra) {
+    public String createAppointment(@RequestParam Map<String, String> allParams, RedirectAttributes ra) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || !auth.isAuthenticated() || (auth.getPrincipal() instanceof String && "anonymousUser".equals(auth.getPrincipal()))) {
             ra.addFlashAttribute("error", "auth.required");
@@ -105,26 +96,30 @@ public class AppointmentController {
         }
         UUID userId = user.getId();
 
-        // Map applicant type
-        ApplicantType applicantType = ApplicantType.SELF;
-        if (applicantTypeStr != null) {
-            String s = applicantTypeStr.trim().toUpperCase(Locale.ROOT);
-            if ("OTHER".equals(s) || "OUTRO".equals(s)) {
-                try { applicantType = ApplicantType.valueOf("OTHER"); } catch (Exception ignored) {}
-            } else {
-                applicantType = ApplicantType.SELF;
-            }
-        }
+        String serviceStr = allParams.get("service");
+        String applicantTypeStr = allParams.get("applicantType");
+        String dateStr = allParams.get("date");
+        String timeStr = allParams.get("time");
 
+        ApplicantType applicantType = ApplicantType.fromInput(applicantTypeStr);
+        AppointmentServiceType service = AppointmentServiceType.fromInput(serviceStr);
         Date startAt = deriveStartAt(dateStr, timeStr);
         Date endAt = null; // service will default to +30min if needed
 
-        // Parse service string into enum
-        AppointmentServiceType service = AppointmentServiceType.fromInput(serviceStr);
+        boolean forOther = applicantType == ApplicantType.OTHER;
+        Map<String, String> otherPersonDetails = new HashMap<>();
+        if (forOther) {
+            otherPersonDetails.put("firstName", allParams.get("otherFirstName"));
+            otherPersonDetails.put("lastName", allParams.get("otherLastName"));
+            otherPersonDetails.put("dob", allParams.get("otherDob"));
+            otherPersonDetails.put("nationality", allParams.get("otherNationality"));
+            otherPersonDetails.put("passportNumber", allParams.get("otherPassportNumber"));
+            otherPersonDetails.put("email", allParams.get("otherEmail"));
+            otherPersonDetails.put("phone", allParams.get("otherPhone"));
+        }
 
         try {
-            var saved = appointmentService.createForUser(userId, service, applicantType, startAt, endAt);
-            // Prepare confirmation display fields
+            var saved = appointmentService.createForUser(userId, service, applicantType, startAt, endAt, forOther, otherPersonDetails);
             ra.addFlashAttribute("appointmentServiceName", service != null ? service.getLabel() : "");
             ra.addFlashAttribute("appointmentDate", new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH).format(saved.getStartAt()));
             ra.addFlashAttribute("appointmentTime", new SimpleDateFormat("h:mm a", Locale.ENGLISH).format(saved.getStartAt()));
@@ -132,23 +127,9 @@ public class AppointmentController {
             return "redirect:/appointment-confirmed";
         } catch (IllegalArgumentException ex) {
             ra.addFlashAttribute("error", ex.getMessage());
-            // Send back to confirm page with the current selections
-            String url = "/schedule-confirm-details" + buildQueryParams(serviceStr, applicantTypeStr, dateStr, timeStr);
-            return "redirect:" + url;
+            allParams.forEach(ra::addAttribute);
+            return "redirect:/schedule-confirm-details";
         }
-    }
-
-    private String buildQueryParams(String service, String applicantType, String date, String time) {
-        List<String> parts = new ArrayList<>();
-        if (service != null && !service.isBlank()) parts.add("service=" + urlEncode(service));
-        if (applicantType != null && !applicantType.isBlank()) parts.add("applicantType=" + urlEncode(applicantType));
-        if (date != null && !date.isBlank()) parts.add("date=" + urlEncode(date));
-        if (time != null && !time.isBlank()) parts.add("time=" + urlEncode(time));
-        return parts.isEmpty() ? "" : ("?" + String.join("&", parts));
-    }
-
-    private String urlEncode(String v) {
-        try { return java.net.URLEncoder.encode(v, java.nio.charset.StandardCharsets.UTF_8); } catch (Exception e) { return v; }
     }
 
     private Date deriveStartAt(String dateStr, String timeStr) {

@@ -5,52 +5,69 @@ import com.milsondev.servus.enums.AppointmentServiceType;
 import com.milsondev.servus.enums.AppointmentStatus;
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.UpdateTimestamp;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @Entity
-@Data
 @Table(name = "appointment", schema = "servus")
+@Data
+@NoArgsConstructor
 public class AppointmentEntity {
 
     @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @Column(columnDefinition = "uuid")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column(name = "user_id", nullable = false, columnDefinition = "uuid")
+    @Column(nullable = false)
     private UUID userId;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "appointment_service_type", nullable = false, length = 100)
+    @Column(nullable = false)
     private AppointmentServiceType appointmentServiceType;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "applicant_type", nullable = false, length = 20)
-    private ApplicantType applicantType = ApplicantType.SELF;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "start_at", nullable = false)
-    private Date startAt;
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "end_at", nullable = false)
-    private Date endAt;
+    @Column(nullable = false)
+    private ApplicantType applicantType;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false, length = 20)
-    private AppointmentStatus status = AppointmentStatus.Scheduled;
+    @Column(nullable = false)
+    private AppointmentStatus status;
 
-    @CreationTimestamp
-    @Column(name = "created_at", updatable = false)
+    @Column(nullable = false)
+    private Date startAt;
+
+    @Column(nullable = false)
+    private Date endAt;
+
+    @Column(nullable = false)
+    private boolean forOther = false;
+
+    @ElementCollection
+    @CollectionTable(name = "appointment_other_person_details", schema = "servus", joinColumns = @JoinColumn(name = "appointment_id"))
+    @MapKeyColumn(name = "detail_key")
+    @Column(name = "detail_value")
+    private Map<String, String> otherPersonDetails = new HashMap<>();
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private Date createdAt;
 
-    @UpdateTimestamp
-    @Column(name = "updated_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "updated_at", nullable = false)
     private Date updatedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = new Date();
+        updatedAt = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = new Date();
+    }
 }

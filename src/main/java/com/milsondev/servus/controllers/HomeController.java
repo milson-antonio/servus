@@ -1,13 +1,19 @@
 package com.milsondev.servus.controllers;
 
 import com.milsondev.servus.dtos.LoginRequestDTO;
+import com.milsondev.servus.dtos.OtherPersonDetailsDTO;
 import com.milsondev.servus.dtos.ResetPasswordRequestDTO;
 import com.milsondev.servus.dtos.NewPasswordDTO;
 import com.milsondev.servus.dtos.UserDTO;
 import com.milsondev.servus.services.OrchestrationService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Map;
 
 @Controller
 @RequestMapping("/")
@@ -48,27 +54,53 @@ public class HomeController {
         return "schedule-who";
     }
 
-    @GetMapping("/schedule-date-and-time")
-    public String scheduleDateAndTime(@RequestParam(name = "service") String service,
-                                      @RequestParam(name = "applicantType") String applicantType,
-                                      Model model) {
+    @GetMapping("/schedule-for-other")
+    public String scheduleForOther(@RequestParam(name = "service") String service, Model model) {
+        if (!model.containsAttribute("otherPersonDetails")) {
+            OtherPersonDetailsDTO dto = new OtherPersonDetailsDTO();
+            dto.setService(service);
+            model.addAttribute("otherPersonDetails", dto);
+        }
         model.addAttribute("showUserHeader", true);
-        model.addAttribute("service", service);
-        model.addAttribute("applicantType", applicantType);
+        return "schedule-for-other";
+    }
+
+    @PostMapping("/schedule-for-other")
+    public String postScheduleForOther(@Valid @ModelAttribute("otherPersonDetails") OtherPersonDetailsDTO otherPersonDetails,
+                                       BindingResult bindingResult,
+                                       RedirectAttributes ra) {
+        if (bindingResult.hasErrors()) {
+            ra.addFlashAttribute("org.springframework.validation.BindingResult.otherPersonDetails", bindingResult);
+            ra.addFlashAttribute("otherPersonDetails", otherPersonDetails);
+            ra.addAttribute("service", otherPersonDetails.getService());
+            return "redirect:/schedule-for-other";
+        }
+
+        ra.addAttribute("service", otherPersonDetails.getService());
+        ra.addAttribute("applicantType", "OTHER");
+        ra.addAttribute("otherFirstName", otherPersonDetails.getOtherFirstName());
+        ra.addAttribute("otherLastName", otherPersonDetails.getOtherLastName());
+        ra.addAttribute("otherDob", otherPersonDetails.getOtherDob());
+        ra.addAttribute("otherNationality", otherPersonDetails.getOtherNationality());
+        ra.addAttribute("otherPassportNumber", otherPersonDetails.getOtherPassportNumber());
+        ra.addAttribute("otherEmail", otherPersonDetails.getOtherEmail());
+        ra.addAttribute("otherPhone", otherPersonDetails.getOtherPhone());
+
+        return "redirect:/schedule-date-and-time";
+    }
+
+
+    @GetMapping("/schedule-date-and-time")
+    public String scheduleDateAndTime(@RequestParam Map<String, String> allParams, Model model) {
+        model.addAttribute("showUserHeader", true);
+        allParams.forEach(model::addAttribute);
         return "schedule-date-and-time";
     }
 
     @GetMapping("/schedule-confirm-details")
-    public String scheduleConfirmDetails(@RequestParam(name = "service") String service,
-                                         @RequestParam(name = "applicantType") String applicantType,
-                                         @RequestParam(name = "date") String date,
-                                         @RequestParam(name = "time") String time,
-                                         Model model) {
+    public String scheduleConfirmDetails(@RequestParam Map<String, String> allParams, Model model) {
         model.addAttribute("showUserHeader", true);
-        model.addAttribute("service", service);
-        model.addAttribute("applicantType", applicantType);
-        model.addAttribute("date", date);
-        model.addAttribute("time", time);
+        allParams.forEach(model::addAttribute);
         return "schedule-confirm-details";
     }
 
