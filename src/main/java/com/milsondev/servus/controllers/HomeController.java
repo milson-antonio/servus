@@ -5,6 +5,7 @@ import com.milsondev.servus.dtos.OtherPersonDetailsDTO;
 import com.milsondev.servus.dtos.ResetPasswordRequestDTO;
 import com.milsondev.servus.dtos.NewPasswordDTO;
 import com.milsondev.servus.dtos.UserDTO;
+import com.milsondev.servus.enums.AppointmentServiceType;
 import com.milsondev.servus.services.OrchestrationService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -105,6 +106,7 @@ public class HomeController {
     @GetMapping("/schedule-confirm-details")
     public String scheduleConfirmDetails(@RequestParam Map<String, String> allParams, Model model) {
         model.addAttribute("showUserHeader", true);
+        allParams.replace("service", AppointmentServiceType.fromInput(allParams.get("service")).getLabel());
         allParams.forEach(model::addAttribute);
         return "schedule-confirm-details";
     }
