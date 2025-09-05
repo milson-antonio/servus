@@ -52,9 +52,10 @@
 
                     <div class="flex px-4 py-3 justify-between">
                          <a th:href="@{/schedule-date-and-time(service=${service}, applicantType=${applicantType}, otherFirstName=${otherFirstName}, otherLastName=${otherLastName}, otherEmail=${otherEmail}, otherPhone=${otherPhone})}"
-                           class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#e7edf4] text-[#0d141c] text-sm font-bold leading-normal tracking-[0.015em]">
+                           class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#0d80f2] text-slate-50 text-sm font-bold leading-normal tracking-[0.015em]">
                             <span class="truncate" th:text="#{common.back}">Back</span>
                         </a>
+
                         <form th:action="@{/appointments}" method="post" class="m-0">
                             <input type="hidden" name="service" th:value="${service}" />
                             <input type="hidden" name="applicantType" th:value="${applicantType}" />

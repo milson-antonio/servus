@@ -55,7 +55,12 @@ public class HomeController {
     }
 
     @GetMapping("/schedule-for-other")
-    public String scheduleForOther(@RequestParam(name = "service") String service, Model model) {
+    public String scheduleForOther(@RequestParam(name = "service") String service, Model model, RedirectAttributes ra) {
+        if (service == null || service.isBlank()) {
+            ra.addFlashAttribute("error", "Service parameter is missing or invalid.");
+            return "redirect:/schedule-who"; // Redirect back to the previous step
+        }
+
         if (!model.containsAttribute("otherPersonDetails")) {
             OtherPersonDetailsDTO dto = new OtherPersonDetailsDTO();
             dto.setService(service);
