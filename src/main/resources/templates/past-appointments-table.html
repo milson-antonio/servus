@@ -13,9 +13,9 @@
             <tbody>
             <tr class="border-t border-t-[#cedbe8]" th:each="a : ${pastAppointments}">
                 <td class="table-78a91709-2297-410a-971f-6f82435152e2-column-120 h-[72px] px-4 py-2 w-[400px] text-[#49739c] text-sm font-normal leading-normal"
-                    th:text="${#dates.format(a.startAt, 'yyyy-MM-dd')}">2024-07-10</td>
+                    th:text="${#dates.format(a.startAt, 'dd-MM-yyyy')}">2024-07-10</td>
                 <td class="table-78a91709-2297-410a-971f-6f82435152e2-column-240 h-[72px] px-4 py-2 w-[400px] text-[#49739c] text-sm font-normal leading-normal"
-                    th:text="${#dates.format(a.startAt, 'hh:mm a')}">11:00 AM</td>
+                    th:text="${#dates.format(a.startAt, 'hh:mm')}">11:00 AM</td>
                 <td class="table-78a91709-2297-410a-971f-6f82435152e2-column-480 h-[72px] px-4 py-2 w-[400px] text-[#49739c] text-sm font-normal leading-normal"
                     th:text="${a.appointmentServiceType}">Service</td>
                 <td class="table-78a91709-2297-410a-971f-6f82435152e2-column-600 h-[72px] px-4 py-2 w-60 text-sm font-normal leading-normal">

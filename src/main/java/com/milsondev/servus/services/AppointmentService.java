@@ -28,7 +28,17 @@ public class AppointmentService {
         Map<String, List<String>> availableSlots = new HashMap<>();
 
         // Dummy data: in a real application, this would query the database.
-        List<String> times = Arrays.asList("9:00 AM", "9:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM", "1:00 PM", "1:30 PM", "2:00 PM");
+        List<String> times = Arrays.asList(
+                "09:00",
+                "09:30",
+                "10:00",
+                "10:30",
+                "11:00",
+                "11:30",
+                "13:00",
+                "13:30",
+                "14:00"
+        );
 
         Calendar cal = Calendar.getInstance();
         cal.set(year, month - 1, 1);
