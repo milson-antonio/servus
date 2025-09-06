@@ -20,6 +20,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Controller
@@ -122,7 +127,7 @@ public class AppointmentController {
             var saved = appointmentService.createForUser(userId, service, applicantType, startAt, endAt, forOther, otherPersonDetails);
             ra.addFlashAttribute("appointmentServiceName", service != null ? service.getLabel() : "");
             ra.addFlashAttribute("appointmentDate", new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH).format(saved.getStartAt()));
-            ra.addFlashAttribute("appointmentTime", new SimpleDateFormat("h:mm a", Locale.ENGLISH).format(saved.getStartAt()));
+            ra.addFlashAttribute("appointmentTime", timeStr);
             ra.addFlashAttribute("appointmentLocation", "—");
             return "redirect:/appointment-confirmed";
         } catch (IllegalArgumentException ex) {
@@ -133,51 +138,13 @@ public class AppointmentController {
     }
 
     private Date deriveStartAt(String dateStr, String timeStr) {
-        // Try multiple patterns
-        List<String> patterns = Arrays.asList(
-                "yyyy-MM-dd'T'HH:mm",
-                "yyyy-MM-dd HH:mm",
-                "yyyy-MM-dd",
-                "MM/dd/yyyy HH:mm",
-                "MM/dd/yyyy",
-                "dd/MM/yyyy HH:mm",
-                "dd/MM/yyyy",
-                "h:mm a" // time-only, use today/tomorrow
-        );
-        Date datePart = null;
-        Date timePart = null;
-        if (dateStr != null && !dateStr.isBlank()) {
-            for (String p : patterns) {
-                if (!p.contains("HH") && !p.contains("h") && p.contains("yyyy")) {
-                    try { datePart = new SimpleDateFormat(p).parse(dateStr.trim()); break; } catch (ParseException ignored) {}
-                }
-            }
-        }
-        if (timeStr != null && !timeStr.isBlank()) {
-            for (String p : patterns) {
-                if (!p.contains("yyyy")) {
-                    try { timePart = new SimpleDateFormat(p, Locale.ENGLISH).parse(timeStr.trim()); break; } catch (ParseException ignored) {}
-                }
-            }
-        }
-        Calendar cal = Calendar.getInstance();
-        if (datePart != null) {
-            cal.setTime(datePart);
-        } else {
-            // default to tomorrow
-            cal.add(Calendar.DAY_OF_MONTH, 1);
-        }
-        if (timePart != null) {
-            Calendar t = Calendar.getInstance();
-            t.setTime(timePart);
-            cal.set(Calendar.HOUR_OF_DAY, t.get(Calendar.HOUR_OF_DAY));
-            cal.set(Calendar.MINUTE, t.get(Calendar.MINUTE));
-        } else {
-            cal.set(Calendar.HOUR_OF_DAY, 10);
-            cal.set(Calendar.MINUTE, 0);
-        }
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-        return cal.getTime();
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+
+        LocalDate date = LocalDate.parse(dateStr.trim(), dateFormatter);
+        LocalTime time = LocalTime.parse(timeStr.trim(), timeFormatter);
+
+        LocalDateTime dateTime = LocalDateTime.of(date, time);
+        return Date.from(dateTime.atZone(ZoneId.systemDefault()).toInstant());
     }
 }

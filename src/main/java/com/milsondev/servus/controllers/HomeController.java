@@ -14,6 +14,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 @Controller
@@ -107,8 +109,22 @@ public class HomeController {
     public String scheduleConfirmDetails(@RequestParam Map<String, String> allParams, Model model) {
         model.addAttribute("showUserHeader", true);
         allParams.replace("service", AppointmentServiceType.fromInput(allParams.get("service")).getLabel());
+        reformatDate(allParams, "date");
         allParams.forEach(model::addAttribute);
         return "schedule-confirm-details";
+    }
+
+    private void reformatDate(Map<String, String> params, String key) {
+        if (params.containsKey(key) && params.get(key) != null && !params.get(key).isEmpty()) {
+            try {
+                DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                LocalDate parsedDate = LocalDate.parse(params.get(key), inputFormatter);
+                params.put(key, parsedDate.format(outputFormatter));
+            } catch (Exception e) {
+                System.err.println("Erro ao converter data: " + params.get(key));
+            }
+        }
     }
 
     @GetMapping("/appointment-confirmed")
