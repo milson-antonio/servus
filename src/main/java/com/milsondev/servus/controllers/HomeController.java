@@ -1,5 +1,6 @@
 package com.milsondev.servus.controllers;
 
+import com.milsondev.servus.db.entities.UserEntity;
 import com.milsondev.servus.dtos.LoginRequestDTO;
 import com.milsondev.servus.dtos.OtherPersonDetailsDTO;
 import com.milsondev.servus.dtos.ResetPasswordRequestDTO;
@@ -8,6 +9,7 @@ import com.milsondev.servus.dtos.UserDTO;
 import com.milsondev.servus.enums.AppointmentServiceType;
 import com.milsondev.servus.services.OrchestrationService;
 import jakarta.validation.Valid;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -58,10 +60,9 @@ public class HomeController {
     }
 
     @GetMapping("/schedule-for-other")
-    public String scheduleForOther(@RequestParam(name = "service") String service, Model model, RedirectAttributes ra) {
+    public String scheduleForOther(@RequestParam(name = "service", required = false) String service, Model model) {
         if (service == null || service.isBlank()) {
-            ra.addFlashAttribute("error", "Service parameter is missing or invalid.");
-            return "redirect:/schedule-who"; // Redirect back to the previous step
+            return "redirect:/schedule-appointment";
         }
 
         if (!model.containsAttribute("otherPersonDetails")) {
@@ -108,7 +109,22 @@ public class HomeController {
     @GetMapping("/schedule-confirm-details")
     public String scheduleConfirmDetails(@RequestParam Map<String, String> allParams, Model model) {
         model.addAttribute("showUserHeader", true);
-        allParams.replace("service", AppointmentServiceType.fromInput(allParams.get("service")).getLabel());
+
+        // Add full user object if appointment is for SELF
+        if ("SELF".equals(allParams.get("applicantType"))) {
+            String email = SecurityContextHolder.getContext().getAuthentication().getName();
+            orchestrationService.findUserByEmail(email).ifPresent(user -> model.addAttribute("user", user));
+        }
+        
+        // Format service name for display
+        String serviceName = allParams.get("service");
+        if (serviceName != null) {
+            AppointmentServiceType serviceType = AppointmentServiceType.fromInput(serviceName);
+            if (serviceType != null) {
+                model.addAttribute("serviceLabel", serviceType.getLabel());
+            }
+        }
+
         reformatDate(allParams, "date");
         allParams.forEach(model::addAttribute);
         return "schedule-confirm-details";
@@ -126,6 +142,8 @@ public class HomeController {
             }
         }
     }
+
+
 
     @GetMapping("/appointment-confirmed")
     public String appointmentConfirmed(Model model) {

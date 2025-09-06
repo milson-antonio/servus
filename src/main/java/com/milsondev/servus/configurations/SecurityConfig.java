@@ -61,7 +61,9 @@ public class SecurityConfig {
             .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/", "/login", "/sign-up", "/password-reset", "/password-reset/new", "/password-reset/requested", "/schedule", "/sign-up/success", "/activation/failed").permitAll()
-                .requestMatchers("/auth/login", "/auth/register", "/auth/password-reset", "/auth/password-reset/new", "/auth/active/token", "/auth/password-reset/token", "/auth/logout").permitAll()
+                .requestMatchers("/schedule-appointment", "/schedule-who", "/schedule-for-other", "/schedule-date-and-time", "/schedule-confirm-details", "/appointment-confirmed").permitAll()
+                .requestMatchers("/auth/**").permitAll()
+                .requestMatchers("/api/appointments/available-slots").permitAll()
                 .requestMatchers("/static/**", "/images/**", "/css/**", "/js/**", "/favicon.ico").permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()

@@ -26,7 +26,7 @@
                         <!-- Appointment Details -->
                         <div>
                             <h3 class="text-lg font-semibold text-gray-800 border-b pb-2 mb-2">Appointment Details</h3>
-                            <p><strong>Service:</strong> <span th:text="${service}"></span></p>
+                            <p><strong>Service:</strong> <span th:text="${serviceLabel}"></span></p>
                             <p><strong>Date:</strong> <span th:text="${date}"></span></p>
                             <p><strong>Time:</strong> <span th:text="${time}"></span></p>
                         </div>
@@ -38,20 +38,27 @@
                             <div th:if="${applicantType == 'OTHER'}">
                                 <p><strong>First Name:</strong> <span th:text="${otherFirstName}"></span></p>
                                 <p><strong>Last Name:</strong> <span th:text="${otherLastName}"></span></p>
+                                <p><strong>Date of Birth:</strong> <span th:text="${otherDob}"></span></p>
+                                <p><strong>Nationality:</strong> <span th:text="${otherNationality}"></span></p>
+                                <p><strong>Passport Number:</strong> <span th:text="${otherPassportNumber}"></span></p>
                                 <p><strong>Email:</strong> <span th:text="${otherEmail}"></span></p>
                                 <p><strong>Phone:</strong> <span th:text="${otherPhone}"></span></p>
                             </div>
                             <!-- Details for SELF -->
-                            <div th:if="${applicantType == 'SELF'}" sec:authorize="isAuthenticated()">
-                                <p><strong>Name:</strong> <span sec:authentication="principal.firstName"></span> <span sec:authentication="principal.lastName"></span></p>
-                                <p><strong>Email:</strong> <span sec:authentication="principal.username"></span></p>
-                                <p>(Appointment for yourself)</p>
+                            <div th:if="${applicantType == 'SELF' and user != null}">
+                                <p><strong>First Name:</strong> <span th:text="${user.firstName}"></span></p>
+                                <p><strong>Last Name:</strong> <span th:text="${user.lastName}"></span></p>
+                                <p><strong>Date of Birth:</strong> <span th:text="${user.dateOfBirth != null ? #dates.format(user.dateOfBirth, 'dd/MM/yyyy') : 'N/A'}"></span></p>
+                                <p><strong>Nationality:</strong> <span th:text="${user.nationality}"></span></p>
+                                <p><strong>Passport Number:</strong> <span th:text="${user.passportNumber}"></span></p>
+                                <p><strong>Email:</strong> <span th:text="${user.email}"></span></p>
+                                <p><strong>Phone:</strong> <span th:text="${user.phone}"></span></p>
                             </div>
                         </div>
                     </div>
 
                     <div class="flex px-4 py-3 justify-between">
-                         <a th:href="@{/schedule-date-and-time(service=${service}, applicantType=${applicantType}, otherFirstName=${otherFirstName}, otherLastName=${otherLastName}, otherEmail=${otherEmail}, otherPhone=${otherPhone})}"
+                         <a th:href="@{/schedule-date-and-time(service=${service}, applicantType=${applicantType}, otherFirstName=${otherFirstName}, otherLastName=${otherLastName}, otherDob=${otherDob}, otherNationality=${otherNationality}, otherPassportNumber=${otherPassportNumber}, otherEmail=${otherEmail}, otherPhone=${otherPhone})}"
                            class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#0d80f2] text-slate-50 text-sm font-bold leading-normal tracking-[0.015em]">
                             <span class="truncate" th:text="#{common.back}">Back</span>
                         </a>
@@ -63,6 +70,9 @@
                             <input type="hidden" name="time" th:value="${time}" />
                             <input type="hidden" name="otherFirstName" th:value="${otherFirstName}" />
                             <input type="hidden" name="otherLastName" th:value="${otherLastName}" />
+                            <input type="hidden" name="otherDob" th:value="${otherDob}" />
+                            <input type="hidden" name="otherNationality" th:value="${otherNationality}" />
+                            <input type="hidden" name="otherPassportNumber" th:value="${otherPassportNumber}" />
                             <input type="hidden" name="otherEmail" th:value="${otherEmail}" />
                             <input type="hidden" name="otherPhone" th:value="${otherPhone}" />
                             <button type="submit"
