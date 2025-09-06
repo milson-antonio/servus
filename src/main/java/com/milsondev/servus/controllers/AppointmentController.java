@@ -58,6 +58,7 @@ public class AppointmentController {
                 UUID userId = user.getId();
                 model.addAttribute("upcomingAppointments", appointmentService.listUpcomingByUser(userId));
                 model.addAttribute("pastAppointments", appointmentService.listPastByUser(userId));
+                model.addAttribute("firstName", user.getFirstName());
             }
         }
         return "appointments";

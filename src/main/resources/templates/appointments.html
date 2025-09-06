@@ -15,7 +15,8 @@
             <div class="px-40 flex flex-1 justify-center py-5">
                 <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
                     <div class="flex flex-wrap justify-between gap-3 p-4">
-                        <p class="text-[#0d141c] tracking-light text-[32px] font-bold leading-tight min-w-72">Welcome back, Sophia!</p>
+                        <p class="text-[#0d141c] tracking-light text-[32px] font-bold leading-tight min-w-72"
+                           th:text="#{welcome} + ' ' + ${firstName} + '!'"></p>
                         <a href="/schedule-appointment"
                            class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 px-4 bg-[#e7edf4] text-[#0d141c] text-sm font-medium leading-normal">
                             <span class="truncate" th:text="#{appointments.new}">New Appointment</span>

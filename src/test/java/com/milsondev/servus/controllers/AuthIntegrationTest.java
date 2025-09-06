@@ -42,7 +42,7 @@ public class AuthIntegrationTest {
         testUser = new UserEntity();
         testUser.setEmail("test@example.com");
         testUser.setPassword(passwordEncoder.encode("password"));
-        testUser.setFullName("User Test");
+        //testUser.setFullName("User Test");
         testUser.setPhone("1234567890");
         userRepository.save(testUser);
     }

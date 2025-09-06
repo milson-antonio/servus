@@ -37,7 +37,8 @@ public class ProfileController {
     }
 
     @PostMapping
-    public String updateProfile(@RequestParam("fullName") String fullName,
+    public String updateProfile(@RequestParam("firstName") String firstName,
+                                @RequestParam("lastName") String lastName,
                                 @RequestParam(value = "phone", required = false) String phone,
                                 RedirectAttributes ra) {
         String email = currentEmail();
@@ -45,15 +46,12 @@ public class ProfileController {
         if (opt.isEmpty()) {
             return "redirect:/login";
         }
-        UserEntity user = opt.get();
         // Simple validation
-        if (fullName == null || fullName.trim().isEmpty()) {
-            ra.addFlashAttribute("error", "profile.fullName.required");
+        if (firstName == null || firstName.trim().isEmpty() || lastName == null || lastName.trim().isEmpty()) {
+            ra.addFlashAttribute("error", "profile.name.required");
             return "redirect:/profile";
         }
-        user.setFullName(fullName.trim());
-        user.setPhone(phone != null ? phone.trim() : null);
-        orchestrationService.updateUserProfile(email, fullName, phone);
+        orchestrationService.updateUserProfile(email, firstName, lastName, phone);
         ra.addFlashAttribute("success", "profile.update.success");
         return "redirect:/profile";
     }

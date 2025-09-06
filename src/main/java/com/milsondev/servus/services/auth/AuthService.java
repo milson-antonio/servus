@@ -20,6 +20,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Optional;
 
 import com.milsondev.servus.enums.ResetRequestStatus;
@@ -75,11 +77,23 @@ public class AuthService {
 
     public void register(UserDTO userDto) {
         UserEntity userEntity = new UserEntity();
-        userEntity.setFullName(userDto.getFullName());
+        userEntity.setFirstName(userDto.getFirstName());
+        userEntity.setLastName(userDto.getLastName());
         userEntity.setEmail(userDto.getEmail());
         userEntity.setPhone(userDto.getPhone());
         userEntity.setPassword(passwordEncoder.encode(userDto.getPassword()));
         userEntity.setRole(userDto.getRole());
+        userEntity.setNationality(userDto.getNationality());
+        userEntity.setPassportNumber(userDto.getPassportNumber());
+
+        if (userDto.getDateOfBirth() != null && !userDto.getDateOfBirth().isBlank()) {
+            try {
+                userEntity.setDateOfBirth(new SimpleDateFormat("yyyy-MM-dd").parse(userDto.getDateOfBirth()));
+            } catch (ParseException e) {
+                LOGGER.warn("Could not parse date of birth: {}", userDto.getDateOfBirth(), e);
+            }
+        }
+
         LOGGER.info("Registering user: {}", userEntity);
         userRepository.save(userEntity);
         sendActivationEmailAsync(userEntity.getEmail());

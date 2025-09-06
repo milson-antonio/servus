@@ -25,11 +25,19 @@
                     </div>
 
                     <form method="post" action="/profile" class="bg-white rounded-lg border border-slate-200 p-6 shadow-sm space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-slate-700 mb-1" for="fullName" th:text="#{profile.form.fullName.label}">Nome completo</label>
-                            <input id="fullName" name="fullName" type="text" required
-                                   class="block w-full rounded-md border-slate-300 shadow-sm focus:border-slate-400 focus:ring-slate-400"
-                                   th:value="${user.fullName}" />
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1" for="firstName" th:text="#{profile.form.firstName.label}">Primeiro Nome</label>
+                                <input id="firstName" name="firstName" type="text" required
+                                       class="block w-full rounded-md border-slate-300 shadow-sm focus:border-slate-400 focus:ring-slate-400"
+                                       th:value="${user.firstName}" />
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1" for="lastName" th:text="#{profile.form.lastName.label}">Apelido</label>
+                                <input id="lastName" name="lastName" type="text" required
+                                       class="block w-full rounded-md border-slate-300 shadow-sm focus:border-slate-400 focus:ring-slate-400"
+                                       th:value="${user.lastName}" />
+                            </div>
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 mb-1" for="email" th:text="#{profile.form.email.label}">Email</label>

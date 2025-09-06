@@ -16,7 +16,6 @@
             <div class="layout-content-container flex flex-col w-[512px] max-w-[512px] py-5 max-w-[960px] flex-1">
                 <h2 class="text-[#0d141c] tracking-light text-[28px] font-bold leading-tight px-4 text-center pb-3 pt-5" th:text="#{signup.heading}">Criar a sua conta</h2>
 
-                <!-- Error message when validation fails (server-param) -->
                 <div class="px-4" th:if="${param.error}">
                     <div class="rounded-md border border-red-300 bg-red-50 text-red-700 text-sm p-3" th:text="#{signup.error}">
                         Por favor verifique os campos obrigatórios e confirme que as palavras‑passe coincidem.
@@ -29,19 +28,58 @@
                       th:object="${user}"
                       action="/auth/register"
                       novalidate>
+
                     <div class="flex max-w-[480px] flex-wrap items-end gap-2 px-4 py-3">
                         <label class="flex flex-col min-w-40 flex-1">
                             <p class="text-[#0d141c] text-base font-medium leading-normal pb-2">
-                                <span th:text="#{signup.fullName.label}">Nome completo</span>
+                                <span th:text="#{signup.firstName.label}">Primeiro Nome</span>
                                 <span class="text-red-600" aria-hidden="true"> *</span>
                             </p>
-                            <input id="fullName" th:field="*{fullName}" type="text"
-                                   th:attr="placeholder=#{signup.fullName.placeholder}"
-                                   placeholder="Introduza o seu nome"
+                            <input id="firstName" th:field="*{firstName}" type="text"
+                                   th:attr="placeholder=#{signup.firstName.placeholder}"
                                    class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0d141c] focus:outline-0 focus:ring-0 border-none bg-[#e7edf4] focus:border-none h-14 placeholder:text-[#49739c] p-4 text-base font-normal leading-normal"
-                                   th:classappend="${errors != null and errors.containsKey('fullName') ? ' ring-2 ring-red-500' : (user != null and !#strings.isEmpty(user.fullName) ? ' ring-2 ring-green-400' : '')}"/>
+                                   th:classappend="${#fields.hasErrors('firstName') ? 'ring-2 ring-red-500' : ''}"/>
+                            <div class="mt-2 text-sm text-red-600" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
+                        </label>
+                    </div>
 
-                            <div class="mt-2 text-sm text-red-600" th:if="${errors != null and errors.containsKey('fullName')}" th:text="${errors['fullName']}"></div>
+                    <div class="flex max-w-[480px] flex-wrap items-end gap-2 px-4 py-3">
+                        <label class="flex flex-col min-w-40 flex-1">
+                            <p class="text-[#0d141c] text-base font-medium leading-normal pb-2">
+                                <span th:text="#{signup.lastName.label}">Apelido</span>
+                                <span class="text-red-600" aria-hidden="true"> *</span>
+                            </p>
+                            <input id="lastName" th:field="*{lastName}" type="text"
+                                   th:attr="placeholder=#{signup.lastName.placeholder}"
+                                   class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0d141c] focus:outline-0 focus:ring-0 border-none bg-[#e7edf4] focus:border-none h-14 placeholder:text-[#49739c] p-4 text-base font-normal leading-normal"
+                                   th:classappend="${#fields.hasErrors('lastName') ? 'ring-2 ring-red-500' : ''}"/>
+                            <div class="mt-2 text-sm text-red-600" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
+                        </label>
+                    </div>
+
+                    <div class="flex max-w-[480px] flex-wrap items-end gap-2 px-4 py-3">
+                        <label class="flex flex-col min-w-40 flex-1">
+                            <p class="text-[#0d141c] text-base font-medium leading-normal pb-2" th:text="#{signup.dob.label}">Data de Nascimento</p>
+                            <input id="dateOfBirth" th:field="*{dateOfBirth}" type="date"
+                                   class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0d141c] focus:outline-0 focus:ring-0 border-none bg-[#e7edf4] focus:border-none h-14 placeholder:text-[#49739c] p-4 text-base font-normal leading-normal"/>
+                        </label>
+                    </div>
+
+                    <div class="flex max-w-[480px] flex-wrap items-end gap-2 px-4 py-3">
+                        <label class="flex flex-col min-w-40 flex-1">
+                            <p class="text-[#0d141c] text-base font-medium leading-normal pb-2" th:text="#{signup.nationality.label}">Nacionalidade</p>
+                            <input id="nationality" th:field="*{nationality}" type="text"
+                                   th:attr="placeholder=#{signup.nationality.placeholder}"
+                                   class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0d141c] focus:outline-0 focus:ring-0 border-none bg-[#e7edf4] focus:border-none h-14 placeholder:text-[#49739c] p-4 text-base font-normal leading-normal"/>
+                        </label>
+                    </div>
+
+                    <div class="flex max-w-[480px] flex-wrap items-end gap-2 px-4 py-3">
+                        <label class="flex flex-col min-w-40 flex-1">
+                            <p class="text-[#0d141c] text-base font-medium leading-normal pb-2" th:text="#{signup.passport.label}">Número do Passaporte</p>
+                            <input id="passportNumber" th:field="*{passportNumber}" type="text"
+                                   th:attr="placeholder=#{signup.passport.placeholder}"
+                                   class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0d141c] focus:outline-0 focus:ring-0 border-none bg-[#e7edf4] focus:border-none h-14 placeholder:text-[#49739c] p-4 text-base font-normal leading-normal"/>
                         </label>
                     </div>
 
@@ -55,8 +93,8 @@
                             <input id="email" th:field="*{email}" type="email"
                                    th:attr="placeholder=#{signup.email.placeholder}" placeholder="Introduza o seu email"
                                    class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0d141c] focus:outline-0 focus:ring-0 border-none bg-[#e7edf4] focus:border-none h-14 placeholder:text-[#49739c] p-4 text-base font-normal leading-normal"
-                                   th:classappend="${errors != null and errors.containsKey('email') ? ' ring-2 ring-red-500' : (user != null and !#strings.isEmpty(user.email) ? ' ring-2 ring-green-400' : '')}"/>
-                            <div class="mt-2 text-sm text-red-600" th:if="${errors != null and errors.containsKey('email')}" th:text="${errors['email']}"></div>
+                                   th:classappend="${#fields.hasErrors('email') ? 'ring-2 ring-red-500' : ''}"/>
+                            <div class="mt-2 text-sm text-red-600" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
                         </label>
                     </div>
 
@@ -79,8 +117,8 @@
                                 <input id="password" th:field="*{password}" type="password"
                                        th:attr="placeholder=#{signup.password.placeholder}" placeholder="Introduza a sua palavra‑passe"
                                        class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0d141c] focus:outline-0 focus:ring-0 border-none bg-[#e7edf4] focus:border-none h-14 placeholder:text-[#49739c] p-4 text-base font-normal leading-normal"
-                                       th:classappend="${errors != null and errors.containsKey('password') ? ' ring-2 ring-red-500' : (user != null and !#strings.isEmpty(user.password) ? ' ring-2 ring-green-400' : '')}"/>
-                                <div class="mt-2 text-sm text-red-600" th:if="${errors != null and errors.containsKey('password')}" th:text="${errors['password']}"></div>
+                                       th:classappend="${#fields.hasErrors('password') ? 'ring-2 ring-red-500' : ''}"/>
+                                <div class="mt-2 text-sm text-red-600" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
                             </label>
                             <label class="flex flex-col min-w-40 flex-1">
                                 <p class="text-[#0d141c] text-base font-medium leading-normal pb-2">
@@ -90,15 +128,18 @@
                                 <input id="confirmPassword" th:field="*{confirmPassword}" type="password"
                                        th:attr="placeholder=#{signup.confirmPassword.placeholder}" placeholder="Repita a palavra‑passe"
                                        class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#0d141c] focus:outline-0 focus:ring-0 border-none bg-[#e7edf4] focus:border-none h-14 placeholder:text-[#49739c] p-4 text-base font-normal leading-normal"
-                                       th:classappend="${errors != null and errors.containsKey('confirmPassword') ? ' ring-2 ring-red-500' : (user != null and !#strings.isEmpty(user.confirmPassword) ? ' ring-2 ring-green-400' : '')}"/>
-                                <div class="mt-2 text-sm text-red-600" th:if="${errors != null and errors.containsKey('confirmPassword')}" th:text="${errors['confirmPassword']}"></div>
+                                       th:classappend="${#fields.hasErrors('confirmPassword') ? 'ring-2 ring-red-500' : ''}"/>
+                                <div class="mt-2 text-sm text-red-600" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></div>
                             </label>
                         </div>
                     </div>
 
-                    <!-- Global error from backend (optional) -->
-                    <div class="px-4" th:if="${errors != null and errors.containsKey('_global')}">
-                        <div class="rounded-md border border-red-300 bg-red-50 text-red-700 text-sm p-3" th:text="${errors['_global']}"></div>
+                    <div class="px-4" th:if="${#fields.hasGlobalErrors()}">
+                        <div class="rounded-md border border-red-300 bg-red-50 text-red-700 text-sm p-3">
+                            <ul>
+                                <li th:each="err : ${#fields.globalErrors()}" th:text="${err}"></li>
+                            </ul>
+                        </div>
                     </div>
 
 

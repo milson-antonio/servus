@@ -4,7 +4,8 @@ CREATE SCHEMA IF NOT EXISTS servus;
 -- Criação da tabela de usuários
 CREATE TABLE servus."user" (
                                id UUID PRIMARY KEY,
-                               full_name VARCHAR(255) NOT NULL,
+                               first_name VARCHAR(255) NOT NULL,
+                               last_name VARCHAR(255) NOT NULL,
                                email VARCHAR(100) NOT NULL UNIQUE,
                                phone VARCHAR(20),
                                password VARCHAR(255) NOT NULL,
@@ -13,7 +14,10 @@ CREATE TABLE servus."user" (
                                token_version INTEGER,
                                last_password_reset_request_at TIMESTAMP,
                                updated_at TIMESTAMP,
-                               role VARCHAR(50) NOT NULL
+                               role VARCHAR(50) NOT NULL,
+                               date_of_birth DATE,
+                               nationality VARCHAR(255),
+                               passport_number VARCHAR(255)
 );
 
 -- Criação da tabela de agendamentos

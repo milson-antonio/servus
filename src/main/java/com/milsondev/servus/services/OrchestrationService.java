@@ -72,10 +72,11 @@ public class OrchestrationService {
         return userRepository.findByEmail(email);
     }
 
-    public void updateUserProfile(final String email, final String fullName, final String phone) {
+    public void updateUserProfile(final String email, final String firstName, final String lastName, final String phone) {
         UserEntity user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("User not found: " + email));
-        user.setFullName(fullName != null ? fullName.trim() : null);
+        user.setFirstName(firstName != null ? firstName.trim() : null);
+        user.setLastName(lastName != null ? lastName.trim() : null);
         user.setPhone(phone != null ? phone.trim() : null);
         userRepository.save(user);
     }

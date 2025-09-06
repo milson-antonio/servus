@@ -30,12 +30,6 @@ public class UserDTOValidatorImpl implements ConstraintValidator<UserDTOValidato
         boolean valid = true;
         boolean isCreate = dto.getId() == null;
 
-        // fullName required (non-null, non-blank)
-        if (orchestrationService.isBlank(dto.getFullName())) {
-            addViolation(ctx, "fullName", msg("validation.signup.fullName.required"));
-            valid = false;
-        }
-
         // email required and valid format
         if (orchestrationService.isBlank(dto.getEmail())) {
             addViolation(ctx, "email", msg("validation.signup.email.required"));
