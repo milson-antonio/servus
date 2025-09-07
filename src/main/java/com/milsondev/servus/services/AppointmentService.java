@@ -1,10 +1,10 @@
 package com.milsondev.servus.services;
 
 import com.milsondev.servus.db.entities.AppointmentEntity;
+import com.milsondev.servus.db.entities.ServiceTypeEntity;
 import com.milsondev.servus.db.repositories.AppointmentRepository;
 import com.milsondev.servus.dtos.AppointmentDTO;
 import com.milsondev.servus.enums.ApplicantType;
-import com.milsondev.servus.enums.AppointmentServiceType;
 import com.milsondev.servus.enums.AppointmentStatus;
 import jakarta.validation.Validator;
 import org.springframework.stereotype.Service;
@@ -81,7 +81,7 @@ public class AppointmentService {
                 .collect(Collectors.toList());
     }
 
-    public AppointmentEntity createForUser(UUID userId, AppointmentServiceType service,
+    public AppointmentEntity createForUser(UUID userId, ServiceTypeEntity serviceType,
                                            ApplicantType applicantType,
                                            Date startAt, Date endAt,
                                            boolean forOther, Map<String, String> otherPersonDetails) {
@@ -96,26 +96,13 @@ public class AppointmentService {
             cal.add(java.util.Calendar.MINUTE, 30);
             endAt = cal.getTime();
         }
-        // Build DTO to reuse validator rules
-        AppointmentDTO dto = new AppointmentDTO();
-        dto.setUserId(userId);
-        dto.setAppointmentServiceType(service);
-        dto.setApplicantType(applicantType);
-        dto.setStartAt(startAt);
-        dto.setEndAt(endAt);
-
-        var violations = validator.validate(dto);
-        if (!violations.isEmpty()) {
-            String msg = violations.stream().map(v -> v.getPropertyPath() + ": " + v.getMessage()).reduce((a,b) -> a + "; " + b).orElse("Invalid appointment");
-            throw new IllegalArgumentException(msg);
-        }
 
         AppointmentEntity entity = new AppointmentEntity();
         entity.setUserId(userId);
-        entity.setAppointmentServiceType(service);
+        entity.setServiceType(serviceType);
         entity.setApplicantType(applicantType);
-        entity.setStartAt(dto.getStartAt());
-        entity.setEndAt(dto.getEndAt());
+        entity.setStartAt(startAt);
+        entity.setEndAt(endAt);
         entity.setStatus(AppointmentStatus.Scheduled);
         entity.setForOther(forOther);
 

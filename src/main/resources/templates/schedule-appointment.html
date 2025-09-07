@@ -23,11 +23,11 @@
                     <p class="text-[#627384] text-base leading-normal px-4 pb-5" th:text="#{schedule.subtitle}">Select the service you want to schedule.</p>
 
                     <div class="flex flex-col gap-4 p-4">
-                        <a th:each="service : ${T(com.milsondev.servus.enums.AppointmentServiceType).values()}"
-                           th:href="@{/schedule-documents(service=${service.name()})}"
+                        <a th:each="service : ${services}"
+                           th:href="@{/schedule-documents(service=${service.name})}"
                            class="flex flex-col gap-1.5 rounded-lg border border-[#cedbe8] p-4 hover:border-[#0d80f2] focus:border-[#0d80f2] focus:outline-none">
-                            <p class="text-[#0d141c] text-base font-bold leading-tight" th:text="${service.getLabel()}"></p>
-                            <p class="text-[#627384] text-sm leading-normal" th:text="#{'schedule.service.' + ${service.name()} + '.desc'}"></p>
+                            <p class="text-[#0d141c] text-base font-bold leading-tight" th:text="${service.label}"></p>
+                            <p class="text-[#627384] text-sm leading-normal" th:text="${service.description}"></p>
                         </a>
                     </div>
 

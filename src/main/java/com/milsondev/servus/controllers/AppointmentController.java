@@ -1,9 +1,10 @@
 package com.milsondev.servus.controllers;
 
+import com.milsondev.servus.db.entities.ServiceTypeEntity;
 import com.milsondev.servus.db.entities.UserEntity;
+import com.milsondev.servus.db.repositories.ServiceTypeRepository;
 import com.milsondev.servus.db.repositories.UserRepository;
 import com.milsondev.servus.enums.ApplicantType;
-import com.milsondev.servus.enums.AppointmentServiceType;
 import com.milsondev.servus.services.AppointmentService;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -32,11 +33,13 @@ public class AppointmentController {
 
     private final AppointmentService appointmentService;
     private final UserRepository userRepository;
+    private final ServiceTypeRepository serviceTypeRepository;
     private final MessageSource messageSource;
 
-    public AppointmentController(AppointmentService appointmentService, UserRepository userRepository, MessageSource messageSource) {
+    public AppointmentController(AppointmentService appointmentService, UserRepository userRepository, ServiceTypeRepository serviceTypeRepository, MessageSource messageSource) {
         this.appointmentService = appointmentService;
         this.userRepository = userRepository;
+        this.serviceTypeRepository = serviceTypeRepository;
         this.messageSource = messageSource;
     }
 
@@ -102,13 +105,15 @@ public class AppointmentController {
         }
         UUID userId = user.getId();
 
-        String serviceStr = allParams.get("service");
+        String serviceName = allParams.get("service");
+        ServiceTypeEntity serviceType = serviceTypeRepository.findByName(serviceName)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid service type: " + serviceName));
+
         String applicantTypeStr = allParams.get("applicantType");
         String dateStr = allParams.get("date");
         String timeStr = allParams.get("time");
 
         ApplicantType applicantType = ApplicantType.fromInput(applicantTypeStr);
-        AppointmentServiceType service = AppointmentServiceType.fromInput(serviceStr);
         Date startAt = deriveStartAt(dateStr, timeStr);
         Date endAt = null; // service will default to +30min if needed
 
@@ -125,8 +130,8 @@ public class AppointmentController {
         }
 
         try {
-            var saved = appointmentService.createForUser(userId, service, applicantType, startAt, endAt, forOther, otherPersonDetails);
-            ra.addFlashAttribute("appointmentServiceName", service != null ? service.getLabel() : "");
+            var saved = appointmentService.createForUser(userId, serviceType, applicantType, startAt, endAt, forOther, otherPersonDetails);
+            ra.addFlashAttribute("appointmentServiceName", serviceType.getLabel());
             ra.addFlashAttribute("appointmentDate", new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH).format(saved.getStartAt()));
             ra.addFlashAttribute("appointmentTime", timeStr);
             ra.addFlashAttribute("appointmentLocation", "—");

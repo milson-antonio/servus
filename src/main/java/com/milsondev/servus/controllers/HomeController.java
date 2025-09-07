@@ -6,8 +6,8 @@ import com.milsondev.servus.dtos.OtherPersonDetailsDTO;
 import com.milsondev.servus.dtos.ResetPasswordRequestDTO;
 import com.milsondev.servus.dtos.NewPasswordDTO;
 import com.milsondev.servus.dtos.UserDTO;
-import com.milsondev.servus.enums.AppointmentServiceType;
 import com.milsondev.servus.services.OrchestrationService;
+import com.milsondev.servus.services.ServiceTypeService;
 import jakarta.validation.Valid;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -25,9 +25,11 @@ import java.util.Map;
 public class HomeController {
 
     private final OrchestrationService orchestrationService;
+    private final ServiceTypeService serviceTypeService;
 
-    public HomeController(OrchestrationService orchestrationService) {
+    public HomeController(OrchestrationService orchestrationService, ServiceTypeService serviceTypeService) {
         this.orchestrationService = orchestrationService;
+        this.serviceTypeService = serviceTypeService;
     }
 
     @GetMapping
@@ -48,6 +50,7 @@ public class HomeController {
     @GetMapping("/schedule-appointment")
     public String scheduleAppointment(Model model) {
         model.addAttribute("showUserHeader", true);
+        model.addAttribute("services", serviceTypeService.findAll());
         return "schedule-appointment";
     }
 
@@ -55,6 +58,10 @@ public class HomeController {
     public String scheduleDocuments(@RequestParam(name = "service") String service, Model model) {
         model.addAttribute("showUserHeader", true);
         model.addAttribute("service", service);
+        serviceTypeService.findByName(service).ifPresent(serviceType -> {
+            model.addAttribute("serviceLabel", serviceType.getLabel());
+            model.addAttribute("documents", serviceType.getRequiredDocuments());
+        });
         return "schedule-documents";
     }
 
@@ -114,40 +121,55 @@ public class HomeController {
     }
 
     @GetMapping("/schedule-confirm-details")
-    public String scheduleConfirmDetails(@RequestParam Map<String, String> allParams, Model model) {
+    public String scheduleConfirmDetails(@RequestParam(name = "service") String service,
+                                         @RequestParam(name = "applicantType") String applicantType,
+                                         @RequestParam(name = "date") String date,
+                                         @RequestParam(name = "time") String time,
+                                         @RequestParam(name = "otherFirstName", required = false) String otherFirstName,
+                                         @RequestParam(name = "otherLastName", required = false) String otherLastName,
+                                         @RequestParam(name = "otherDob", required = false) String otherDob,
+                                         @RequestParam(name = "otherNationality", required = false) String otherNationality,
+                                         @RequestParam(name = "otherPassportNumber", required = false) String otherPassportNumber,
+                                         @RequestParam(name = "otherEmail", required = false) String otherEmail,
+                                         @RequestParam(name = "otherPhone", required = false) String otherPhone,
+                                         Model model) {
         model.addAttribute("showUserHeader", true);
 
-        // Add full user object if appointment is for SELF
-        if ("SELF".equals(allParams.get("applicantType"))) {
+        if ("SELF".equals(applicantType)) {
             String email = SecurityContextHolder.getContext().getAuthentication().getName();
             orchestrationService.findUserByEmail(email).ifPresent(user -> model.addAttribute("user", user));
         }
-        
-        // Format service name for display
-        String serviceName = allParams.get("service");
-        if (serviceName != null) {
-            AppointmentServiceType serviceType = AppointmentServiceType.fromInput(serviceName);
-            if (serviceType != null) {
-                model.addAttribute("serviceLabel", serviceType.getLabel());
-            }
-        }
 
-        reformatDate(allParams, "date");
-        allParams.forEach(model::addAttribute);
+        serviceTypeService.findByName(service).ifPresent(serviceType -> 
+            model.addAttribute("serviceLabel", serviceType.getLabel()));
+
+        model.addAttribute("service", service);
+        model.addAttribute("applicantType", applicantType);
+        model.addAttribute("date", reformatDate(date));
+        model.addAttribute("time", time);
+        model.addAttribute("otherFirstName", otherFirstName);
+        model.addAttribute("otherLastName", otherLastName);
+        model.addAttribute("otherDob", otherDob);
+        model.addAttribute("otherNationality", otherNationality);
+        model.addAttribute("otherPassportNumber", otherPassportNumber);
+        model.addAttribute("otherEmail", otherEmail);
+        model.addAttribute("otherPhone", otherPhone);
+
         return "schedule-confirm-details";
     }
 
-    private void reformatDate(Map<String, String> params, String key) {
-        if (params.containsKey(key) && params.get(key) != null && !params.get(key).isEmpty()) {
+    private String reformatDate(final String date) {
+        if (date != null && !date.isEmpty()) {
             try {
                 DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                 DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                LocalDate parsedDate = LocalDate.parse(params.get(key), inputFormatter);
-                params.put(key, parsedDate.format(outputFormatter));
+                LocalDate parsedDate = LocalDate.parse(date, inputFormatter);
+                return parsedDate.format(outputFormatter);
             } catch (Exception e) {
-                System.err.println("Erro ao converter data: " + params.get(key));
+                System.err.println("Erro ao converter data: " + date);
             }
         }
+        return null;
     }
 
     @GetMapping("/appointment-confirmed")

@@ -18,11 +18,11 @@
             <tbody>
             <tr class="border-t border-t-[#cedbe8]" th:each="a : ${upcomingAppointments}">
                 <td class="h-[72px] px-4 py-2 w-[130px] text-[#49739c] text-sm font-normal leading-normal"
-                    th:text="${#dates.format(a.startAt, 'dd-MM-yyyy')}">15-08-2024</td>
+                    th:text="${#dates.format(a.startAt, 'dd/MM/yyyy')}">15-08-2024</td>
                 <td class="h-[72px] px-4 py-2 w-[130px] text-[#49739c] text-sm font-normal leading-normal"
                     th:text="${#dates.format(a.startAt, 'HH:mm')}">10:00 AM</td>
                 <td class="h-[72px] px-4 py-2 w-[200px] text-[#49739c] text-sm font-normal leading-normal"
-                    th:text="${a.appointmentServiceType}">Service</td>
+                    th:text="${a.serviceType.label}">Service</td>
                 <td class="h-[72px] px-4 py-2 w-[140px] text-sm font-normal leading-normal">
                     <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 border-2 border-green-400 inset-ring inset-ring-green-600/20" th:text="${a.status}"></span>
                     <!--<span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 inset-ring inset-ring-green-600/20" th:text="${a.status}"></span>-->

@@ -32,28 +32,15 @@
                         </div>
 
                         <!-- Applicant Details -->
-                        <div>
+                        <div th:with="isOther=${applicantType == 'OTHER'}, currentUser=${user}">
                             <h3 class="text-lg font-semibold text-gray-800 border-b pb-2 mb-2">Applicant Details</h3>
-                            <!-- Details for OTHER -->
-                            <div th:if="${applicantType == 'OTHER'}">
-                                <p><strong>First Name:</strong> <span th:text="${otherFirstName}"></span></p>
-                                <p><strong>Last Name:</strong> <span th:text="${otherLastName}"></span></p>
-                                <p><strong>Date of Birth:</strong> <span th:text="${otherDob}"></span></p>
-                                <p><strong>Nationality:</strong> <span th:text="${otherNationality}"></span></p>
-                                <p><strong>Passport Number:</strong> <span th:text="${otherPassportNumber}"></span></p>
-                                <p><strong>Email:</strong> <span th:text="${otherEmail}"></span></p>
-                                <p><strong>Phone:</strong> <span th:text="${otherPhone}"></span></p>
-                            </div>
-                            <!-- Details for SELF -->
-                            <div th:if="${applicantType == 'SELF' and user != null}">
-                                <p><strong>First Name:</strong> <span th:text="${user.firstName}"></span></p>
-                                <p><strong>Last Name:</strong> <span th:text="${user.lastName}"></span></p>
-                                <p><strong>Date of Birth:</strong> <span th:text="${user.dateOfBirth != null ? #dates.format(user.dateOfBirth, 'dd/MM/yyyy') : 'N/A'}"></span></p>
-                                <p><strong>Nationality:</strong> <span th:text="${user.nationality}"></span></p>
-                                <p><strong>Passport Number:</strong> <span th:text="${user.passportNumber}"></span></p>
-                                <p><strong>Email:</strong> <span th:text="${user.email}"></span></p>
-                                <p><strong>Phone:</strong> <span th:text="${user.phone}"></span></p>
-                            </div>
+                            <p><strong>First Name:</strong> <span th:text="${isOther ? otherFirstName : currentUser.firstName}"></span></p>
+                            <p><strong>Last Name:</strong> <span th:text="${isOther ? otherLastName : currentUser.lastName}"></span></p>
+                            <p><strong>Date of Birth:</strong> <span th:text="${isOther ? otherDob : (currentUser.dateOfBirth != null ? #dates.format(currentUser.dateOfBirth, 'dd/MM/yyyy') : 'N/A')}"></span></p>
+                            <p><strong>Nationality:</strong> <span th:text="${isOther ? otherNationality : currentUser.nationality}"></span></p>
+                            <p><strong>Passport Number:</strong> <span th:text="${isOther ? otherPassportNumber : currentUser.passportNumber}"></span></p>
+                            <p><strong>Email:</strong> <span th:text="${isOther ? otherEmail : currentUser.email}"></span></p>
+                            <p><strong>Phone:</strong> <span th:text="${isOther ? otherPhone : currentUser.phone}"></span></p>
                         </div>
                     </div>
 
