@@ -51,6 +51,13 @@ public class HomeController {
         return "schedule-appointment";
     }
 
+    @GetMapping("/schedule-documents")
+    public String scheduleDocuments(@RequestParam(name = "service") String service, Model model) {
+        model.addAttribute("showUserHeader", true);
+        model.addAttribute("service", service);
+        return "schedule-documents";
+    }
+
     @GetMapping("/schedule-who")
     public String scheduleWho(@RequestParam(name = "service") String service,
                               Model model) {
@@ -142,8 +149,6 @@ public class HomeController {
             }
         }
     }
-
-
 
     @GetMapping("/appointment-confirmed")
     public String appointmentConfirmed(Model model) {
