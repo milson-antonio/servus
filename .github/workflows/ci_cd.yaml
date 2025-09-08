@@ -1,0 +1,56 @@
+name: CI/CD Servus to AWS ECS
+
+on:
+  push:
+    branches: [ "*" ] # Alterado para ser mais específico
+  pull_request:
+    branches: [ "*" ] # Adicionado para rodar em PRs para a branch main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4 # Versão atualizada
+
+      - name: Configurar Java 21
+        uses: actions/setup-java@v4 # Versão atualizada
+        with:
+          distribution: 'temurin'
+          java-version: '21' # CORRIGIDO: Alinhado com a versão do Dockerfile
+          cache: 'maven' # Adicionado cache para acelerar builds futuros
+
+      - name: Build do projeto com Maven
+        run: mvn clean package -DskipTests
+
+      - name: Configurar credenciais AWS
+        uses: aws-actions/configure-aws-credentials@v4 # Versão atualizada
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login no Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2 # Action dedicada e mais segura
+
+      - name: Build, tag, e push da imagem para o ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
+          IMAGE_TAG: ${{ github.sha }}
+        uses: docker/build-push-action@v5 # Action dedicada para build e push
+        with:
+          context: .
+          push: true
+          tags: ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}, ${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:latest
+
+      - name: Deploy no ECS (Forçando novo deployment com a tag 'latest')
+        # ATENÇÃO: Este passo assume que sua Task Definition no ECS está configurada para usar a tag 'latest' da imagem.
+        run: |
+          aws ecs update-service \
+            --cluster meu-cluster \
+            --service meu-service \
+            --force-new-deployment \
+            --region ${{ secrets.AWS_REGION }}
