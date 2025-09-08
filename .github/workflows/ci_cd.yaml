@@ -2,8 +2,7 @@ name: CI/CD ECS Docker
 
 on:
   push:
-    branches:
-      - '*'
+    branches: [ "*" ]
 
 jobs:
   build-and-deploy:
