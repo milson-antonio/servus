@@ -58,6 +58,7 @@ public class HomeController {
     public String scheduleDocuments(@RequestParam(name = "service") String service, Model model) {
         model.addAttribute("showUserHeader", true);
         model.addAttribute("service", service);
+
         serviceTypeService.findByName(service).ifPresent(serviceType -> {
             model.addAttribute("serviceLabel", serviceType.getLabel());
             model.addAttribute("documents", serviceType.getRequiredDocuments());
