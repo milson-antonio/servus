@@ -50,7 +50,7 @@ jobs:
         # ATENÇÃO: Este passo assume que sua Task Definition no ECS está configurada para usar a tag 'latest' da imagem.
         run: |
           aws ecs update-service \
-            --cluster meu-cluster \
-            --service meu-service \
+            --cluster flowery-kangaroo-7ggoma \
+            --service servus-task \
             --force-new-deployment \
-            --region ${{ secrets.AWS_REGION }}
+            --region eu-north-1
